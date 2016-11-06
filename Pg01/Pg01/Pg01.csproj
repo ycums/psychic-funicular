@@ -93,6 +93,10 @@
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\IpcObjectSender.cs" />
+    <Compile Include="Views\KeyboardHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\KeyboardHookedEventArgs.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
