@@ -87,6 +87,7 @@
     <Compile Include="Models\ConfigUtil.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ConstValues.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />

@@ -16,17 +16,17 @@ namespace Pg01.Models
 
         public Config()
         {
-            Basic = new Basic()
+            Basic = new Basic
             {
                 Title = "Title01",
-                Buttons = new List<ButtonItem>()
+                WindowLocation = new Location {X = 0, Y = 99999},
+                Buttons = new List<ButtonItem>
                 {
-                    new ButtonItem() { X=0,Y=0, Key = "Num9"},
-                    new ButtonItem() { X=0,Y=1, Key = "Num6"},
-                    new ButtonItem() { X=0,Y=2, Key = "Num3"},
-                    new ButtonItem() { X=0,Y=3, Key = "Num5"},
-                    new ButtonItem() { X=8,Y=8, Key = "Num8"},
-
+                    new ButtonItem {X = 0, Y = 0, Key = "Num9"},
+                    new ButtonItem {X = 0, Y = 1, Key = "Num6"},
+                    new ButtonItem {X = 0, Y = 2, Key = "Num3"},
+                    new ButtonItem {X = 0, Y = 3, Key = "Num5"},
+                    new ButtonItem {X = 8, Y = 8, Key = "Num8"}
                 }
             };
         }
