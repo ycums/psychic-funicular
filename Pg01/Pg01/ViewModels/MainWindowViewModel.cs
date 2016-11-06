@@ -36,6 +36,22 @@ namespace Pg01.ViewModels
                     _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
             ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
             ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+        }
+
+        #endregion
+
+        #region Private Functions
+
+        private void CorrectY()
+        {
+            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+        }
+
+        private void CorrectX()
+        {
+            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
         }
 
         #endregion
@@ -115,6 +131,82 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerHeight = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region X変更通知プロパティ
+
+        private double _X;
+
+        public double X
+        {
+            get { return _X; }
+            set
+            {
+                if (Math.Abs(_X - value) < ConstValues.TOLERANCE)
+                    return;
+                _X = value;
+                CorrectX();
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Y変更通知プロパティ
+
+        private double _Y;
+
+        public double Y
+        {
+            get { return _Y; }
+            set
+            {
+                if (Math.Abs(_Y - value) < ConstValues.TOLERANCE)
+                    return;
+                _Y = value;
+                CorrectY();
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Width変更通知プロパティ
+
+        private double _Width;
+
+        public double Width
+        {
+            get { return _Width; }
+            set
+            {
+                if (Math.Abs(_Width - value) < ConstValues.TOLERANCE)
+                    return;
+                _Width = value;
+                CorrectX();
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Height変更通知プロパティ
+
+        private double _Height;
+
+        public double Height
+        {
+            get { return _Height; }
+            set
+            {
+                if (Math.Abs(_Height - value) < ConstValues.TOLERANCE)
+                    return;
+                _Height = value;
+                CorrectY();
                 RaisePropertyChanged();
             }
         }

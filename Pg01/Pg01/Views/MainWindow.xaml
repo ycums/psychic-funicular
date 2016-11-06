@@ -6,6 +6,8 @@
         xmlns:vm="clr-namespace:Pg01.ViewModels"
         SizeToContent="WidthAndHeight"
         MinHeight="200" MinWidth="200"
+        Left ="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
+        Width ="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
         Title="Pg01" >
     <Window.DataContext>
         <vm:MainWindowViewModel />

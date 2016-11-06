@@ -20,6 +20,12 @@
                   </xsd:sequence>
                 </xsd:complexType>
               </xsd:element>
+              <xsd:element name="WindowLocation">
+                <xsd:complexType>
+                  <xsd:attribute name="X" type="xsd:unsignedByte" use="required" />
+                  <xsd:attribute name="Y" type="xsd:unsignedInt" use="required" />
+                </xsd:complexType>
+              </xsd:element>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Xml.Serialization;
 using Livet;
 
@@ -13,5 +14,8 @@ namespace Pg01.Models
 
         [XmlArrayItem("Button")]
         public List<ButtonItem> Buttons { get; set; }
+
+        [XmlElement]
+        public Location WindowLocation { get; set; }
     }
 }
