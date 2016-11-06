@@ -120,7 +120,13 @@
     <Content Include="InfrastructureAssemblies\Livet.XML" />
     <Content Include="InfrastructureAssemblies\Microsoft.Expression.Interactions.dll" />
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
+    <Resource Include="Resources\SettingSample01.xml">
+      <SubType>Designer</SubType>
+    </Resource>
     <None Include="Resources\PerfCenterCpl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
