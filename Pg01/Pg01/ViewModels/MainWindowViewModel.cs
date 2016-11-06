@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
+using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
@@ -16,9 +15,9 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_model)
+            _listener = new PropertyChangedEventListener(_config)
             {
-                () => _model.Basic.Title,
+                () => _config.Basic.Title,
                 (_, __) => RaisePropertyChanged(() => Title)
             };
         }
@@ -27,8 +26,8 @@ namespace Pg01.ViewModels
 
         #region Fields
 
-        private readonly Model _model = new Model();
-        private PropertyChangedEventListener _listener;
+        private readonly Config _config = new Config();
+        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
@@ -72,14 +71,10 @@ namespace Pg01.ViewModels
         {
             if (m.Response == null)
             {
-                Messenger.Raise(new InformationMessage("Cancel", "Error", MessageBoxImage.Error, "Info"));
                 return;
             }
-            if (!_model.LoadFile(m.Response[0]))
-            {
-                Messenger.Raise(new InformationMessage("Cancel", "無効なファイル", MessageBoxImage.Error, "Info"));
-                return;
-            }
+            if (!_config.LoadFile(m.Response[0]))
+                Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
         }
 
         #endregion

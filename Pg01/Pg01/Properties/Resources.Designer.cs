@@ -61,6 +61,21 @@ namespace Pg01.Properties {
         }
         
         /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///
+        ///&lt;config version=&quot;0.0&quot;&gt;
+        ///  &lt;basic&gt;
+        ///    &lt;tilte&gt;Config01&lt;/tilte&gt;
+        ///  &lt;/basic&gt;
+        ///&lt;/config&gt; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string config {
+            get {
+                return ResourceManager.GetString("config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   RadGest01Startup に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string IPCPortName {

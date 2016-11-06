@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:Pg01.ViewModels"
-        Title="{Binding Title}" Height="350" Width="525">
+        Title="{Binding Title}" Height="350" Width="525" WindowStyle="ToolWindow">
 
     <Window.DataContext>
         <vm:MainWindowViewModel />
@@ -28,11 +28,14 @@
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
 
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Info">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 
     <Grid>
         <StackPanel>
-            <TextBlock>Test01</TextBlock>
+            <TextBlock Text="{Binding Title}"></TextBlock>
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
