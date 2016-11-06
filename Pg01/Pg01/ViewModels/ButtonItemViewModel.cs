@@ -15,8 +15,8 @@ namespace Pg01.ViewModels
 
         public ButtonItemViewModel(ButtonItem buttonItem)
         {
-            Width = 40;
-            Height = 24;
+            Width = ConstValues.ButtonWidth;
+            Height = ConstValues.ButtonHeight;
 
             X = buttonItem.X * Width;
             Y = buttonItem.Y * Height;
@@ -26,7 +26,6 @@ namespace Pg01.ViewModels
         public void Initialize()
         {
         }
-
 
         #endregion
 

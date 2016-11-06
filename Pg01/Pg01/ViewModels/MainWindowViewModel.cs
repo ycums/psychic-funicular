@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
@@ -33,6 +34,8 @@ namespace Pg01.ViewModels
             Buttons =
                 new ObservableSynchronizedCollection<ButtonItemViewModel>(
                     _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
+            ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+            ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
         }
 
         #endregion
@@ -76,6 +79,42 @@ namespace Pg01.ViewModels
                 if (_Buttons == value)
                     return;
                 _Buttons = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ButtonsContainerWidth変更通知プロパティ
+
+        private double _ButtonsContainerWidth;
+
+        public double ButtonsContainerWidth
+        {
+            get { return _ButtonsContainerWidth; }
+            set
+            {
+                if (Math.Abs(_ButtonsContainerWidth - value) < ConstValues.TOLERANCE)
+                    return;
+                _ButtonsContainerWidth = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ButtonsContainerHeight変更通知プロパティ
+
+        private double _ButtonsContainerHeight;
+
+        public double ButtonsContainerHeight
+        {
+            get { return _ButtonsContainerHeight; }
+            set
+            {
+                if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
+                    return;
+                _ButtonsContainerHeight = value;
                 RaisePropertyChanged();
             }
         }

@@ -4,7 +4,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:Pg01.ViewModels"
-        Title="Pg01" Height="350" Width="525">
+        SizeToContent="WidthAndHeight"
+        MinHeight="200" MinWidth="200"
+        Title="Pg01" >
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -62,7 +64,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-            <ItemsControl MinHeight="200" ItemsSource="{Binding Buttons}">
+            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" Height ="{Binding ButtonsContainerHeight}" Width ="{Binding ButtonsContainerWidth}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas />

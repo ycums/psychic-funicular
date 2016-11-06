@@ -25,16 +25,10 @@ namespace Pg01.Models
                     new ButtonItem() { X=0,Y=1, Key = "Num6"},
                     new ButtonItem() { X=0,Y=2, Key = "Num3"},
                     new ButtonItem() { X=0,Y=3, Key = "Num5"},
-                    new ButtonItem() { X=8,Y=8, Key = "Num5"},
+                    new ButtonItem() { X=8,Y=8, Key = "Num8"},
 
                 }
             };
-
-            //<buttons> <button x="0" y="0" Key ="Num9" />
-            //  <button x="0" y="1" Key ="Num6" />
-            //  <button x="0" y="2" Key ="Num3" />
-            //  <button x="0" y="3" Key ="Num5" />
-            //</buttons>
         }
 
         #endregion
