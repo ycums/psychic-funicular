@@ -82,8 +82,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\ApplicationGroup.cs" />
     <Compile Include="Models\Basic.cs" />
+    <Compile Include="Models\ButtonItem.cs" />
     <Compile Include="Models\ConfigUtil.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\MenuGroup.cs" />
@@ -130,9 +130,6 @@
       <SubType>Designer</SubType>
     </Resource>
     <Resource Include="Resources\SettingSample02.xml">
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\SettingSample01.xml">
       <SubType>Designer</SubType>
     </Resource>
     <None Include="Resources\config.xsd">

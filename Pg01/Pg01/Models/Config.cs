@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Livet;
 
@@ -15,7 +16,24 @@ namespace Pg01.Models
 
         public Config()
         {
-            Basic = new Basic();
+            Basic = new Basic()
+            {
+                Title = "Title01",
+                Buttons = new List<ButtonItem>()
+                {
+                    new ButtonItem() { X=0,Y=0, Key = "Num9"},
+                    new ButtonItem() { X=0,Y=1, Key = "Num6"},
+                    new ButtonItem() { X=0,Y=2, Key = "Num3"},
+                    new ButtonItem() { X=0,Y=3, Key = "Num5"},
+
+                }
+            };
+
+            //<buttons> <button x="0" y="0" Key ="Num9" />
+            //  <button x="0" y="1" Key ="Num6" />
+            //  <button x="0" y="2" Key ="Num3" />
+            //  <button x="0" y="3" Key ="Num5" />
+            //</buttons>
         }
 
         #endregion

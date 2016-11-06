@@ -1,6 +1,12 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Basic>
-    <Title>Title</Title>
+    <Title>Title01</Title>
+    <Buttons>
+      <Button X="0" Y="0" Key="Num9" />
+      <Button X="0" Y="1" Key="Num6" />
+      <Button X="0" Y="2" Key="Num3" />
+      <Button X="0" Y="3" Key="Num5" />
+    </Buttons>
   </Basic>
 </Config>
