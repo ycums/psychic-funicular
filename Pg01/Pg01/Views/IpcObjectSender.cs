@@ -158,7 +158,7 @@ namespace Pg01.Views
                 // そうしなければ、オブジェクトにアクセスせず一定期限が過ぎると
                 // 自動的に破棄されてしまいます。
                 var lease = base.InitializeLifetimeService() as ILease;
-                if (lease != null && lease.CurrentState == LeaseState.Initial)
+                if ((lease != null) && (lease.CurrentState == LeaseState.Initial))
                     lease.InitialLeaseTime = TimeSpan.Zero;
                 return lease;
             }

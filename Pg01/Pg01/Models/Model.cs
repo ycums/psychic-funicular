@@ -12,5 +12,16 @@ namespace Pg01.Models
         /*
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
+        public Basic Basic { get; set; }
+
+        public bool LoadFile(string mResponse)
+        {
+            return true;
+        }
+    }
+
+    public class Basic: NotificationObject
+    {
+        public string Title { get; set; }
     }
 }
