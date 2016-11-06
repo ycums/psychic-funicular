@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Livet;
@@ -6,6 +8,7 @@ using Livet.Commands;
 using Livet.EventListeners;
 using Livet.Messaging;
 using Livet.Messaging.IO;
+using Livet.Messaging.Windows;
 using Pg01.Models;
 
 namespace Pg01.ViewModels
@@ -18,13 +21,21 @@ namespace Pg01.ViewModels
         {
             _listener = new PropertyChangedEventListener(_config)
             {
-                () => _config.Basic, UpdateBasic
+                () => _config.Basic,
+                UpdateBasic
             };
+
+            UpdateBasic(null, null);
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             Title = _config.Basic.Title;
+            Buttons =
+                new ObservableSynchronizedCollection<ButtonItemViewModel>(
+                    _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
+            ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+            ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
         }
 
         #endregion
@@ -50,6 +61,60 @@ namespace Pg01.ViewModels
                 if (_Title == value)
                     return;
                 _Title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Buttons変更通知プロパティ
+
+        private ObservableSynchronizedCollection<ButtonItemViewModel> _Buttons;
+
+        public ObservableSynchronizedCollection<ButtonItemViewModel> Buttons
+        {
+            get { return _Buttons; }
+            set
+            {
+                if (_Buttons == value)
+                    return;
+                _Buttons = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ButtonsContainerWidth変更通知プロパティ
+
+        private double _ButtonsContainerWidth;
+
+        public double ButtonsContainerWidth
+        {
+            get { return _ButtonsContainerWidth; }
+            set
+            {
+                if (Math.Abs(_ButtonsContainerWidth - value) < ConstValues.TOLERANCE)
+                    return;
+                _ButtonsContainerWidth = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ButtonsContainerHeight変更通知プロパティ
+
+        private double _ButtonsContainerHeight;
+
+        public double ButtonsContainerHeight
+        {
+            get { return _ButtonsContainerHeight; }
+            set
+            {
+                if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
+                    return;
+                _ButtonsContainerHeight = value;
                 RaisePropertyChanged();
             }
         }
@@ -100,7 +165,19 @@ namespace Pg01.ViewModels
                 return;
             if (!_config.SaveFile(parameter.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+        }
 
+        #endregion
+
+        #region CloseCommand
+
+        private ViewModelCommand _CloseCommand;
+
+        public ViewModelCommand CloseCommand => _CloseCommand ?? (_CloseCommand = new ViewModelCommand(Close));
+
+        public void Close()
+        {
+            Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
         }
 
         #endregion

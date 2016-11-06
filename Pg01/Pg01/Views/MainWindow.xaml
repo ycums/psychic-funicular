@@ -4,8 +4,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:Pg01.ViewModels"
-        Title="{Binding Title}" Height="350" Width="525" WindowStyle="ToolWindow">
-
+        SizeToContent="WidthAndHeight"
+        MinHeight="200" MinWidth="200"
+        Title="Pg01" >
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -29,13 +30,17 @@
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
 
         <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Info">
-            <l:InformationDialogInteractionMessageAction/>
+            <l:InformationDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
+
+        <l:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
+            <l:WindowInteractionMessageAction />
         </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Title}"></TextBlock>
+            <TextBlock Text="{Binding Title}" />
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -59,7 +64,27 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-
+            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" Height ="{Binding ButtonsContainerHeight}" Width ="{Binding ButtonsContainerWidth}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                        <Setter Property="Height" Value="{Binding Height}" />
+                        <Setter Property="Width" Value="{Binding Width}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Key}"  />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" />
         </StackPanel>
     </Grid>
 </Window>

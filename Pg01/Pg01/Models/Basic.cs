@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 using Livet;
 
 namespace Pg01.Models
@@ -6,22 +8,10 @@ namespace Pg01.Models
     [Serializable]
     public class Basic : NotificationObject
     {
-        #region Title変更通知プロパティ
+        [XmlElement]
+        public string Title { get; set; }
 
-        private string _Title;
-
-        public string Title
-        {
-            get { return _Title; }
-            set
-            {
-                if (_Title == value)
-                    return;
-                _Title = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        #endregion
+        [XmlArrayItem("Button")]
+        public List<ButtonItem> Buttons { get; set; }
     }
 }
