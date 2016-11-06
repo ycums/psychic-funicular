@@ -29,7 +29,9 @@ namespace Pg01.Views
             ShowInTaskbar = false;
             WindowStyle = WindowStyle.None;
             AllowsTransparency = true;
+#if !DEBUG
             Topmost = true;
+#endif
             InitNotifyIcon();
             CaptureMouse();
         }
@@ -77,16 +79,16 @@ namespace Pg01.Views
             _notifyIcon.MouseClick += _notifyIcon_MouseClick;
         }
 
-        #region "IPC Events"
+#region "IPC Events"
 
         private void ipc_MessageReceived(object sender, MessageEventArgs<string> e)
         {
             Dispatcher.Invoke(Show);
         }
 
-        #endregion
+#endregion
 
-        #region "NotifiIcon Events"
+#region "NotifiIcon Events"
 
         private void _notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
@@ -116,6 +118,6 @@ namespace Pg01.Views
         {
         }
 
-        #endregion
+#endregion
     }
 }

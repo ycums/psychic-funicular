@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
@@ -17,9 +18,13 @@ namespace Pg01.ViewModels
         {
             _listener = new PropertyChangedEventListener(_config)
             {
-                () => _config.Basic.Title,
-                (_, __) => RaisePropertyChanged(() => Title)
+                () => _config.Basic, UpdateBasic
             };
+        }
+
+        private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            Title = _config.Basic.Title;
         }
 
         #endregion
@@ -70,11 +75,32 @@ namespace Pg01.ViewModels
         public void Open(OpeningFileSelectionMessage m)
         {
             if (m.Response == null)
-            {
                 return;
-            }
             if (!_config.LoadFile(m.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+        }
+
+        #endregion
+
+        #region SaveCommand
+
+        private ListenerCommand<SavingFileSelectionMessage> _SaveCommand;
+
+        public ListenerCommand<SavingFileSelectionMessage> SaveCommand
+            => _SaveCommand ?? (_SaveCommand = new ListenerCommand<SavingFileSelectionMessage>(Save, CanSave));
+
+        public bool CanSave()
+        {
+            return true;
+        }
+
+        public void Save(SavingFileSelectionMessage parameter)
+        {
+            if (parameter.Response == null)
+                return;
+            if (!_config.SaveFile(parameter.Response[0]))
+                Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+
         }
 
         #endregion

@@ -11,19 +11,23 @@ namespace Pg01.Models
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
 
+        #region Initialize & Finalize
+
         public Config()
         {
-            Basic = new Basic {Title = "Title"};
+            Basic = new Basic();
         }
 
-        public Basic Basic { get; set; }
+        #endregion
+
+        #region Functions
 
         public bool LoadFile(string path)
         {
             try
             {
                 var tmp = ConfigUtil.LoadConfigFile(path);
-                Basic.Title = tmp.Basic.Title;
+                Basic = tmp.Basic;
             }
             catch (Exception ex)
             {
@@ -32,11 +36,43 @@ namespace Pg01.Models
             }
             return true;
         }
-    }
 
-    [Serializable]
-    public class Basic : NotificationObject
-    {
-        public string Title { get; set; }
+        public bool SaveFile(string path)
+        {
+            try
+            {
+                ConfigUtil.SaveConfigFile(this, path);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Properties
+
+        #region Basic変更通知プロパティ
+
+        private Basic _Basic;
+
+        public Basic Basic
+        {
+            get { return _Basic; }
+            set
+            {
+                if (_Basic == value)
+                    return;
+                _Basic = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

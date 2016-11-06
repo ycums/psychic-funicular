@@ -48,6 +48,18 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+            <Button Content="保存 (_S)" IsEnabled="{Binding SaveCommand.CanExecute}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:SaveFileDialogInteractionMessageAction>
+                            <l:DirectInteractionMessage CallbackCommand="{Binding SaveCommand}">
+                                <l:SavingFileSelectionMessage Filter="設定ファイル(*.xml)|*.xml" Title="ファイルを開く" />
+                            </l:DirectInteractionMessage>
+                        </l:SaveFileDialogInteractionMessageAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
         </StackPanel>
     </Grid>
 </Window>

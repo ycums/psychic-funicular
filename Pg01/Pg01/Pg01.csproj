@@ -83,6 +83,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ApplicationGroup.cs" />
+    <Compile Include="Models\Basic.cs" />
     <Compile Include="Models\ConfigUtil.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\MenuGroup.cs" />
@@ -134,6 +135,9 @@
     <Resource Include="Resources\SettingSample01.xml">
       <SubType>Designer</SubType>
     </Resource>
+    <None Include="Resources\config.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\PerfCenterCpl.ico" />
   </ItemGroup>
   <ItemGroup>
