@@ -139,4 +139,7 @@
   <data name="MainWindow_Application_Startup_先行プロセス" xml:space="preserve">
     <value>先行プロセスです。後続プロセスの起動を待機しています。</value>
   </data>
+  <data name="config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\config.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

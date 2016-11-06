@@ -1,9 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<Config version="0.0">
-  <Basic>
-    <Tilte>Config01</Tilte>
-  </Basic>
+<config version="0.0">
+  <basic>
+    <tilte>Config02</tilte>
+    <reset-key Key="Num5" />
+    <bank-reset-delay Value="1.0" />
+    <display-location x="0" y="99999" />
+    <buttons>
+      <button x="0" y="0" Key ="Num9" />
+      <button x="0" y="1" Key ="Num6" />
+      <button x="0" y="2" Key ="Num3" />
+      <button x="0" y="3" Key ="Num5" />
+    </buttons>
+  </basic>
   <aplication-group Name="CLIP STUDIO PAINT">
     <matching-rule>
       <exe-name>ClipStudioPaint.exe</exe-name>
@@ -58,4 +67,4 @@
       </menu>
     </menus>
   </aplication-group>
-</Config>
+</config>
