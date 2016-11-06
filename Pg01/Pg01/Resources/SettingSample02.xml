@@ -2,7 +2,7 @@
 
 <config version="0.0">
   <basic>
-    <tilte>Config01</tilte>
+    <tilte>Config02</tilte>
     <reset-key Key="Num5" />
     <bank-reset-delay Value="1.0" />
     <display-location x="0" y="99999" />
