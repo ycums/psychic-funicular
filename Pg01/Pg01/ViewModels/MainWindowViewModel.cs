@@ -36,6 +36,8 @@ namespace Pg01.ViewModels
                     _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
             ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
             ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+            X = _config.Basic.WindowLocation.X;
+            Y = _config.Basic.WindowLocation.Y;
         }
 
         #endregion
@@ -115,6 +117,42 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerHeight = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region X変更通知プロパティ
+
+        private double _X;
+
+        public double X
+        {
+            get { return _X; }
+            set
+            {
+                if (Math.Abs(_X - value) < ConstValues.TOLERANCE)
+                    return;
+                _X = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Y変更通知プロパティ
+
+        private double _Y;
+
+        public double Y
+        {
+            get { return _Y; }
+            set
+            {
+                if (Math.Abs(_Y - value) < ConstValues.TOLERANCE)
+                    return;
+                _Y = value;
                 RaisePropertyChanged();
             }
         }
