@@ -86,8 +86,10 @@
     <Compile Include="Models\ButtonItem.cs" />
     <Compile Include="Models\ConfigUtil.cs" />
     <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\ConstValues.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="ViewModels\ButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\IpcObjectSender.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
