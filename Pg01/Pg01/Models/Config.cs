@@ -19,7 +19,7 @@ namespace Pg01.Models
             Basic = new Basic
             {
                 Title = "Title01",
-                WindowLocation = new Location {X = 0, Y = 99999},
+                WindowLocation = new Location {X = 99999, Y = 0},
                 Buttons = new List<ButtonItem>
                 {
                     new ButtonItem {X = 0, Y = 0, Key = "Num9"},

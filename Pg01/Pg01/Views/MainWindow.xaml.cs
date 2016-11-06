@@ -55,7 +55,6 @@ namespace Pg01.Views
             Console.ReadLine();
         }
 
-
         private void InitNotifyIcon()
         {
             _notifyIcon = new NotifyIcon
