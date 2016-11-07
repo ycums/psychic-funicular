@@ -5,22 +5,22 @@ namespace Pg01.Views
 {
     public class KeyboardHookedEventArgs : CancelEventArgs
     {
-        private readonly KeyboardMessage _message;
-        private KeyboardState _state;
+        private readonly NativeMethods.KeyboardMessage _message;
+        private NativeMethods.KeyboardState _state;
 
         internal KeyboardHookedEventArgs(
-            KeyboardMessage message,
-            ref KeyboardState state
+            NativeMethods.KeyboardMessage message,
+            ref NativeMethods.KeyboardState state
             )
         {
             _message = message;
             _state = state;
         }
 
-        public KeyboardUpDown UpDown => _message == KeyboardMessage.KeyDown
-                                        || _message == KeyboardMessage.SysKeyDown
-            ? KeyboardUpDown.Down
-            : KeyboardUpDown.Up;
+        public NativeMethods.KeyboardUpDown UpDown => _message == NativeMethods.KeyboardMessage.KeyDown
+                                        || _message == NativeMethods.KeyboardMessage.SysKeyDown
+            ? NativeMethods.KeyboardUpDown.Down
+            : NativeMethods.KeyboardUpDown.Up;
 
         public Keys KeyCode => _state.KeyCode;
 
