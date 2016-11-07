@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Livet;
+using Pg01.Behaviors.Util;
 
 namespace Pg01.Models
 {
@@ -64,6 +65,11 @@ namespace Pg01.Models
             return true;
         }
 
+        public void SetEvent(KeyboardHookedEventArgs e)
+        {
+            Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
+        }
+
         #endregion
 
         #region Properties
@@ -87,5 +93,6 @@ namespace Pg01.Models
         #endregion
 
         #endregion
+
     }
 }

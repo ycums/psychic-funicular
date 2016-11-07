@@ -9,6 +9,7 @@ using Livet.EventListeners;
 using Livet.Messaging;
 using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
+using Pg01.Behaviors.Util;
 using Pg01.Models;
 
 namespace Pg01.ViewModels
@@ -211,6 +212,25 @@ namespace Pg01.ViewModels
             }
         }
 
+        #endregion
+
+
+        #region Event変更通知プロパティ
+        private KeyboardHookedEventArgs _Event;
+
+        public KeyboardHookedEventArgs Event
+        {
+            get
+            { return _Event; }
+            set
+            { 
+                if (_Event == value)
+                    return;
+                _Event = value;
+                _config.SetEvent(_Event);
+                RaisePropertyChanged();
+            }
+        }
         #endregion
 
         #endregion

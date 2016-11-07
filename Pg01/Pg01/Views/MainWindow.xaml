@@ -14,7 +14,7 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <i:Interaction.Behaviors>
-        <behaviors:KeyboardHookBehavior />
+        <behaviors:KeyboardHookBehavior Event="{Binding Event, Mode=OneWayToSource}"/>
     </i:Interaction.Behaviors>
 
     <i:Interaction.Triggers>
