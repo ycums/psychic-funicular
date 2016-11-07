@@ -4,6 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:Pg01.ViewModels"
+        xmlns:behaviors="clr-namespace:Pg01.Behaviors"
         SizeToContent="WidthAndHeight"
         MinHeight="200" MinWidth="200"
         Left ="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
@@ -12,6 +13,9 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <i:Interaction.Behaviors>
+        <behaviors:KeyboardHookBehavior />
+    </i:Interaction.Behaviors>
 
     <i:Interaction.Triggers>
 
