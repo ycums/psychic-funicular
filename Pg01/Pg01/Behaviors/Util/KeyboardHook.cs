@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Pg01.Views
+namespace Pg01.Behaviors.Util
 {
     [DefaultEvent("KeyboardHooked")]
     public sealed class KeyboardHook

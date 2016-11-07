@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Pg01.Views
+namespace Pg01.Behaviors.Util
 {
     public static class NativeMethods
     {

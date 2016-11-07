@@ -74,7 +74,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Views\NativeMethods.cs" />
+    <Compile Include="Behaviors\KeyboardHookBehavior.cs" />
+    <Compile Include="Behaviors\Util\NativeMethods.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,8 +95,8 @@
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\IpcObjectSender.cs" />
-    <Compile Include="Views\KeyboardHook.cs" />
-    <Compile Include="Views\KeyboardHookedEventArgs.cs" />
+    <Compile Include="Behaviors\Util\KeyboardHook.cs" />
+    <Compile Include="Behaviors\Util\KeyboardHookedEventArgs.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -143,9 +144,7 @@
     </None>
     <None Include="Resources\PerfCenterCpl.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

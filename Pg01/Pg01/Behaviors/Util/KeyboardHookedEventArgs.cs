@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Pg01.Views
+namespace Pg01.Behaviors.Util
 {
     public class KeyboardHookedEventArgs : CancelEventArgs
     {

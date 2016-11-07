@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using Application = System.Windows.Application;
@@ -19,7 +18,6 @@ namespace Pg01.Views
     /// </summary>
     public partial class MainWindow
     {
-        private static KeyboardHook _hook;
         private NotifyIcon _notifyIcon;
 
         public MainWindow()
@@ -36,19 +34,6 @@ namespace Pg01.Views
 #endif
             InitNotifyIcon();
             CaptureMouse();
-
-            _hook = new KeyboardHook();
-            _hook.KeyboardHooked += _hook_KeyboardHooked;
-        }
-
-        private void _hook_KeyboardHooked(object sender, KeyboardHookedEventArgs e)
-        {
-            Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-        }
-
-        ~MainWindow()
-        {
-            _hook.KeyboardHooked -= _hook_KeyboardHooked;
         }
 
         private void Application_Startup()
