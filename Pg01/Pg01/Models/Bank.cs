@@ -10,8 +10,7 @@ namespace Pg01.Models
         [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlElement]
+        [XmlElement("Entry")]
         public List<Entry> Entries { get; set; }
-
     }
 }

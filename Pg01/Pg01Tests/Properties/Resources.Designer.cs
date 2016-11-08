@@ -110,7 +110,6 @@ namespace Pg01Tests.Properties {
         
         /// <summary>
         ///   &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///
         ///&lt;Config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
         ///  &lt;Basic&gt;
         ///    &lt;Title&gt;Title01&lt;/Title&gt;
@@ -124,11 +123,11 @@ namespace Pg01Tests.Properties {
         ///    &lt;WindowLocation X=&quot;99999&quot; Y=&quot;0&quot; /&gt;
         ///  &lt;/Basic&gt;
         ///  &lt;ApplicationGroups&gt;
-        ///    &lt;ApplicationGroup Name=&quot; [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///    &lt;ApplicationGroup Name=&quot;CL [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string testconfig03 {
+        internal static string TestConfig03 {
             get {
-                return ResourceManager.GetString("testconfig03", resourceCulture);
+                return ResourceManager.GetString("TestConfig03", resourceCulture);
             }
         }
     }

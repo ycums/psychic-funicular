@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
@@ -52,9 +53,11 @@ namespace Pg01Tests.Models
             {
                 ConfigUtil.Serialize(config, stream);
                 var uni = Encoding.GetEncoding("UTF-8").GetString(stream.ToArray());
-                uni.Is(Resources.testconfig03);
+                new Regex("<Entries").Matches(uni).Count.Is(0);
+                new Regex("<Entry").Matches(uni).Count.Is(2);
+                new Regex("<MenuItem").Matches(uni).Count.Is(2);
+                uni.Is(Resources.TestConfig03);
             }
-
         }
 
         private static Config GetSerializeTest02Param()
@@ -106,6 +109,18 @@ namespace Pg01Tests.Models
                                             ActionValue = " ",
                                             NextBank = "曲線"
                                         }
+                                    },
+                                    new Entry
+                                    {
+                                        Trigger = "Num9",
+                                        LabelText = "前景",
+                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        ActionItem = new ActionItem
+                                        {
+                                            ActionType = ActionType.Send,
+                                            ActionValue = " ",
+                                            NextBank = "曲線"
+                                        }
                                     }
                                 }
                             }
@@ -117,6 +132,17 @@ namespace Pg01Tests.Models
                                 Name = "menu01",
                                 MenuItem = new List<MenuItem>
                                 {
+                                    new MenuItem
+                                    {
+                                        LabelText = "前景",
+                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        X = 0,
+                                        Y = 0,
+                                        Action = new ActionItem
+                                        {
+                                            ActionType = ActionType.None
+                                        }
+                                    },
                                     new MenuItem
                                     {
                                         LabelText = "前景",
