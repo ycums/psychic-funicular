@@ -46,6 +46,33 @@
                               </xsd:sequence>
                             </xsd:complexType>
                           </xsd:element>
+                          <xsd:element name="Banks">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="Entries">
+                                  <xsd:complexType>
+                                    <xsd:sequence>
+                                      <xsd:element name="Entry">
+                                        <xsd:complexType>
+                                          <xsd:sequence>
+                                            <xsd:element name="ActionItem">
+                                              <xsd:complexType>
+                                                <xsd:attribute name="ActionType" type="xsd:string" use="required" />
+                                                <xsd:attribute name="ActionValue" type="xsd:string" use="required" />
+                                              </xsd:complexType>
+                                            </xsd:element>
+                                          </xsd:sequence>
+                                          <xsd:attribute name="Trigger" type="xsd:string" use="required" />
+                                          <xsd:attribute name="LabelText" type="xsd:string" use="required" />
+                                          <xsd:attribute name="LabelColor" type="xsd:string" use="required" />
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:sequence>
+                                  </xsd:complexType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
                         </xsd:sequence>
                         <xsd:attribute name="Name" type="xsd:string" use="required" />
                       </xsd:complexType>

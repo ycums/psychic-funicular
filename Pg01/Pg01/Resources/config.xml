@@ -19,6 +19,13 @@
             <Pattern>ショートカット設定</Pattern>
           </WindowTitlePatterns>
         </MatchingRoule>
+        <Banks>
+          <Entries>
+            <Entry Trigger="Num9" LabelText="前景" LabelColor="#FF0000FF">
+              <ActionItem ActionType="Send" ActionValue="wd" NextBank="曲線" />
+            </Entry>
+          </Entries>
+        </Banks>
       </ApplicationGroup>
     </ApplicationGroups>
   </Basic>

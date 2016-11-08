@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Media;
 using Livet;
 using Pg01.Behaviors.Util;
 
@@ -29,8 +30,9 @@ namespace Pg01.Models
                     new ButtonItem {X = 0, Y = 3, Key = "Num5"},
                     new ButtonItem {X = 8, Y = 8, Key = "Num8"}
                 },
-                ApplicationGroups = new List<ApplicationGroup> {
-                    new ApplicationGroup()
+                ApplicationGroups = new List<ApplicationGroup>
+                {
+                    new ApplicationGroup
                     {
                         Name = "CLIP STUDIO PAINT",
                         MatchingRoule = new MatchingRoule
@@ -41,8 +43,29 @@ namespace Pg01.Models
                                 "*CLIP STUDIO PAINT",
                                 "ショートカット設定"
                             }
+                        },
+                        Banks = new List<Bank>
+                        {
+                            new Bank
+                            {
+                                Entries = new List<Entry>
+                                {
+                                    new Entry
+                                    {
+                                        Trigger = "Num9",
+                                        LabelText = "前景",
+                                        LabelColor = Color.FromRgb(0, 0, 255),
+                                        ActionItem = new ActionItem
+                                        {
+                                            ActionType = ActionType.Send,
+                                            ActionValue = "wd",
+                                            NextBank = "曲線"
+                                        },
+                                    }
+                                }
+                            }
                         }
-                    } 
+                    }
                 }
             };
         }
@@ -108,6 +131,5 @@ namespace Pg01.Models
         #endregion
 
         #endregion
-
     }
 }

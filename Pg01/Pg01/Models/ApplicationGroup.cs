@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Pg01.Models
@@ -11,5 +12,8 @@ namespace Pg01.Models
 
         [XmlElement]
         public MatchingRoule MatchingRoule { get; set; }
+
+        [XmlElement]
+        public List<Bank> Banks { get; set; }
     }
 }
