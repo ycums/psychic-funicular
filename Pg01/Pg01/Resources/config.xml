@@ -9,6 +9,31 @@
       <Button X="0" Y="3" Key="Num5" />
       <Button X="8" Y="8" Key="Num8" />
     </Buttons>
-    <WindowLocation X="0" Y="99999" />
+    <WindowLocation X="99999" Y="0" />
+    <ApplicationGroups>
+      <ApplicationGroup Name="CLIP STUDIO PAINT">
+        <MatchingRoule>
+          <ExeName>ClipStudioPaint.exe</ExeName>
+          <WindowTitlePatterns>
+            <Pattern>*CLIP STUDIO PAINT</Pattern>
+            <Pattern>ショートカット設定</Pattern>
+          </WindowTitlePatterns>
+        </MatchingRoule>
+        <Banks>
+          <Bank Name="base">
+            <Entries Trigger="Num9" LabelText="前景" BackColor="#FF0000FF">
+              <ActionItem ActionType="Send" ActionValue="wd" NextBank="曲線" />
+            </Entries>
+          </Bank>
+        </Banks>
+        <Menus>
+          <Menu Name="menu01">
+            <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
+              <Action ActionType="None" />
+            </MenuItem>
+          </Menu>
+        </Menus>
+      </ApplicationGroup>
+    </ApplicationGroups>
   </Basic>
 </Config>

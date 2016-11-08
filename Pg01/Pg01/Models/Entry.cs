@@ -5,13 +5,10 @@ using System.Xml.Serialization;
 namespace Pg01.Models
 {
     [Serializable]
-    public class MenuItem
+    public class Entry
     {
         [XmlAttribute]
-        public double X { get; set; }
-
-        [XmlAttribute]
-        public double Y { get; set; }
+        public string Trigger { get; set; }
 
         [XmlAttribute]
         public string LabelText { get; set; }
@@ -27,7 +24,6 @@ namespace Pg01.Models
         }
 
         [XmlElement]
-        public ActionItem Action { get; set; }
-
+        public ActionItem ActionItem { get; set; }
     }
 }

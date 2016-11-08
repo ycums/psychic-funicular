@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Media;
 using Livet;
 using Pg01.Behaviors.Util;
 
@@ -28,8 +29,10 @@ namespace Pg01.Models
                     new ButtonItem {X = 0, Y = 2, Key = "Num3"},
                     new ButtonItem {X = 0, Y = 3, Key = "Num5"},
                     new ButtonItem {X = 8, Y = 8, Key = "Num8"}
-                }
+                },
             };
+            ApplicationGroups = new List<ApplicationGroup>();
+
         }
 
         #endregion
@@ -90,9 +93,10 @@ namespace Pg01.Models
             }
         }
 
-        #endregion
+        public List<ApplicationGroup> ApplicationGroups { get; set; }
 
         #endregion
 
+        #endregion
     }
 }
