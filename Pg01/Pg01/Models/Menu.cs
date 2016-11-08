@@ -5,13 +5,11 @@ using System.Xml.Serialization;
 namespace Pg01.Models
 {
     [Serializable]
-    public class Bank
+    public class Menu
     {
-        [XmlAttribute]
-        public string Name { get; set; }
+        [XmlAttribute] public string Name;
 
         [XmlElement]
-        public List<Entry> Entries { get; set; }
-
+        public List<MenuItem> MenuItem { get; set; }
     }
 }

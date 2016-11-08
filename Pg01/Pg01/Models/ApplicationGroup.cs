@@ -13,7 +13,10 @@ namespace Pg01.Models
         [XmlElement]
         public MatchingRoule MatchingRoule { get; set; }
 
-        [XmlElement]
+        [XmlArrayItem("Bank")]
         public List<Bank> Banks { get; set; }
+
+        [XmlArrayItem("Menu")]
+        public List<Menu> Menus { get; set; }
     }
 }

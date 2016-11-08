@@ -14,13 +14,13 @@ namespace Pg01.Models
         public string LabelText { get; set; }
 
         [XmlIgnore]
-        public Color LabelColor { get; set; }
+        public Color BackColor { get; set; }
 
-        [XmlAttribute("LabelColor")]
+        [XmlAttribute("BackColor")]
         public string LabelColorAsString
         {
-            get { return Util.ConvertToString(LabelColor); }
-            set { LabelColor = Util.ConvertFromString<Color>(value); }
+            get { return Util.ConvertToString(BackColor); }
+            set { BackColor = Util.ConvertFromString<Color>(value); }
         }
 
         [XmlElement]

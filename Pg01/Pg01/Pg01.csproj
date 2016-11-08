@@ -96,6 +96,7 @@
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\MatchingRoule.cs" />
+    <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Util.cs" />

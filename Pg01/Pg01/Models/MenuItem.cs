@@ -1,25 +1,33 @@
 ﻿using System;
-using System.Drawing;
+using System.Windows.Media;
 using System.Xml.Serialization;
 
 namespace Pg01.Models
 {
     [Serializable]
-    public struct MenuItem
+    public class MenuItem
     {
-        public string Key;
-        public string Label;
-        public string Type;
-        public string Data;
-        public string NextGroup;
+        [XmlAttribute]
+        public double X { get; set; }
 
-        [XmlIgnore] public Color BackColor;
+        [XmlAttribute]
+        public double Y { get; set; }
 
-        [XmlElement("BackColor")]
-        public string BackColorHtml
+        [XmlAttribute]
+        public string LabelText { get; set; }
+
+        [XmlIgnore]
+        public Color BackColor { get; set; }
+
+        [XmlAttribute("BackColor")]
+        public string LabelColorAsString
         {
-            get { return ColorTranslator.ToHtml(BackColor); }
-            set { BackColor = ColorTranslator.FromHtml(value); }
+            get { return Util.ConvertToString(BackColor); }
+            set { BackColor = Util.ConvertFromString<Color>(value); }
         }
+
+        [XmlElement]
+        public ActionItem Action { get; set; }
+
     }
 }

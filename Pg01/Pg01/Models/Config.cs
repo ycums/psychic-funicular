@@ -48,19 +48,41 @@ namespace Pg01.Models
                         {
                             new Bank
                             {
+                                Name = "base",
                                 Entries = new List<Entry>
                                 {
                                     new Entry
                                     {
                                         Trigger = "Num9",
                                         LabelText = "前景",
-                                        LabelColor = Color.FromRgb(0, 0, 255),
+                                        BackColor = Color.FromRgb(0, 0, 255),
                                         ActionItem = new ActionItem
                                         {
                                             ActionType = ActionType.Send,
                                             ActionValue = "wd",
                                             NextBank = "曲線"
-                                        },
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        Menus = new List<Menu>
+                        {
+                            new Menu
+                            {
+                                Name = "menu01",
+                                MenuItem = new List<MenuItem>
+                                {
+                                    new MenuItem
+                                    {
+                                        LabelText = "前景",
+                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        X = 0,
+                                        Y = 0,
+                                        Action = new ActionItem
+                                        {
+                                            ActionType = ActionType.None
+                                        }
                                     }
                                 }
                             }

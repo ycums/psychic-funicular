@@ -64,7 +64,7 @@
                                           </xsd:sequence>
                                           <xsd:attribute name="Trigger" type="xsd:string" use="required" />
                                           <xsd:attribute name="LabelText" type="xsd:string" use="required" />
-                                          <xsd:attribute name="LabelColor" type="xsd:string" use="required" />
+                                          <xsd:attribute name="BackColor" type="xsd:string" use="required" />
                                         </xsd:complexType>
                                       </xsd:element>
                                     </xsd:sequence>
