@@ -9,6 +9,17 @@
       <Button X="0" Y="3" Key="Num5" />
       <Button X="8" Y="8" Key="Num8" />
     </Buttons>
-    <WindowLocation X="0" Y="99999" />
+    <WindowLocation X="99999" Y="0" />
+    <ApplicationGroups>
+      <ApplicationGroup Name="CLIP STUDIO PAINT">
+        <MatchingRoule>
+          <ExeName>ClipStudioPaint.exe</ExeName>
+          <WindowTitlePatterns>
+            <Pattern>*CLIP STUDIO PAINT</Pattern>
+            <Pattern>ショートカット設定</Pattern>
+          </WindowTitlePatterns>
+        </MatchingRoule>
+      </ApplicationGroup>
+    </ApplicationGroups>
   </Basic>
 </Config>

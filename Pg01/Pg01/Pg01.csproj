@@ -84,12 +84,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ApplicationGroup.cs" />
     <Compile Include="Models\Basic.cs" />
     <Compile Include="Models\ButtonItem.cs" />
     <Compile Include="Models\ConfigUtil.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ConstValues.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\MatchingRoule.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />

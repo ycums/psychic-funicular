@@ -28,6 +28,21 @@ namespace Pg01.Models
                     new ButtonItem {X = 0, Y = 2, Key = "Num3"},
                     new ButtonItem {X = 0, Y = 3, Key = "Num5"},
                     new ButtonItem {X = 8, Y = 8, Key = "Num8"}
+                },
+                ApplicationGroups = new List<ApplicationGroup> {
+                    new ApplicationGroup()
+                    {
+                        Name = "CLIP STUDIO PAINT",
+                        MatchingRoule = new MatchingRoule
+                        {
+                            ExeName = "ClipStudioPaint.exe",
+                            WindowTitlePatterns = new List<string>
+                            {
+                                "*CLIP STUDIO PAINT",
+                                "ショートカット設定"
+                            }
+                        }
+                    } 
                 }
             };
         }
