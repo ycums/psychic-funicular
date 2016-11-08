@@ -16,8 +16,5 @@ namespace Pg01.Models
 
         [XmlElement]
         public Location WindowLocation { get; set; }
-
-        [XmlArrayItem("ApplicationGroup")]
-        public List<ApplicationGroup> ApplicationGroups { get; set; }
     }
 }

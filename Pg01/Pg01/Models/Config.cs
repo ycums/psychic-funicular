@@ -30,66 +30,9 @@ namespace Pg01.Models
                     new ButtonItem {X = 0, Y = 3, Key = "Num5"},
                     new ButtonItem {X = 8, Y = 8, Key = "Num8"}
                 },
-                ApplicationGroups = new List<ApplicationGroup>
-                {
-                    new ApplicationGroup
-                    {
-                        Name = "CLIP STUDIO PAINT",
-                        MatchingRoule = new MatchingRoule
-                        {
-                            ExeName = "ClipStudioPaint.exe",
-                            WindowTitlePatterns = new List<string>
-                            {
-                                "*CLIP STUDIO PAINT",
-                                "ショートカット設定"
-                            }
-                        },
-                        Banks = new List<Bank>
-                        {
-                            new Bank
-                            {
-                                Name = "base",
-                                Entries = new List<Entry>
-                                {
-                                    new Entry
-                                    {
-                                        Trigger = "Num9",
-                                        LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
-                                        ActionItem = new ActionItem
-                                        {
-                                            ActionType = ActionType.Send,
-                                            ActionValue = "wd",
-                                            NextBank = "曲線"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        Menus = new List<Menu>
-                        {
-                            new Menu
-                            {
-                                Name = "menu01",
-                                MenuItem = new List<MenuItem>
-                                {
-                                    new MenuItem
-                                    {
-                                        LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
-                                        X = 0,
-                                        Y = 0,
-                                        Action = new ActionItem
-                                        {
-                                            ActionType = ActionType.None
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             };
+            ApplicationGroups = new List<ApplicationGroup>();
+
         }
 
         #endregion
@@ -149,6 +92,8 @@ namespace Pg01.Models
                 RaisePropertyChanged();
             }
         }
+
+        public List<ApplicationGroup> ApplicationGroups { get; set; }
 
         #endregion
 
