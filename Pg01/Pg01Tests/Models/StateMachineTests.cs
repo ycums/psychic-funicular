@@ -52,11 +52,11 @@ namespace Pg01Tests.Models
             var r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.Is("曲線");
+            r1.NextBank.Is("曲線");
             eia.ClearInternalStatuses();
 
             var menuGroup = config.ApplicationGroups[0].Banks[3];
-            menuGroup.Name.Is(r1.NextGroup);
+            menuGroup.Name.Is(r1.NextBank);
             menuItems = menuGroup.Entries;
 
             r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Down);
@@ -82,7 +82,7 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.D, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.IsNull();
+            r1.NextBank.IsNull();
             eia.ClearInternalStatuses();
         }
 
@@ -110,7 +110,7 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.IsNull();
+            r1.NextBank.IsNull();
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.IsNull();
+            r1.NextBank.IsNull();
             eia.ClearInternalStatuses();
 
             r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Up);
@@ -157,7 +157,7 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.IsNull();
+            r1.NextBank.IsNull();
             eia.ClearInternalStatuses();
 
             r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Up);
@@ -184,7 +184,7 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
-            r1.NextGroup.IsNull();
+            r1.NextBank.IsNull();
             eia.ClearInternalStatuses();
 
             r1 = eia.Exec(menuItems, Keys.LWin, NativeMethods.KeyboardUpDown.Up);

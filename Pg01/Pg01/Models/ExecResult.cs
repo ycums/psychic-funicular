@@ -6,11 +6,11 @@
         {
         }
 
-        public ExecResult(bool shoudCancel, ExecStatus status, string nextGroup, string message = "")
+        public ExecResult(bool shoudCancel, ExecStatus status, string nextBank, string message = "")
         {
             ShouldCancel = shoudCancel;
             Status = status;
-            NextGroup = nextGroup;
+            NextBank = nextBank;
             Message = message;
         }
 
@@ -20,6 +20,6 @@
 
         public ExecStatus Status { get; set; }
 
-        public string NextGroup { get; set; }
+        public string NextBank { get; set; }
     }
 }

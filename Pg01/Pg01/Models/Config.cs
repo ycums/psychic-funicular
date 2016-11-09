@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
 using Livet;
 using Pg01.Behaviors.Util;
+using Pg01.Properties;
 
 namespace Pg01.Models
 {
     [Serializable]
     public class Config : NotificationObject
     {
-        #region Fields
-
-        private StateMachine _stateMachine;
-
-        #endregion
-
         /*
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
@@ -39,6 +35,13 @@ namespace Pg01.Models
             ApplicationGroups = new List<ApplicationGroup>();
             _stateMachine = new StateMachine();
         }
+
+        #endregion
+
+        #region Fields
+
+        private readonly StateMachine _stateMachine;
+        private Bank _bank;
 
         #endregion
 
@@ -76,6 +79,24 @@ namespace Pg01.Models
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
+            var entries = _bank.Entries;
+            var result = _stateMachine.Exec(entries, e.KeyCode, e.UpDown);
+            switch (result.Status)
+            {
+                case ExecStatus.LoadGroup:
+                    LoadBank(result.NextBank);
+                    break;
+                case ExecStatus.Error:
+                    MessageBox.Show(result.Message, Resources.MainWindow_ExecItemAction_Error,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+            e.Cancel = result.ShouldCancel;
+        }
+
+        private void LoadBank(string resultNextGroup)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
