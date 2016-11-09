@@ -214,16 +214,15 @@ namespace Pg01.ViewModels
 
         #endregion
 
-
         #region Event変更通知プロパティ
+
         private KeyboardHookedEventArgs _Event;
 
         public KeyboardHookedEventArgs Event
         {
-            get
-            { return _Event; }
+            get { return _Event; }
             set
-            { 
+            {
                 if (_Event == value)
                     return;
                 _Event = value;
@@ -231,6 +230,7 @@ namespace Pg01.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         #endregion
 
         #endregion

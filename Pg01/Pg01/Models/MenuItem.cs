@@ -22,12 +22,11 @@ namespace Pg01.Models
         [XmlAttribute("BackColor")]
         public string LabelColorAsString
         {
-            get { return Util.ConvertToString(BackColor); }
-            set { BackColor = Util.ConvertFromString<Color>(value); }
+            get { return Util.Util.ConvertToString(BackColor); }
+            set { BackColor = Util.Util.ConvertFromString<Color>(value); }
         }
 
         [XmlElement]
         public ActionItem Action { get; set; }
-
     }
 }

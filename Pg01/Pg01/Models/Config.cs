@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Media;
 using Livet;
 using Pg01.Behaviors.Util;
 
@@ -10,6 +9,12 @@ namespace Pg01.Models
     [Serializable]
     public class Config : NotificationObject
     {
+        #region Fields
+
+        private StateMachine _stateMachine;
+
+        #endregion
+
         /*
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
@@ -29,10 +34,10 @@ namespace Pg01.Models
                     new ButtonItem {X = 0, Y = 2, Key = "Num3"},
                     new ButtonItem {X = 0, Y = 3, Key = "Num5"},
                     new ButtonItem {X = 8, Y = 8, Key = "Num8"}
-                },
+                }
             };
             ApplicationGroups = new List<ApplicationGroup>();
-
+            _stateMachine = new StateMachine();
         }
 
         #endregion
