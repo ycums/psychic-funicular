@@ -20,9 +20,9 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_config)
+            _listener = new PropertyChangedEventListener(_model)
             {
-                () => _config.Basic,
+                () => _model.Basic,
                 UpdateBasic
             };
 
@@ -31,14 +31,14 @@ namespace Pg01.ViewModels
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Title = _config.Basic.Title;
+            Title = _model.Basic.Title;
             Buttons =
                 new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                    _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
+                    _model.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
             ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
             ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
-            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
-            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
         }
 
         #endregion
@@ -47,19 +47,19 @@ namespace Pg01.ViewModels
 
         private void CorrectY()
         {
-            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
         }
 
         private void CorrectX()
         {
-            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
         }
 
         #endregion
 
         #region Fields
 
-        private readonly Config _config = new Config();
+        private readonly Model _model = new Model();
         [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
@@ -226,7 +226,7 @@ namespace Pg01.ViewModels
                 if (_Event == value)
                     return;
                 _Event = value;
-                _config.SetEvent(_Event);
+                _model.SetEvent(_Event);
                 RaisePropertyChanged();
             }
         }
@@ -253,7 +253,7 @@ namespace Pg01.ViewModels
         {
             if (m.Response == null)
                 return;
-            if (!_config.LoadFile(m.Response[0]))
+            if (!_model.LoadFile(m.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
         }
 
@@ -275,7 +275,7 @@ namespace Pg01.ViewModels
         {
             if (parameter.Response == null)
                 return;
-            if (!_config.SaveFile(parameter.Response[0]))
+            if (!_model.SaveFile(parameter.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
         }
 

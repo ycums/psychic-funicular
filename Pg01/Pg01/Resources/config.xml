@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Basic>
-    <Title>Title01</Title>
+    <Title>Sample01</Title>
     <Buttons>
       <Button X="0" Y="0" Key="Num9" />
       <Button X="0" Y="1" Key="Num6" />
