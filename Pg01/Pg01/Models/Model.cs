@@ -12,6 +12,12 @@ namespace Pg01.Models
     [Serializable]
     public class Model : NotificationObject
     {
+        #region Fields
+
+        private readonly StateMachine _stateMachine;
+
+        #endregion
+
         /*
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
@@ -20,18 +26,11 @@ namespace Pg01.Models
 
         public Model()
         {
+            _stateMachine = new StateMachine();
             var config = ConfigUtil.LoadDefaultConfigFile();
             Basic = config.Basic;
-            ApplicationGroups = new List<ApplicationGroup>();
-            _stateMachine = new StateMachine();
+            ApplicationGroups = config.ApplicationGroups;
         }
-
-        #endregion
-
-        #region Fields
-
-        private readonly StateMachine _stateMachine;
-        private Bank _bank;
 
         #endregion
 
@@ -69,12 +68,12 @@ namespace Pg01.Models
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-            var entries = _bank.Entries;
+            var entries = _Bank.Entries;
             var result = _stateMachine.Exec(entries, e.KeyCode, e.UpDown);
             switch (result.Status)
             {
                 case ExecStatus.LoadGroup:
-                    LoadBank(result.NextBank);
+                    LoadBank(_ApplicationGroup, result.NextBank);
                     break;
                 case ExecStatus.Error:
                     MessageBox.Show(result.Message, Resources.MainWindow_ExecItemAction_Error,
@@ -84,7 +83,7 @@ namespace Pg01.Models
             e.Cancel = result.ShouldCancel;
         }
 
-        private void LoadApplicationGroup(string exeName, string windowText)
+        public void LoadApplicationGroup(string exeName, string windowText)
         {
             var q1 =
                 ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
@@ -94,9 +93,9 @@ namespace Pg01.Models
             ApplicationGroup = q1.FirstOrDefault();
         }
 
-        private void LoadBank(string bankName)
+        private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
-            throw new NotImplementedException();
+            Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 
         #endregion
@@ -117,6 +116,25 @@ namespace Pg01.Models
                 if (_ApplicationGroup == value)
                     return;
                 _ApplicationGroup = value;
+                LoadBank(_ApplicationGroup, "");
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Bank変更通知プロパティ
+
+        private Bank _Bank;
+
+        public Bank Bank
+        {
+            get { return _Bank; }
+            set
+            {
+                if (_Bank == value)
+                    return;
+                _Bank = value;
                 RaisePropertyChanged();
             }
         }

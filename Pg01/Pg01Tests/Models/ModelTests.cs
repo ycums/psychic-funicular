@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
-using Pg01Tests.Properties;
 
 namespace Pg01Tests.Models
 {
@@ -14,15 +13,20 @@ namespace Pg01Tests.Models
             var path = ConfigUtil.GetConfigFilePath();
             File.Delete(path);
 
-            var config = new Model();
-            config.ApplicationGroup.IsNull();
-            config.Basic.Title.Is("Sample01");
-        }
+            var model = new Model();
+            model.Basic.Title.Is("Sample01");
+            model.ApplicationGroups.IsNotNull();
+            model.ApplicationGroup.IsNull();
+            model.Bank.IsNull();
 
-        [TestMethod]
-        public void SetEventTest()
-        {
-            var config = ConfigUtil.Deserialize(Resources.TestConfig02);
+            model.LoadApplicationGroup(
+                "ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.IsNotNull();
+            model.ApplicationGroup.Name = "CLIP STUDIO PAINT";
+            model.Bank.IsNotNull();
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
         }
     }
 }
