@@ -28,12 +28,28 @@ namespace Pg01.ViewModels
             _listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
-                {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name}
+                {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
+                {() => _model.Bank, (s,e) => ApplyBank(_model.Bank)},
             };
 
             UpdateBasic(null, null);
 
             _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+        }
+
+        private void ApplyBank(Bank bank)
+        {
+            foreach (var btn in _Buttons)
+            {
+                var val = bank.Entries.Find(x => x.Trigger == btn.Key);
+
+                btn.Enabled = val != null;
+                if (val != null)
+                {
+                    btn.Background = val.Background;
+                    btn.LabelText = val.LabelText;
+                }
+            }
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

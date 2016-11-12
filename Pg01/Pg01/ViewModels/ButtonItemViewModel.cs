@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
-using Livet.EventListeners;
 using Pg01.Models;
 
 namespace Pg01.ViewModels
@@ -11,8 +10,7 @@ namespace Pg01.ViewModels
     {
         #region Fields
 
-        private readonly ButtonItem _item;
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
+        [UsedImplicitly] private readonly ButtonItem _item;
 
         #endregion
 
@@ -32,13 +30,6 @@ namespace Pg01.ViewModels
             X = _item.X*Width;
             Y = _item.Y*Height;
             Key = _item.Key;
-
-            _listener = new PropertyChangedEventListener(_item)
-            {
-                {() => _item.LabeText, (s, e) => LabelText = _item.LabeText},
-                {() => _item.Background, (s, e) => Background = _item.Background},
-                {() => _item.Enabled, (s, e) => Enabled = _item.Enabled}
-            };
         }
 
         public void Initialize()
