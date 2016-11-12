@@ -120,13 +120,24 @@ namespace Pg01.Models
                             _keySending--;
                         }
                     break;
+                case ActionType.Menu:
+                    LoadMenu(_ApplicationGroup, result.ActionValue);
+                    break;
             }
             switch (result.Status)
             {
                 case ExecStatus.LoadGroup:
                     LoadBank(_ApplicationGroup, result.NextBank);
+                    IsMenuVisible = true;
                     break;
             }
+        }
+
+        private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
+        {
+            if (menuName == null)
+                menuName = "";
+            Menu = applicationGroup.Menus.Find(x => x.Name == menuName);
         }
 
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
@@ -211,6 +222,42 @@ namespace Pg01.Models
                 if (_Message == value)
                     return;
                 _Message = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region IsMenuVisible変更通知プロパティ
+
+        private bool _IsMenuVisible;
+
+        public bool IsMenuVisible
+        {
+            get { return _IsMenuVisible; }
+            set
+            {
+                if (_IsMenuVisible == value)
+                    return;
+                _IsMenuVisible = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Menu変更通知プロパティ
+
+        private Menu _Menu;
+
+        public Menu Menu
+        {
+            get { return _Menu; }
+            set
+            {
+                if (_Menu == value)
+                    return;
+                _Menu = value;
                 RaisePropertyChanged();
             }
         }

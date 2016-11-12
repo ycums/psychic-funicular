@@ -9,6 +9,10 @@ namespace Pg01Tests.Models
     [TestClass]
     public class StateMachineTests
     {
+        public TestContext TestContext { get; set; }
+
+        #region Test Exec
+
         [TestMethod]
         [TestCategory("Ctrl+Shift+S")]
         [Description("Ctrl+Shift+S として有効な順序でキーを操作した場合、DPGest はキー操作に介入しない")]
@@ -189,5 +193,54 @@ namespace Pg01Tests.Models
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
         }
+
+        #endregion
+
+        #region Test ExecCore
+
+        public static object[] ToaruSource =
+        {
+            new object[]
+            {
+                "Key Down",
+                new ActionItem {ActionType = ActionType.Key, ActionValue = "", NextBank = ""},
+                NativeMethods.KeyboardUpDown.Down,
+                new ExecResult(true, ExecStatus.None, "", ActionType.Key, "", NativeMethods.KeyboardUpDown.Down)
+            },
+            new object[]
+            {
+                "Send Up",
+                new ActionItem {ActionType = ActionType.Send, ActionValue = "Val1", NextBank = "Bank1"},
+                NativeMethods.KeyboardUpDown.Up,
+                new ExecResult(true, ExecStatus.LoadGroup, "Bank1", ActionType.Send, "Val1", NativeMethods.KeyboardUpDown.Up)
+            },
+            new object[]
+            {
+                "Menu Up",
+                new ActionItem {ActionType = ActionType.Menu, ActionValue = "Menu1", NextBank = ""},
+                NativeMethods.KeyboardUpDown.Up,
+                new ExecResult(true, ExecStatus.None, "", ActionType.Menu, "Menu1", NativeMethods.KeyboardUpDown.Up)
+            }
+        };
+
+        [TestMethod]
+        [TestCaseSource(nameof(ToaruSource))]
+        public void TestTestCaseSource()
+        {
+            var sm = new StateMachine();
+            TestContext.Run((
+                    string caseName,
+                    ActionItem actionItem,
+                    NativeMethods.KeyboardUpDown upDown,
+                    ExecResult expected) =>
+                {
+                    var actual = sm.ExecCore(actionItem, upDown);
+                    actual.ActionType.Is(expected.ActionType,caseName);
+                    actual.UpDown.Is(expected.UpDown, caseName);
+                    actual.Status.Is(expected.Status, caseName);
+                });
+        }
+
+        #endregion
     }
 }

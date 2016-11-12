@@ -94,26 +94,26 @@ namespace Pg01.Models
 
         public ExecResult ExecCore(ActionItem item, NativeMethods.KeyboardUpDown kud)
         {
-            switch (kud)
+            switch (item.ActionType)
             {
-                case NativeMethods.KeyboardUpDown.Down:
-                    switch (item.ActionType)
+                case ActionType.Key:
+                    switch (kud)
                     {
-                        case ActionType.Key:
+                        case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.None, "", ActionType.Key, item.ActionValue, kud);
-                        default:
-                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank);
-                    }
-                case NativeMethods.KeyboardUpDown.Up:
-                    switch (item.ActionType)
-                    {
-                        case ActionType.Key:
+                        case NativeMethods.KeyboardUpDown.Up:
                             return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank, ActionType.Send,
                                 item.ActionValue, kud);
+                        default:
+                            return new ExecResult(true);
                     }
-                    break;
+                case ActionType.Send:
+                    return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank,
+                        ActionType.Send, item.ActionValue, kud);
+                default:
+                    return new ExecResult(true, ExecStatus.None, "",
+                        ActionType.Menu, item.ActionValue, kud);
             }
-            return new ExecResult(true);
         }
 
         #endregion
