@@ -7,16 +7,17 @@ using Pg01Tests.Properties;
 
 namespace Pg01Tests.Models
 {
-    [TestClass()]
+    [TestClass]
     public class StateMachineTests
     {
-        [TestMethod, TestCategory("Ctrl+Shift+S")]
+        [TestMethod]
+        [TestCategory("Ctrl+Shift+S")]
         [Description("Ctrl+Shift+S として有効な順序でキーを操作した場合、DPGest はキー操作に介入しない")]
         public void ExecCtrlShiftSTest01()
         {
             var eia = new StateMachine(new DummySendKey());
-            var applicationGroups = ConfigUtil.Deserialize(Resources.TestConfig04);
-            var menuItems = applicationGroups.ApplicationGroups[0].Banks[0].Entries;
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
             var r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
@@ -42,7 +43,8 @@ namespace Pg01Tests.Models
             r1.Status.Is(ExecStatus.None);
         }
 
-        [TestMethod, TestCategory("Ctrl+Shift+S")]
+        [TestMethod]
+        [TestCategory("Ctrl+Shift+S")]
         [Description("Ctrl+Shift+S として無効な順序でキーを操作した場合、DPGest の機能が優先される")]
         public void ExecCtrlShiftSTest02()
         {
@@ -92,9 +94,7 @@ namespace Pg01Tests.Models
         {
             var eia = new StateMachine(new DummySendKey());
             var config = ConfigUtil.Deserialize(Resources.TestConfig04);
-            var applicationGroup = config.ApplicationGroups[0];
-            var menuGroup = applicationGroup.Banks[0];
-            var menuItems = menuGroup.Entries;
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
             var r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.None);
@@ -118,8 +118,8 @@ namespace Pg01Tests.Models
         public void ExecMenuItemTypeKey02()
         {
             var eia = new StateMachine(new DummySendKey());
-            var applicationGroups = ConfigUtil.Deserialize(Resources.TestConfig04);
-            var menuItems = applicationGroups.ApplicationGroups[0].Banks[0].Entries;
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
             var r1 = eia.Exec(menuItems, Keys.D4, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.None);
@@ -144,8 +144,8 @@ namespace Pg01Tests.Models
         public void ExecMenuItemTypeKey03()
         {
             var eia = new StateMachine(new DummySendKey());
-            var applicationGroups = ConfigUtil.Deserialize(Resources.TestConfig04);
-            var menuItems = applicationGroups.ApplicationGroups[0].Banks[0].Entries;
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
             var r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
@@ -163,7 +163,6 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
-
         }
 
         [TestMethod]
@@ -171,8 +170,8 @@ namespace Pg01Tests.Models
         public void ExecMenuItemTypeKey04()
         {
             var eia = new StateMachine(new DummySendKey());
-            var applicationGroups = ConfigUtil.Deserialize(Resources.TestConfig04);
-            var menuItems = applicationGroups.ApplicationGroups[0].Banks[0].Entries;
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
             var r1 = eia.Exec(menuItems, Keys.LWin, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
@@ -190,7 +189,6 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.LWin, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
-
         }
     }
 

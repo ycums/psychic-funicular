@@ -1,6 +1,7 @@
 ﻿using System.Deployment.Application;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Pg01.Properties;
@@ -14,7 +15,7 @@ namespace Pg01.Models
 
     public static class ConfigUtil
     {
-        #region singleton pattern
+        #region public functions
 
         public static string GetConfigFilePath()
         {
@@ -30,9 +31,6 @@ namespace Pg01.Models
 
             return configFilePath;
         }
-        #endregion
-
-        #region public functions
 
         public static void SaveConfigFile(Config mgs, string configFilePath)
         {
@@ -42,27 +40,27 @@ namespace Pg01.Models
             }
         }
 
+        public static Config LoadDefaultConfigFile()
+        {
+            var configFilePath = GetConfigFilePath();
+            if (!File.Exists(configFilePath))
+                using (var writer = File.CreateText(configFilePath))
+                {
+                    writer.Write(Resources.config);
+                    writer.Flush();
+                }
+            return LoadConfigFile(configFilePath);
+        }
+
         public static Config LoadConfigFile(string configFilePath)
         {
-            Config mgs = null;
-            var serializer = new XmlSerializer(typeof(Config));
-            if (!File.Exists(configFilePath))
-                using (var sw = File.CreateText(configFilePath))
-                {
-                    sw.Write(Resources.config);
-                    sw.Flush();
-                }
-            using (var fs = new FileStream(configFilePath, FileMode.Open))
+            Config config;
+            using (var sr = new StreamReader(configFilePath, new UTF8Encoding(false)))
             {
-                var doc = new XmlDocument {PreserveWhitespace = true};
-                doc.Load(fs);
-                if (doc.DocumentElement != null)
-                {
-                    var reader = new XmlNodeReader(doc.DocumentElement);
-                    mgs = (Config) serializer.Deserialize(reader);
-                }
+                var serializer = new XmlSerializer(typeof(Config));
+                config = (Config) serializer.Deserialize(sr);
             }
-            return mgs;
+            return config;
         }
 
         #endregion

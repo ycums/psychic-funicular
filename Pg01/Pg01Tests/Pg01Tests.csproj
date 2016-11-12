@@ -82,7 +82,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ChainingAssertion.MSTest.cs" />
-    <Compile Include="Models\ConfigTests.cs" />
+    <Compile Include="Models\ModelTests.cs" />
     <Compile Include="Models\ConfigUtilTests.cs" />
     <Compile Include="Models\StateMachineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
