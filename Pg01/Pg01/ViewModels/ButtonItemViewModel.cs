@@ -41,7 +41,6 @@ namespace Pg01.ViewModels
             };
         }
 
-
         public void Initialize()
         {
         }

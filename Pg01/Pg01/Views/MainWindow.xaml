@@ -47,6 +47,7 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding Title}" />
+            <TextBlock Text="{Binding ApplicationGroupName}" />
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">

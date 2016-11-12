@@ -22,11 +22,13 @@ namespace Pg01.ViewModels
         {
             _listener = new PropertyChangedEventListener(_model)
             {
-                () => _model.Basic,
-                UpdateBasic
+                {() => _model.Basic, UpdateBasic},
+                {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name}
             };
 
             UpdateBasic(null, null);
+
+            _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -78,6 +80,24 @@ namespace Pg01.ViewModels
                 if (_Title == value)
                     return;
                 _Title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ApplicationGroupName変更通知プロパティ
+
+        private string _ApplicationGroupName;
+
+        public string ApplicationGroupName
+        {
+            get { return _ApplicationGroupName; }
+            set
+            {
+                if (_ApplicationGroupName == value)
+                    return;
+                _ApplicationGroupName = value;
                 RaisePropertyChanged();
             }
         }
