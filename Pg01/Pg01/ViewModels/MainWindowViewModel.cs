@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
@@ -20,6 +21,10 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
+#if DEBUG
+            var path = ConfigUtil.GetConfigFilePath();
+            File.Delete(path);
+#endif
             _listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},

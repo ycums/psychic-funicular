@@ -36,7 +36,7 @@ namespace Pg01.ViewModels
             _listener = new PropertyChangedEventListener(_item)
             {
                 {() => _item.LabeText, (s, e) => LabelText = _item.LabeText},
-                {() => _item.BackColor, (s, e) => BackColor = _item.BackColor},
+                {() => _item.Background, (s, e) => Background = _item.Background},
                 {() => _item.Enabled, (s, e) => Enabled = _item.Enabled}
             };
         }
@@ -67,18 +67,18 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        #region BackColor変更通知プロパティ
+        #region Background変更通知プロパティ
 
-        private Color _BackColor;
+        private Brush _background;
 
-        public Color BackColor
+        public Brush Background
         {
-            get { return _BackColor; }
+            get { return _background; }
             set
             {
-                if (_BackColor == value)
+                if (Equals(_background, value))
                     return;
-                _BackColor = value;
+                _background = value;
                 RaisePropertyChanged();
             }
         }

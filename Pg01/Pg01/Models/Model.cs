@@ -135,7 +135,24 @@ namespace Pg01.Models
                 if (_Bank == value)
                     return;
                 _Bank = value;
+                SetBankToButtons(_Bank);
                 RaisePropertyChanged();
+            }
+        }
+
+        private void SetBankToButtons(Bank bank)
+        {
+            var buttons = _Basic.Buttons;
+            foreach (var btn in buttons)
+            {
+                var val = bank.Entries.Find(x => x.Trigger == btn.Key);
+
+                btn.Enabled = val != null;
+                if (val != null)
+                {
+                    btn.Background = val.Background;
+                    btn.LabeText = val.LabelText;
+                }
             }
         }
 

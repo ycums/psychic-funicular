@@ -102,7 +102,7 @@ namespace Pg01Tests.Models
                                     {
                                         Trigger = "Num9",
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         ActionItem = new ActionItem
                                         {
                                             ActionType = ActionType.Send,
@@ -114,7 +114,7 @@ namespace Pg01Tests.Models
                                     {
                                         Trigger = "Num9",
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         ActionItem = new ActionItem
                                         {
                                             ActionType = ActionType.Send,
