@@ -87,6 +87,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviors\KeyboardHookBehavior.cs" />
+    <Compile Include="Behaviors\NonActiveWindow.cs" />
     <Compile Include="Behaviors\Util\NativeMethods.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

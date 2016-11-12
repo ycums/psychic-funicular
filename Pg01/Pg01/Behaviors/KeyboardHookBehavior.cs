@@ -32,8 +32,8 @@ namespace Pg01.Behaviors
 
         protected override void OnDetaching()
         {
-            base.OnDetaching();
             _hook.KeyboardHooked -= _hook_KeyboardHooked;
+            base.OnDetaching();
         }
     }
 }

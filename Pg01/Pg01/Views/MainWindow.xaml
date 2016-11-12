@@ -15,6 +15,7 @@
     </Window.DataContext>
     <i:Interaction.Behaviors>
         <behaviors:KeyboardHookBehavior Event="{Binding Event, Mode=OneWayToSource}" />
+        <behaviors:NonActiveWindow />
     </i:Interaction.Behaviors>
 
     <i:Interaction.Triggers>
@@ -91,7 +92,7 @@
                         <Button Content="{Binding LabelText}"
                                 IsEnabled="{Binding Enabled}"
                                 Background="{Binding Background}" 
-                                Command="{Binding ButtonComand}"/>
+                                Command="{Binding ButtonCommand}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
