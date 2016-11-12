@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Interactivity;
-using Pg01.Behaviors.Util;
+using Pg01.Views.Behaviors.Util;
 
-namespace Pg01.Behaviors
+namespace Pg01.Views.Behaviors
 {
     public class KeyboardHookBehavior : Behavior<Window>
     {

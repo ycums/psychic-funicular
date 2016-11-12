@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Pg01.Behaviors.Util
+namespace Pg01.Views.Behaviors.Util
 {
     public static class NativeMethods
     {
@@ -14,7 +14,8 @@ namespace Pg01.Behaviors.Util
         public enum KeyboardUpDown
         {
             Down,
-            Up
+            Up,
+            None
         }
 
         public enum KeyboardMessage

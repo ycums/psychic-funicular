@@ -5,8 +5,8 @@ using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
-using Pg01.Behaviors.Util;
 using Pg01.Models;
+using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.ViewModels
 {

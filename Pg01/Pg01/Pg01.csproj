@@ -86,9 +86,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\KeyboardHookBehavior.cs" />
-    <Compile Include="Behaviors\NonActiveWindow.cs" />
-    <Compile Include="Behaviors\Util\NativeMethods.cs" />
+    <Compile Include="Views\Behaviors\KeyboardHookBehavior.cs" />
+    <Compile Include="Views\Behaviors\NonActiveWindowBehavior.cs" />
+    <Compile Include="Views\Behaviors\Util\NativeMethods.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,14 +116,13 @@
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\StateMachine.cs" />
-    <Compile Include="Models\Util\ISendKeyCode.cs" />
     <Compile Include="Models\Util\SendKeyCode.cs" />
     <Compile Include="Models\Util\Util.cs" />
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\IpcObjectSender.cs" />
-    <Compile Include="Behaviors\Util\KeyboardHook.cs" />
-    <Compile Include="Behaviors\Util\KeyboardHookedEventArgs.cs" />
+    <Compile Include="Views\Behaviors\Util\KeyboardHook.cs" />
+    <Compile Include="Views\Behaviors\Util\KeyboardHookedEventArgs.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

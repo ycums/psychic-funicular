@@ -10,8 +10,8 @@ using Livet.EventListeners;
 using Livet.Messaging;
 using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
-using Pg01.Behaviors.Util;
 using Pg01.Models;
+using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.ViewModels
 {

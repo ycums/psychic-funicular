@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Pg01.Behaviors.Util;
 using Pg01.Models.Util;
+using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models
 {
@@ -11,15 +10,11 @@ namespace Pg01.Models
     {
         #region Initialize & Finalize
 
-        public StateMachine() : this(new SendKeyCode())
+        public StateMachine()
         {
-        }
-
-        public StateMachine(ISendKeyCode skc)
-        {
-            _skc = skc;
             ClearInternalStatuses();
         }
+
 
         public void ClearInternalStatuses()
         {
@@ -64,8 +59,7 @@ namespace Pg01.Models
                         select mi;
                     var mi1 = query.FirstOrDefault();
 
-                    if ((mi1 != null) && (mi1.ActionItem.ActionType == ActionType.Key) && (mi1.Trigger != null) &&
-                        (0 == _keySending))
+                    if ((mi1 != null) && (mi1.ActionItem.ActionType == ActionType.Key) && (mi1.Trigger != null))
                         return ExecCore(mi1.ActionItem, upDown);
                     if (_keyControlDown || _keyShiftDown || _keyAltDown)
                     {
@@ -91,8 +85,7 @@ namespace Pg01.Models
                     else
                     {
                         if (mi1?.Trigger != null)
-                            if (0 == _keySending)
-                                return ExecCore(mi1.ActionItem, upDown);
+                            return ExecCore(mi1.ActionItem, upDown);
                     }
                     break;
             }
@@ -107,41 +100,16 @@ namespace Pg01.Models
                     switch (item.ActionType)
                     {
                         case ActionType.Key:
-                            _keySending++;
-                            _skc.SendKey(item.ActionValue, kud);
-                            _keySending--;
-
-                            break;
-
+                            return new ExecResult(true, ExecStatus.None, "", ActionType.Key, item.ActionValue, kud);
                         default:
-                            if (0 < item.ActionValue.Length)
-                                try
-                                {
-                                    _keySending++;
-                                    _skc.SendWait(item.ActionValue);
-                                }
-                                catch (ArgumentException aex)
-                                {
-                                    return new ExecResult(true, ExecStatus.Error,
-                                        string.Empty,
-                                        $"{aex.Message}\n設定を確認してください。");
-                                }
-                                finally
-                                {
-                                    _keySending--;
-                                }
                             return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank);
                     }
-                    break;
                 case NativeMethods.KeyboardUpDown.Up:
                     switch (item.ActionType)
                     {
                         case ActionType.Key:
-                            _keySending++;
-                            _skc.SendKey(item.ActionValue, kud);
-                            _keySending--;
-
-                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank);
+                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank, ActionType.Send,
+                                item.ActionValue, kud);
                     }
                     break;
             }
@@ -152,12 +120,9 @@ namespace Pg01.Models
 
         #region Fields
 
-        private readonly ISendKeyCode _skc;
-
         private bool _keyAltDown;
         private bool _keyControlDown;
         private int _keyDownCount;
-        private int _keySending;
         private bool _keyShiftDown;
 
         #endregion

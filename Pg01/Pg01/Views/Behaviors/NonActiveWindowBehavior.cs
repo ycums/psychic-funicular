@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Interactivity;
 using System.Windows.Interop;
 
-namespace Pg01.Behaviors
+namespace Pg01.Views.Behaviors
 {
-    public class NonActiveWindow : Behavior<Window>
+    public class NonActiveWindowBehavior : Behavior<Window>
     {
         [DllImport("user32.dll")]
         private static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
