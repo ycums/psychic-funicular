@@ -18,10 +18,6 @@ namespace Pg01.Models
 
         #endregion
 
-        /*
-         * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
-         */
-
         #region Initialize & Finalize
 
         public Model()

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
+using Livet.EventListeners;
 using Pg01.Behaviors.Util;
 using Pg01.Models;
 
@@ -10,10 +12,28 @@ namespace Pg01.ViewModels
 {
     public class ButtonItemViewModel : ViewModel
     {
+        #region Functions
+
+        private void LoadBank(object sender, PropertyChangedEventArgs e)
+        {
+            var val = _model.Bank.Entries.Find(x => x.Trigger == Key);
+
+            Enabled = val != null;
+            if (val != null)
+            {
+                Background = val.Background;
+                LabelText = val.LabelText;
+                ActionItem = val.ActionItem;
+            }
+        }
+
+        #endregion
+
         #region Fields
 
         [UsedImplicitly] private readonly ButtonItem _item;
-        private MainWindowViewModel _parent;
+        private readonly Model _model;
+        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
@@ -24,9 +44,9 @@ namespace Pg01.ViewModels
             Key = "";
         }
 
-        public ButtonItemViewModel(MainWindowViewModel parent, ButtonItem buttonItem)
+        public ButtonItemViewModel(Model model, ButtonItem buttonItem)
         {
-            _parent = parent;
+            _model = model;
             _item = buttonItem;
             Width = ConstValues.ButtonWidth;
             Height = ConstValues.ButtonHeight;
@@ -34,10 +54,11 @@ namespace Pg01.ViewModels
             X = _item.X*Width;
             Y = _item.Y*Height;
             Key = _item.Key;
-        }
 
-        public void Initialize()
-        {
+            _listener = new PropertyChangedEventListener(_model)
+            {
+                {() => _model.Bank, LoadBank}
+            };
         }
 
         #endregion
@@ -98,24 +119,23 @@ namespace Pg01.ViewModels
 
         #endregion
 
-
         #region ActionItem変更通知プロパティ
+
         private ActionItem _ActionItem;
 
         public ActionItem ActionItem
         {
-            get
-            { return _ActionItem; }
+            get { return _ActionItem; }
             set
-            { 
+            {
                 if (_ActionItem == value)
                     return;
                 _ActionItem = value;
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
+        #endregion
 
         #region X変更通知プロパティ
 
@@ -219,8 +239,8 @@ namespace Pg01.ViewModels
 
         public void Button()
         {
-            _parent.DoAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
-            _parent.DoAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
+            _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
+            _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
         }
 
         #endregion
