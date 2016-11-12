@@ -90,7 +90,8 @@
                     <DataTemplate>
                         <Button Content="{Binding LabelText}"
                                 IsEnabled="{Binding Enabled}"
-                                Background="{Binding Background}" />
+                                Background="{Binding Background}" 
+                                Command="{Binding ButtonComand}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

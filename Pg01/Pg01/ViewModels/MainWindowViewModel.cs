@@ -17,6 +17,15 @@ namespace Pg01.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        #region Public Functions
+
+        public void DoAction(ActionItem actionItem, NativeMethods.KeyboardUpDown kud)
+        {
+            _model.ProcAction(actionItem, kud);
+        }
+
+        #endregion
+
         #region Initialize & Finalize
 
         public void Initialize()
@@ -29,7 +38,7 @@ namespace Pg01.ViewModels
             {
                 {() => _model.Basic, UpdateBasic},
                 {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
-                {() => _model.Bank, (s,e) => ApplyBank(_model.Bank)},
+                {() => _model.Bank, (s, e) => ApplyBank(_model.Bank)}
             };
 
             UpdateBasic(null, null);
@@ -48,6 +57,7 @@ namespace Pg01.ViewModels
                 {
                     btn.Background = val.Background;
                     btn.LabelText = val.LabelText;
+                    btn.ActionItem = val.ActionItem;
                 }
             }
         }
@@ -57,7 +67,7 @@ namespace Pg01.ViewModels
             Title = _model.Basic.Title;
             Buttons =
                 new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                    _model.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
+                    _model.Basic.Buttons.Select(x => new ButtonItemViewModel(this, x)).ToArray());
             ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
             ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
             X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);

@@ -17,10 +17,17 @@ namespace Pg01.Behaviors.Util
             _state = state;
         }
 
-        public NativeMethods.KeyboardUpDown UpDown => _message == NativeMethods.KeyboardMessage.KeyDown
-                                        || _message == NativeMethods.KeyboardMessage.SysKeyDown
-            ? NativeMethods.KeyboardUpDown.Down
-            : NativeMethods.KeyboardUpDown.Up;
+        public NativeMethods.KeyboardUpDown UpDown
+        {
+            get
+            {
+                return _message == NativeMethods.KeyboardMessage.KeyDown
+                       || _message == NativeMethods.KeyboardMessage.SysKeyDown
+                    ? NativeMethods.KeyboardUpDown.Down
+                    : NativeMethods.KeyboardUpDown.Up;
+            }
+            set { throw new System.NotImplementedException(); }
+        }
 
         public Keys KeyCode => _state.KeyCode;
 

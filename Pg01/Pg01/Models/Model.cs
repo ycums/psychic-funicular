@@ -64,7 +64,6 @@ namespace Pg01.Models
             return true;
         }
 
-
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
@@ -83,6 +82,21 @@ namespace Pg01.Models
             e.Cancel = result.ShouldCancel;
         }
 
+        public void ProcAction(ActionItem action, NativeMethods.KeyboardUpDown kud)
+        {
+            var result = _stateMachine.ExecCore(action, kud);
+            switch (result.Status)
+            {
+                case ExecStatus.LoadGroup:
+                    LoadBank(_ApplicationGroup, result.NextBank);
+                    break;
+                case ExecStatus.Error:
+                    MessageBox.Show(result.Message, Resources.MainWindow_ExecItemAction_Error,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
+
         public void LoadApplicationGroup(string exeName, string windowText)
         {
             var q1 =
@@ -95,11 +109,8 @@ namespace Pg01.Models
 
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
-
             if (bankName == null)
-            {
                 bankName = "";
-            }
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 

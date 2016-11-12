@@ -2,6 +2,8 @@
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
+using Livet.Commands;
+using Pg01.Behaviors.Util;
 using Pg01.Models;
 
 namespace Pg01.ViewModels
@@ -11,6 +13,7 @@ namespace Pg01.ViewModels
         #region Fields
 
         [UsedImplicitly] private readonly ButtonItem _item;
+        private MainWindowViewModel _parent;
 
         #endregion
 
@@ -21,8 +24,9 @@ namespace Pg01.ViewModels
             Key = "";
         }
 
-        public ButtonItemViewModel(ButtonItem buttonItem)
+        public ButtonItemViewModel(MainWindowViewModel parent, ButtonItem buttonItem)
         {
+            _parent = parent;
             _item = buttonItem;
             Width = ConstValues.ButtonWidth;
             Height = ConstValues.ButtonHeight;
@@ -93,6 +97,25 @@ namespace Pg01.ViewModels
         }
 
         #endregion
+
+
+        #region ActionItem変更通知プロパティ
+        private ActionItem _ActionItem;
+
+        public ActionItem ActionItem
+        {
+            get
+            { return _ActionItem; }
+            set
+            { 
+                if (_ActionItem == value)
+                    return;
+                _ActionItem = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
 
         #region X変更通知プロパティ
 
@@ -180,6 +203,24 @@ namespace Pg01.ViewModels
                 _Height = value;
                 RaisePropertyChanged();
             }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Commands
+
+        #region ButtonCommand
+
+        private ViewModelCommand _ButtonCommand;
+
+        public ViewModelCommand ButtonCommand => _ButtonCommand ?? (_ButtonCommand = new ViewModelCommand(Button));
+
+        public void Button()
+        {
+            _parent.DoAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
+            _parent.DoAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
         }
 
         #endregion
