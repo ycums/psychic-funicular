@@ -113,6 +113,7 @@
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\StateMachine.cs" />
     <Compile Include="Models\Util\ISendKeyCode.cs" />
     <Compile Include="Models\Util\SendKeyCode.cs" />
