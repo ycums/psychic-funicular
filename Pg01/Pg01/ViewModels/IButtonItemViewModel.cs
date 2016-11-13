@@ -9,6 +9,7 @@ namespace Pg01.ViewModels
         #region Properties
 
         ActionItem ActionItem { get; set; }
+        Brush Foreground { get; set; }
         Brush Background { get; set; }
         bool Enabled { get; set; }
         double Height { get; set; }

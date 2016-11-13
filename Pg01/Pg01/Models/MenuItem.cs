@@ -28,5 +28,15 @@ namespace Pg01.Models
 
         [XmlElement]
         public ActionItem ActionItem { get; set; }
+
+        [XmlIgnore]
+        public Brush Foreground
+        {
+            get
+            {
+                var b = Background as SolidColorBrush;
+                return b != null ? new SolidColorBrush(Util.Util.GetDisplayForeColor(b.Color)) : Brushes.Black;
+            }
+        }
     }
 }

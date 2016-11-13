@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows.Media;
 using System.Xml.Serialization;
+
+#endregion
 
 namespace Pg01.Models
 {
@@ -21,6 +25,16 @@ namespace Pg01.Models
         {
             get { return Util.Util.ConvertToString(Background); }
             set { Background = Util.Util.ConvertFromString<Brush>(value); }
+        }
+
+        [XmlIgnore]
+        public Brush Foreground
+        {
+            get
+            {
+                var b = Background as SolidColorBrush;
+                return b != null ? new SolidColorBrush(Util.Util.GetDisplayForeColor(b.Color)) : Brushes.Black;
+            }
         }
 
         [XmlElement]

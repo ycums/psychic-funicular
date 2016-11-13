@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.Windows.Media;
 using JetBrains.Annotations;
@@ -7,6 +9,8 @@ using Livet.Commands;
 using Livet.EventListeners;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -21,6 +25,7 @@ namespace Pg01.ViewModels
             Enabled = val != null;
             if (val != null)
             {
+                Foreground = val.Foreground;
                 Background = val.Background;
                 LabelText = val.LabelText;
                 ActionItem = val.ActionItem;
@@ -77,6 +82,24 @@ namespace Pg01.ViewModels
                 if (_Enabled == value)
                     return;
                 _Enabled = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Foreground変更通知プロパティ
+
+        private Brush _Foreground;
+
+        public Brush Foreground
+        {
+            get { return _Foreground; }
+            set
+            {
+                if (_Foreground == value)
+                    return;
+                _Foreground = value;
                 RaisePropertyChanged();
             }
         }
