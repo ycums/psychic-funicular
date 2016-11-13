@@ -34,6 +34,8 @@ namespace Pg01.ViewModels
             UpdateBasic(null, null);
 
             _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+
+            Messenger.Raise(new TransitionMessage(new MenuViewModel(), "OpenMenuMessage"));
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
