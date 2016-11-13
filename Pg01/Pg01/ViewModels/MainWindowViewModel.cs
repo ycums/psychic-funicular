@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
@@ -25,7 +24,7 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-#if DEBUG
+#if False
             var path = ConfigUtil.GetConfigFilePath();
             File.Delete(path);
 #endif
@@ -301,6 +300,25 @@ namespace Pg01.ViewModels
                 return;
             if (!_model.LoadFile(m.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+        }
+
+        #endregion
+
+        #region ReloadCommand
+
+        private ViewModelCommand _ReloadCommand;
+
+        public ViewModelCommand ReloadCommand => _ReloadCommand ?? (_ReloadCommand = new ViewModelCommand(Reload, CanReload));
+
+        public bool CanReload()
+        {
+            return true;
+        }
+
+        public void Reload()
+        {
+            var path = ConfigUtil.GetConfigFilePath();
+            _model.LoadFile(path);
         }
 
         #endregion

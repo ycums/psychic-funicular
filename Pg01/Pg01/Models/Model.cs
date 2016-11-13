@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +8,8 @@ using JetBrains.Annotations;
 using Livet;
 using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.Models
 {
@@ -18,9 +22,7 @@ namespace Pg01.Models
         {
             _skc = new SendKeyCode();
             _stateMachine = new StateMachine();
-            var config = ConfigUtil.LoadDefaultConfigFile();
-            Basic = config.Basic;
-            ApplicationGroups = config.ApplicationGroups;
+            Config = ConfigUtil.LoadDefaultConfigFile();
         }
 
         #endregion
@@ -133,6 +135,12 @@ namespace Pg01.Models
             }
         }
 
+        private void LoadConfig()
+        {
+            Basic = _Config.Basic;
+            ApplicationGroups = _Config.ApplicationGroups;
+        }
+
         private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
         {
             if (menuName == null)
@@ -151,7 +159,26 @@ namespace Pg01.Models
 
         #region Properties
 
-        private Config Config { get; set; }
+        #region Config変更通知プロパティ
+
+        private Config _Config;
+
+        public Config Config
+        {
+            get { return _Config; }
+            set
+            {
+                if (_Config == value)
+                    return;
+                _Config = value;
+
+                LoadConfig();
+
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
 
         #region ApplicationGroup変更通知プロパティ
 
