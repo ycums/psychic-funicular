@@ -44,6 +44,7 @@ namespace Pg01.ViewModels
             //
             Enabled = true;
             ActionItem = _item.ActionItem;
+            Foreground = _item.Foreground; 
             Background = _item.Background;
             LabelText = _item.LabelText;
         }
@@ -51,6 +52,25 @@ namespace Pg01.ViewModels
         #endregion
 
         #region Properties
+
+
+        #region Foreground変更通知プロパティ
+        private Brush _Foreground;
+
+        public Brush Foreground
+        {
+            get
+            { return _Foreground; }
+            set
+            { 
+                if (_Foreground == value)
+                    return;
+                _Foreground = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
 
         #region Enabled変更通知プロパティ
 

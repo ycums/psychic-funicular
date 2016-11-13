@@ -8,12 +8,12 @@
         Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
         SizeToContent="WidthAndHeight"
-        Background="Transparent" 
+        Background="Transparent"
         ShowInTaskbar="false"
         WindowStyle="None"
         AllowsTransparency="true"
         Topmost="True"
-        Title="Menu" MinHeight="25" MinWidth="25">
+        Title="Menu" MinHeight="25" MinWidth="25" Opacity="0.5">
 
     <Window.DataContext>
         <vm:MenuViewModel />
@@ -67,6 +67,7 @@
                 <DataTemplate>
                     <Button Content="{Binding LabelText}"
                             IsEnabled="{Binding Enabled}"
+                            Foreground="{Binding Foreground}"
                             Background="{Binding Background}"
                             Command="{Binding ButtonCommand}" />
                 </DataTemplate>

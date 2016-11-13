@@ -10,12 +10,12 @@
         MinHeight="200" MinWidth="200"
         Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
-        Background="Transparent" 
+        Background="Transparent"
         ShowInTaskbar="false"
         WindowStyle="None"
         AllowsTransparency="true"
         Topmost="True"
-        Title="Pg01">
+        Title="Pg01" Opacity="0.5">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -58,8 +58,12 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Title}" />
-            <TextBlock Text="{Binding ApplicationGroupName}" />
+            <Border BorderBrush="#7F000000" BorderThickness="1">
+                <TextBlock Text="{Binding Title}" Background="White" />
+            </Border>
+            <Border BorderBrush="#7F000000" BorderThickness="1">
+                <TextBlock Text="{Binding ApplicationGroupName}" Background="White" />
+            </Border>
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -102,6 +106,7 @@
                     <DataTemplate>
                         <Button Content="{Binding LabelText}"
                                 IsEnabled="{Binding Enabled}"
+                                Foreground="{Binding Foreground}"
                                 Background="{Binding Background}"
                                 Command="{Binding ButtonCommand}" />
                     </DataTemplate>
