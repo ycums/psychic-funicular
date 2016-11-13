@@ -19,7 +19,7 @@ namespace Pg01Tests.Models
         #region Deserialize Test
 
         [TestMethod]
-        public void ApplicationGroupsTest()
+        public void DeserializeTest()
         {
             var config = ConfigUtil.Deserialize(Resources.TestConfig01);
             var applicationGroup = config.ApplicationGroups[0];

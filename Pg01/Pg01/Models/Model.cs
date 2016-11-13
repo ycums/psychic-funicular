@@ -96,7 +96,7 @@ namespace Pg01.Models
             switch (result.ActionType)
             {
                 case ActionType.Key:
-                    if (_keySending != 0)
+                    if (_keySending == 0)
                     {
                         _keySending++;
                         _skc.SendKey(result.ActionValue, result.UpDown);
@@ -105,7 +105,7 @@ namespace Pg01.Models
                     break;
 
                 case ActionType.Send:
-                    if ((_keySending != 0) && (0 < result.ActionValue.Length))
+                    if ((_keySending == 0) && (0 < result.ActionValue.Length))
                         try
                         {
                             _keySending++;
@@ -129,7 +129,6 @@ namespace Pg01.Models
             {
                 case ExecStatus.LoadGroup:
                     LoadBank(_ApplicationGroup, result.NextBank);
-                    IsMenuVisible = true;
                     break;
             }
         }
