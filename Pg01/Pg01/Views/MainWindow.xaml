@@ -107,7 +107,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" />
+            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" Style="{DynamicResource ButtonStyle1}" />
         </StackPanel>
     </Grid>
 </Window>
