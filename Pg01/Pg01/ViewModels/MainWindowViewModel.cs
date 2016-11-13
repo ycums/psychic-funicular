@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -12,6 +14,8 @@ using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -29,13 +33,23 @@ namespace Pg01.ViewModels
             {
                 {() => _model.Basic, UpdateBasic},
                 {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
+                {() => _model.IsMenuVisible, IsMenuVisibleChanged}
             };
 
             UpdateBasic(null, null);
 
             _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+        }
 
-            Messenger.Raise(new TransitionMessage(new MenuViewModel(), "OpenMenuMessage"));
+        private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var model = sender as Model;
+            if (model != null)
+                if (model.IsMenuVisible)
+                {
+                    var vm = new MenuViewModel(model);
+                    Messenger.Raise(new TransitionMessage(vm, "OpenMenuMessage"));
+                }
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

@@ -29,9 +29,13 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_model)
-            {
-            };
+            _listener = new PropertyChangedEventListener(_model);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _model.IsMenuVisible = false;
+            base.Dispose(disposing);
         }
 
         #endregion

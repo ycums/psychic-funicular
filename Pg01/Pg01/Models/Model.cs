@@ -122,6 +122,7 @@ namespace Pg01.Models
                     break;
                 case ActionType.Menu:
                     LoadMenu(_ApplicationGroup, result.ActionValue);
+                    IsMenuVisible = true;
                     break;
             }
             switch (result.Status)
