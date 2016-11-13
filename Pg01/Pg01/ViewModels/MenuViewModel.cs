@@ -1,11 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Livet;
 using Livet.EventListeners;
+using Livet.Messaging.Windows;
 using Pg01.Models;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -53,9 +58,20 @@ namespace Pg01.ViewModels
         {
             _listener = new PropertyChangedEventListener(_model)
             {
-                {() => _model.Basic, UpdateBasic}
+                {() => _model.Basic, UpdateBasic},
+                {() => _model.IsMenuVisible, Closing}
             };
             UpdateBasic(_model, null);
+        }
+
+        private void Closing(object sender, PropertyChangedEventArgs e)
+        {
+            var model = sender as Model;
+
+            if ((model != null) && !model.IsMenuVisible)
+            {
+                Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+            }
         }
 
         protected override void Dispose(bool disposing)

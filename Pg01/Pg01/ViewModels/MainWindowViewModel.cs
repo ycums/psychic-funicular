@@ -54,7 +54,7 @@ namespace Pg01.ViewModels
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            var model = sender as Model; ;
+            var model = sender as Model;
 
             if (model != null)
             {

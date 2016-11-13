@@ -38,6 +38,9 @@
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
 
+        <l:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
+            <l:WindowInteractionMessageAction />
+        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 
     <Grid>

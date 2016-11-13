@@ -35,12 +35,13 @@ namespace Pg01.ViewModels
             Width = ConstValues.ButtonWidth;
             Height = ConstValues.ButtonHeight;
 
-            X = (_item.X  -origin.X)*Width;
-            Y = (_item.Y  -origin.Y)*Height;
+            X = (_item.X - origin.X)*Width;
+            Y = (_item.Y - origin.Y)*Height;
 
             //
             // ButtonItemViewModel と違い、以下は動的に変更する必要がない
             //
+            Enabled = true;
             ActionItem = _item.Action;
             Background = _item.Background;
             LabelText = _item.LabelText;
@@ -208,6 +209,7 @@ namespace Pg01.ViewModels
         {
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
+            _model.IsMenuVisible = false;
         }
 
         #endregion
