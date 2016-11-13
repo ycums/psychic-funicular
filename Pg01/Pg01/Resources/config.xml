@@ -28,6 +28,9 @@
           <Entry Trigger="NumPad6" LabelText="背景" BackColor="#FF00FF00">
             <ActionItem ActionType="Send" ActionValue="次郎冠者" NextBank="Bank02" />
           </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" BackColor="#FFFF0000">
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
         </Bank>
         <Bank Name="Bank02">
           <Entry Trigger="NumPad9" LabelText="前景02" BackColor="#FF0000F0">
@@ -40,11 +43,14 @@
       </Banks>
       <Menus>
         <Menu Name="menu01">
-          <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
-            <Action ActionType="None" />
+          <MenuItem X="0" Y="0" LabelText="閉じる" BackColor="#FF0000FF">
+            <ActionItem ActionType="None" />
           </MenuItem>
-          <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
-            <Action ActionType="None" />
+          <MenuItem X="1" Y="0" LabelText="前景" BackColor="#FF0000FF">
+            <ActionItem ActionType="None" />
+          </MenuItem>
+          <MenuItem X="-1" Y="0" LabelText="背景" BackColor="#FF00FF00">
+            <ActionItem ActionType="Send" ActionValue="信彦" NextBank="Bank02" />
           </MenuItem>
         </Menu>
       </Menus>

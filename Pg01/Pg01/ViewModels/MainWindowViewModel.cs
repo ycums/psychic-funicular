@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,8 +12,10 @@ using Livet.EventListeners;
 using Livet.Messaging;
 using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
-using Pg01.Behaviors.Util;
 using Pg01.Models;
+using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -29,39 +33,40 @@ namespace Pg01.ViewModels
             {
                 {() => _model.Basic, UpdateBasic},
                 {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
-                {() => _model.Bank, (s,e) => ApplyBank(_model.Bank)},
+                {() => _model.IsMenuVisible, IsMenuVisibleChanged}
             };
 
-            UpdateBasic(null, null);
+            UpdateBasic(_model, null);
 
             _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
         }
 
-        private void ApplyBank(Bank bank)
+        private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            foreach (var btn in _Buttons)
-            {
-                var val = bank.Entries.Find(x => x.Trigger == btn.Key);
-
-                btn.Enabled = val != null;
-                if (val != null)
+            var model = sender as Model;
+            if (model != null)
+                if (model.IsMenuVisible)
                 {
-                    btn.Background = val.Background;
-                    btn.LabelText = val.LabelText;
+                    var vm = new MenuViewModel(model);
+                    Messenger.Raise(new TransitionMessage(vm, "OpenMenuMessage"));
                 }
-            }
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Title = _model.Basic.Title;
-            Buttons =
-                new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                    _model.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
-            ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
-            ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
-            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
-            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            var model = sender as Model;
+
+            if (model != null)
+            {
+                Title = model.Basic.Title;
+                Buttons =
+                    new ObservableSynchronizedCollection<ButtonItemViewModel>(
+                        model.Basic.Buttons.Select(x => new ButtonItemViewModel(model, x)).ToArray());
+                ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+                ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            }
         }
 
         #endregion

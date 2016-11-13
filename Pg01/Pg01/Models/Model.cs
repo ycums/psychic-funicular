@@ -2,30 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
+using JetBrains.Annotations;
 using Livet;
-using Pg01.Behaviors.Util;
-using Pg01.Properties;
+using Pg01.Models.Util;
+using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models
 {
     [Serializable]
     public class Model : NotificationObject
     {
-        #region Fields
-
-        private readonly StateMachine _stateMachine;
-
-        #endregion
-
-        /*
-         * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
-         */
-
         #region Initialize & Finalize
 
         public Model()
         {
+            _skc = new SendKeyCode();
             _stateMachine = new StateMachine();
             var config = ConfigUtil.LoadDefaultConfigFile();
             Basic = config.Basic;
@@ -34,7 +25,15 @@ namespace Pg01.Models
 
         #endregion
 
-        #region Functions
+        #region Fields
+
+        private readonly StateMachine _stateMachine;
+        [UsedImplicitly] private int _keySending;
+        private readonly SendKeyCode _skc;
+
+        #endregion
+
+        #region Public Functions
 
         public bool LoadFile(string path)
         {
@@ -64,23 +63,18 @@ namespace Pg01.Models
             return true;
         }
 
-
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-            var entries = _Bank.Entries;
-            var result = _stateMachine.Exec(entries, e.KeyCode, e.UpDown);
-            switch (result.Status)
-            {
-                case ExecStatus.LoadGroup:
-                    LoadBank(_ApplicationGroup, result.NextBank);
-                    break;
-                case ExecStatus.Error:
-                    MessageBox.Show(result.Message, Resources.MainWindow_ExecItemAction_Error,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-            }
+            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown);
             e.Cancel = result.ShouldCancel;
+            ProcessExecResult(result);
+        }
+
+        public void ProcAction(ActionItem action, NativeMethods.KeyboardUpDown kud)
+        {
+            var result = _stateMachine.ExecCore(action, kud);
+            ProcessExecResult(result);
         }
 
         public void LoadApplicationGroup(string exeName, string windowText)
@@ -93,13 +87,63 @@ namespace Pg01.Models
             ApplicationGroup = q1.FirstOrDefault();
         }
 
+        #endregion
+
+        #region Private Functions
+
+        private void ProcessExecResult(ExecResult result)
+        {
+            switch (result.ActionType)
+            {
+                case ActionType.Key:
+                    if (_keySending == 0)
+                    {
+                        _keySending++;
+                        _skc.SendKey(result.ActionValue, result.UpDown);
+                        _keySending--;
+                    }
+                    break;
+
+                case ActionType.Send:
+                    if ((_keySending == 0) && (0 < result.ActionValue.Length))
+                        try
+                        {
+                            _keySending++;
+                            _skc.SendWait(result.ActionValue);
+                        }
+                        catch (ArgumentException aex)
+                        {
+                            Message = aex.Message;
+                        }
+                        finally
+                        {
+                            _keySending--;
+                        }
+                    break;
+                case ActionType.Menu:
+                    LoadMenu(_ApplicationGroup, result.ActionValue);
+                    IsMenuVisible = true;
+                    break;
+            }
+            switch (result.Status)
+            {
+                case ExecStatus.LoadGroup:
+                    LoadBank(_ApplicationGroup, result.NextBank);
+                    break;
+            }
+        }
+
+        private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
+        {
+            if (menuName == null)
+                menuName = "";
+            Menu = applicationGroup.Menus.Find(x => x.Name == menuName);
+        }
+
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
-
             if (bankName == null)
-            {
                 bankName = "";
-            }
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 
@@ -107,7 +151,7 @@ namespace Pg01.Models
 
         #region Properties
 
-        public Config Config { get; set; }
+        private Config Config { get; set; }
 
         #region ApplicationGroup変更通知プロパティ
 
@@ -163,6 +207,60 @@ namespace Pg01.Models
         }
 
         public List<ApplicationGroup> ApplicationGroups { get; set; }
+
+        #endregion
+
+        #region Message変更通知プロパティ
+
+        private string _Message;
+
+        public string Message
+        {
+            get { return _Message; }
+            set
+            {
+                if (_Message == value)
+                    return;
+                _Message = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region IsMenuVisible変更通知プロパティ
+
+        private bool _IsMenuVisible;
+
+        public bool IsMenuVisible
+        {
+            get { return _IsMenuVisible; }
+            set
+            {
+                if (_IsMenuVisible == value)
+                    return;
+                _IsMenuVisible = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Menu変更通知プロパティ
+
+        private Menu _Menu;
+
+        public Menu Menu
+        {
+            get { return _Menu; }
+            set
+            {
+                if (_Menu == value)
+                    return;
+                _Menu = value;
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 

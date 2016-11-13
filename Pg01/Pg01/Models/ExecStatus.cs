@@ -3,7 +3,6 @@
     public enum ExecStatus
     {
         LoadGroup,
-        Error,
         None
     }
 }

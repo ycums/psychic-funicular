@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,20 +9,35 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
 using Pg01Tests.Properties;
 
+#endregion
+
 namespace Pg01Tests.Models
 {
     [TestClass]
     public class ConfigUtilTests
     {
+        #region Deserialize Test
+
         [TestMethod]
-        public void ApplicationGroupsTest()
+        public void DeserializeTest()
         {
             var config = ConfigUtil.Deserialize(Resources.TestConfig01);
             var applicationGroup = config.ApplicationGroups[0];
             applicationGroup.Name.Is("CLIP STUDIO PAINT");
             var menuGroup = applicationGroup.Banks[0];
             menuGroup.Name.Is(string.Empty);
+
+            var menus = applicationGroup.Menus;
+            menus.Count.Is(1);
+            var menu = menus[0];
+            menu.Name.Is("menu01");
+            menu.MenuItem.Count.Is(3);
+            menu.MenuItem[2].ActionItem.IsNotNull();
         }
+
+        #endregion
+
+        #region Serialize Test
 
         [TestMethod]
         [Description("DPGest #143 設定GUI から Key に 半角スペースを設定できない不具合の修正")]
@@ -135,10 +152,10 @@ namespace Pg01Tests.Models
                                     new MenuItem
                                     {
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         X = 0,
                                         Y = 0,
-                                        Action = new ActionItem
+                                        ActionItem = new ActionItem
                                         {
                                             ActionType = ActionType.None
                                         }
@@ -146,10 +163,10 @@ namespace Pg01Tests.Models
                                     new MenuItem
                                     {
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         X = 0,
                                         Y = 0,
-                                        Action = new ActionItem
+                                        ActionItem = new ActionItem
                                         {
                                             ActionType = ActionType.None
                                         }
@@ -161,5 +178,7 @@ namespace Pg01Tests.Models
                 }
             };
         }
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@
     {
         None,
         Send,
-        Key
+        Key,
+        Menu
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Pg01.Behaviors.Util;
+using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models.Util
 {
-    public class SendKeyCode : ISendKeyCode
+    public class SendKeyCode 
     {
         #region DllImport
 

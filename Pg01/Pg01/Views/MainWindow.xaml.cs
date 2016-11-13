@@ -26,12 +26,6 @@ namespace Pg01.Views
 
             InitializeComponent();
 
-            ShowInTaskbar = false;
-            WindowStyle = WindowStyle.None;
-            AllowsTransparency = true;
-#if !DEBUG
-            Topmost = true;
-#endif
             InitNotifyIcon();
             CaptureMouse();
         }

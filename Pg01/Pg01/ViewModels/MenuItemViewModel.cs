@@ -1,64 +1,51 @@
-﻿using System;
-using System.ComponentModel;
+﻿#region
+
+using System;
+using System.Windows;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
-using Livet.EventListeners;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
 
+#endregion
+
 namespace Pg01.ViewModels
 {
-    public class ButtonItemViewModel : ViewModel, IButtonItemViewModel
+    public class MenuItemViewModel : ViewModel, IButtonItemViewModel
     {
-        #region Functions
-
-        private void LoadBank(object sender, PropertyChangedEventArgs e)
-        {
-            var val = _model.Bank.Entries.Find(x => x.Trigger == Key);
-
-            Enabled = val != null;
-            if (val != null)
-            {
-                Background = val.Background;
-                LabelText = val.LabelText;
-                ActionItem = val.ActionItem;
-            }
-        }
-
-        #endregion
-
         #region Fields
 
-        [UsedImplicitly] private readonly ButtonItem _item;
+        [UsedImplicitly] private readonly MenuItem _item;
+
         private readonly Model _model;
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
         #region Initialize & Finalize
 
-        public ButtonItemViewModel()
+        public MenuItemViewModel()
         {
-            Key = "";
         }
 
-        public ButtonItemViewModel(Model model, ButtonItem buttonItem)
+        public MenuItemViewModel(Model model, MenuItem menuItem, Point origin)
         {
             _model = model;
-            _item = buttonItem;
+            _item = menuItem;
             Width = ConstValues.ButtonWidth;
             Height = ConstValues.ButtonHeight;
 
-            X = _item.X*Width;
-            Y = _item.Y*Height;
-            Key = _item.Key;
+            X = (_item.X - origin.X)*Width;
+            Y = (_item.Y - origin.Y)*Height;
 
-            _listener = new PropertyChangedEventListener(_model)
-            {
-                {() => _model.Bank, LoadBank}
-            };
+            //
+            // ButtonItemViewModel と違い、以下は動的に変更する必要がない
+            //
+            Enabled = true;
+            ActionItem = _item.ActionItem;
+            Background = _item.Background;
+            LabelText = _item.LabelText;
         }
 
         #endregion
@@ -173,24 +160,6 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        #region Key変更通知プロパティ
-
-        private string _Key;
-
-        public string Key
-        {
-            get { return _Key; }
-            set
-            {
-                if (_Key == value)
-                    return;
-                _Key = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        #endregion
-
         #region Width変更通知プロパティ
 
         private double _Width;
@@ -241,6 +210,7 @@ namespace Pg01.ViewModels
         {
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
+            _model.IsMenuVisible = false;
         }
 
         #endregion

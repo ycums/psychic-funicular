@@ -26,7 +26,9 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name = "CLIP STUDIO PAINT";
             model.Bank.IsNotNull();
             model.Bank.Name.Is("");
-            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries.Count.Is(3);
+
+            model.IsMenuVisible.IsFalse();
         }
     }
 }
