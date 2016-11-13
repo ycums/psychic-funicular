@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Livet;
@@ -9,6 +11,26 @@ namespace Pg01.ViewModels
 {
     public class MenuViewModel : ViewModel
     {
+        #region Private Functions
+
+        public void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var model = sender as Model;
+
+            if (model != null)
+            {
+                var items = model.Menu.MenuItem;
+                ButtonsOrigin = new Point(-items.Max(x => Math.Abs(x.X)), -items.Max(x => Math.Abs(x.Y)));
+                ButtonsContainerWidth = (-ButtonsOrigin.X*2 + 1)*ConstValues.ButtonWidth;
+                ButtonsContainerHeight = (-ButtonsOrigin.Y*2 + 1)*ConstValues.ButtonHeight;
+                Buttons =
+                    new ObservableSynchronizedCollection<MenuItemViewModel>(
+                        model.Menu.MenuItem.Select(x => new MenuItemViewModel(model, x, ButtonsOrigin)).ToArray());
+            }
+        }
+
+        #endregion
+
         #region Fields
 
         private readonly Model _model;
@@ -29,7 +51,11 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_model);
+            _listener = new PropertyChangedEventListener(_model)
+            {
+                {() => _model.Basic, UpdateBasic}
+            };
+            UpdateBasic(_model, null);
         }
 
         protected override void Dispose(bool disposing)
@@ -40,21 +66,25 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        #region Private Functions
+        #region Properties
 
-        private void CorrectY()
-        {
-            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
-        }
+        #region Title変更通知プロパティ
 
-        private void CorrectX()
+        private string _Title;
+
+        public string Title
         {
-            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            get { return _Title; }
+            set
+            {
+                if (_Title == value)
+                    return;
+                _Title = value;
+                RaisePropertyChanged();
+            }
         }
 
         #endregion
-
-        #region Properties
 
         #region X変更通知プロパティ
 
@@ -68,7 +98,6 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_X - value) < ConstValues.TOLERANCE)
                     return;
                 _X = value;
-                CorrectX();
                 RaisePropertyChanged();
             }
         }
@@ -87,7 +116,6 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_Y - value) < ConstValues.TOLERANCE)
                     return;
                 _Y = value;
-                CorrectY();
                 RaisePropertyChanged();
             }
         }
@@ -106,7 +134,6 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_Width - value) < ConstValues.TOLERANCE)
                     return;
                 _Width = value;
-                CorrectX();
                 RaisePropertyChanged();
             }
         }
@@ -125,7 +152,6 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_Height - value) < ConstValues.TOLERANCE)
                     return;
                 _Height = value;
-                CorrectY();
                 RaisePropertyChanged();
             }
         }
@@ -134,9 +160,9 @@ namespace Pg01.ViewModels
 
         #region Buttons変更通知プロパティ
 
-        private ObservableSynchronizedCollection<ButtonItemViewModel> _Buttons;
+        private ObservableSynchronizedCollection<MenuItemViewModel> _Buttons;
 
-        public ObservableSynchronizedCollection<ButtonItemViewModel> Buttons
+        public ObservableSynchronizedCollection<MenuItemViewModel> Buttons
         {
             get { return _Buttons; }
             set
@@ -185,6 +211,8 @@ namespace Pg01.ViewModels
         }
 
         #endregion
+
+        public Point ButtonsOrigin { get; set; }
 
         #endregion
 

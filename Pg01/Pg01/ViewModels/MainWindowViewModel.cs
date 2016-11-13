@@ -36,7 +36,7 @@ namespace Pg01.ViewModels
                 {() => _model.IsMenuVisible, IsMenuVisibleChanged}
             };
 
-            UpdateBasic(null, null);
+            UpdateBasic(_model, null);
 
             _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
         }
@@ -54,14 +54,19 @@ namespace Pg01.ViewModels
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Title = _model.Basic.Title;
-            Buttons =
-                new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                    _model.Basic.Buttons.Select(x => new ButtonItemViewModel(_model, x)).ToArray());
-            ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
-            ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
-            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
-            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            var model = sender as Model; ;
+
+            if (model != null)
+            {
+                Title = model.Basic.Title;
+                Buttons =
+                    new ObservableSynchronizedCollection<ButtonItemViewModel>(
+                        model.Basic.Buttons.Select(x => new ButtonItemViewModel(model, x)).ToArray());
+                ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+                ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            }
         }
 
         #endregion

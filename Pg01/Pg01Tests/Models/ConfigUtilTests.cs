@@ -135,7 +135,7 @@ namespace Pg01Tests.Models
                                     new MenuItem
                                     {
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         X = 0,
                                         Y = 0,
                                         Action = new ActionItem
@@ -146,7 +146,7 @@ namespace Pg01Tests.Models
                                     new MenuItem
                                     {
                                         LabelText = "前景",
-                                        BackColor = Color.FromRgb(0, 0, 255),
+                                        Background = Brushes.Blue,
                                         X = 0,
                                         Y = 0,
                                         Action = new ActionItem

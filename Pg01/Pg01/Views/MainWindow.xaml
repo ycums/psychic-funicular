@@ -10,6 +10,10 @@
         MinHeight="200" MinWidth="200"
         Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
+        ShowInTaskbar="false"
+        WindowStyle="None"
+        AllowsTransparency="true"
+        Topmost="True"
         Title="Pg01">
     <Window.DataContext>
         <vm:MainWindowViewModel />

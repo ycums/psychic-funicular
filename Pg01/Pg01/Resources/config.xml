@@ -43,10 +43,13 @@
       </Banks>
       <Menus>
         <Menu Name="menu01">
-          <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
+          <MenuItem X="0" Y="0" LabelText="閉じる" BackColor="#FF0000FF">
             <Action ActionType="None" />
           </MenuItem>
-          <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
+          <MenuItem X="1" Y="0" LabelText="前景" BackColor="#FF0000FF">
+            <Action ActionType="None" />
+          </MenuItem>
+          <MenuItem X="-1" Y="0" LabelText="背景" BackColor="#FF00FF00">
             <Action ActionType="None" />
           </MenuItem>
         </Menu>
