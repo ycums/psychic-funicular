@@ -14,8 +14,8 @@ namespace Pg01.Models
     {
         #region Fields
 
-        private int _cntModifiersDown;
         private int _keySending;
+        private HashSet<Keys> _downedModifierKeys;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace Pg01.Models
         public void ClearInternalStatuses()
         {
             _keySending = 0;
-            _cntModifiersDown = 0;
+            _downedModifierKeys = new HashSet<Keys>();
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace Pg01.Models
 
                 if (upDown == NativeMethods.KeyboardUpDown.Down)
                 {
-                    if (0 != _cntModifiersDown)
+                    if (0 != _downedModifierKeys.Count)
                         return new ExecResult(false);
 
                     _keySending++;
@@ -83,9 +83,10 @@ namespace Pg01.Models
             }
 
             if (upDown != NativeMethods.KeyboardUpDown.Down)
-                _cntModifiersDown--;
+                _downedModifierKeys.Remove(keyCode);
             else
-                _cntModifiersDown++;
+                _downedModifierKeys.Add(keyCode);
+
             return new ExecResult(false);
         }
 

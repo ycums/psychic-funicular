@@ -207,6 +207,40 @@ namespace Pg01Tests.Models
             r1.Status.Is(ExecStatus.None);
         }
 
+        [TestMethod]
+        [Description("モディファイアキーを長時間Downしているとそのあとの入力を受け付けなくなる不具合の修正 #52")]
+        public void ExecMdifireKey01()
+        {
+            var eia = new StateMachine();
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
+            var r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None); 
+
+            // 長期間同じキーをDownしていると Down イベントは複数回発生するが、
+            // Up イベントは1度しか発生しない
+            r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.LoadGroup);
+        }
+
         #endregion
 
         #region Test ExecCore
