@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Basic>
     <Title>Title01</Title>
@@ -33,10 +33,10 @@
       <Menus>
         <Menu Name="menu01">
           <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
-            <Action ActionType="None" />
+            <ActionItem ActionType="None" />
           </MenuItem>
           <MenuItem X="0" Y="0" LabelText="前景" BackColor="#FF0000FF">
-            <Action ActionType="None" />
+            <ActionItem ActionType="None" />
           </MenuItem>
         </Menu>
       </Menus>

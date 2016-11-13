@@ -27,6 +27,6 @@ namespace Pg01.Models
         }
 
         [XmlElement]
-        public ActionItem Action { get; set; }
+        public ActionItem ActionItem { get; set; }
     }
 }

@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
-using Livet.EventListeners;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -17,8 +20,6 @@ namespace Pg01.ViewModels
         [UsedImplicitly] private readonly MenuItem _item;
 
         private readonly Model _model;
-
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
@@ -42,7 +43,7 @@ namespace Pg01.ViewModels
             // ButtonItemViewModel と違い、以下は動的に変更する必要がない
             //
             Enabled = true;
-            ActionItem = _item.Action;
+            ActionItem = _item.ActionItem;
             Background = _item.Background;
             LabelText = _item.LabelText;
         }
