@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 using JetBrains.Annotations;
 using Livet;
 using Livet.EventListeners;
@@ -31,6 +32,10 @@ namespace Pg01.ViewModels
                 Buttons =
                     new ObservableSynchronizedCollection<MenuItemViewModel>(
                         model.Menu.MenuItem.Select(x => new MenuItemViewModel(model, x, ButtonsOrigin)).ToArray());
+
+                var pos = Cursor.Position;
+                X = pos.X - Width/2;
+                Y = pos.Y - Height/2;
             }
         }
 
@@ -52,6 +57,7 @@ namespace Pg01.ViewModels
         public MenuViewModel(Model model)
         {
             _model = model;
+            _X = -99999; //ちらつき防止
         }
 
         public void Initialize()
