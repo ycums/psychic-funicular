@@ -1,13 +1,24 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
 
+#endregion
+
 namespace Pg01.Models
 {
     public class StateMachine
     {
+        #region Fields
+
+        private int _cntModifiersDown;
+        private int _keySending;
+
+        #endregion
+
         #region Initialize & Finalize
 
         public StateMachine()
@@ -18,10 +29,8 @@ namespace Pg01.Models
 
         public void ClearInternalStatuses()
         {
-            _keyControlDown = false;
-            _keyShiftDown = false;
-            _keyAltDown = false;
-            _keyDownCount = 0;
+            _keySending = 0;
+            _cntModifiersDown = 0;
         }
 
         #endregion
@@ -31,64 +40,52 @@ namespace Pg01.Models
         public ExecResult Exec(List<Entry> entries, Keys keyCode, NativeMethods.KeyboardUpDown upDown)
         {
             if (entries == null) return new ExecResult(false);
-            switch (keyCode)
-            {
-                case Keys.LControlKey:
-                    if (upDown == NativeMethods.KeyboardUpDown.Down)
-                    {
-                        _keyControlDown = true;
-                        _keyDownCount = 0;
-                    }
-                    else
-                    {
-                        _keyControlDown = false;
-                    }
-                    break;
-                case Keys.LShiftKey:
-                    _keyShiftDown = upDown == NativeMethods.KeyboardUpDown.Down;
-                    break;
-                case Keys.LMenu:
-                    _keyAltDown = upDown == NativeMethods.KeyboardUpDown.Down;
-                    break;
-                case Keys.Escape:
-                    return new ExecResult(false, ExecStatus.LoadGroup, string.Empty);
-                default:
-                    var keyStr = SendKeyCode.Conv(keyCode);
-                    var query = from mi in entries
-                        where mi.Trigger == keyStr
-                        select mi;
-                    var mi1 = query.FirstOrDefault();
 
-                    if ((mi1 != null) && (mi1.ActionItem.ActionType == ActionType.Key) && (mi1.Trigger != null))
-                        return ExecCore(mi1.ActionItem, upDown);
-                    if (_keyControlDown || _keyShiftDown || _keyAltDown)
-                    {
-                        switch (upDown)
-                        {
-                            case NativeMethods.KeyboardUpDown.Down:
-                                _keyDownCount++;
-                                break;
-                            case NativeMethods.KeyboardUpDown.Up:
-                                _keyDownCount--;
-                                break;
-                        }
-                    }
-                    else if (0 < _keyDownCount)
-                    {
-                        switch (upDown)
-                        {
-                            case NativeMethods.KeyboardUpDown.Up:
-                                _keyDownCount--;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (mi1?.Trigger != null)
-                            return ExecCore(mi1.ActionItem, upDown);
-                    }
-                    break;
+            var modifilers = new[]
+            {
+                Keys.LControlKey, Keys.LShiftKey, Keys.LMenu,
+                Keys.RControlKey, Keys.RShiftKey, Keys.RMenu,
+                Keys.Control, Keys.Shift, Keys.Alt,
+                Keys.ControlKey, Keys.ShiftKey
+            };
+
+            if (keyCode == Keys.Escape)
+                return new ExecResult(false, ExecStatus.LoadGroup, string.Empty);
+
+            if (!modifilers.Contains(keyCode))
+            {
+                var keyStr = SendKeyCode.Conv(keyCode);
+                var query = from mi in entries
+                    where mi.Trigger == keyStr
+                    select mi;
+                var mi1 = query.FirstOrDefault();
+
+                if (mi1?.Trigger == null)
+                    return new ExecResult(false);
+
+                if (mi1.ActionItem.ActionType != ActionType.Send)
+                    return ExecCore(mi1.ActionItem, upDown);
+
+                if (upDown == NativeMethods.KeyboardUpDown.Down)
+                {
+                    if (0 != _cntModifiersDown)
+                        return new ExecResult(false);
+
+                    _keySending++;
+                    return ExecCore(mi1.ActionItem, upDown);
+                }
+
+                if (0 == _keySending)
+                    return new ExecResult(false);
+
+                _keySending--;
+                return ExecCore(mi1.ActionItem, upDown);
             }
+
+            if (upDown != NativeMethods.KeyboardUpDown.Down)
+                _cntModifiersDown--;
+            else
+                _cntModifiersDown++;
             return new ExecResult(false);
         }
 
@@ -108,22 +105,19 @@ namespace Pg01.Models
                             return new ExecResult(true);
                     }
                 case ActionType.Send:
-                    return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank,
-                        ActionType.Send, item.ActionValue, kud);
+                    switch (kud)
+                    {
+                        case NativeMethods.KeyboardUpDown.Up:
+                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank,
+                                ActionType.Send, item.ActionValue, kud);
+                        default:
+                            return new ExecResult(true);
+                    }
                 default:
                     return new ExecResult(true, ExecStatus.None, "",
                         ActionType.Menu, item.ActionValue, kud);
             }
         }
-
-        #endregion
-
-        #region Fields
-
-        private bool _keyAltDown;
-        private bool _keyControlDown;
-        private int _keyDownCount;
-        private bool _keyShiftDown;
 
         #endregion
     }

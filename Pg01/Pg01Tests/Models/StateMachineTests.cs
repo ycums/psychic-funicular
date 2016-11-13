@@ -1,8 +1,13 @@
-﻿using System.Windows.Forms;
+﻿#region
+
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
 using Pg01Tests.Properties;
+
+#endregion
 
 namespace Pg01Tests.Models
 {
@@ -49,12 +54,15 @@ namespace Pg01Tests.Models
         [TestMethod]
         [TestCategory("Ctrl+Shift+S")]
         [Description("Ctrl+Shift+S として無効な順序でキーを操作した場合、DPGest の機能が優先される")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
         public void ExecCtrlShiftSTest02()
         {
             var eia = new StateMachine();
             var config = ConfigUtil.Deserialize(Resources.TestConfig04);
             var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
-            var r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
+            ExecResult r1 = null;
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
             r1.NextBank.Is("曲線");
@@ -63,6 +71,10 @@ namespace Pg01Tests.Models
             var menuGroup = config.ApplicationGroups[0].Banks[3];
             menuGroup.Name.Is(r1.NextBank);
             menuItems = menuGroup.Entries;
+
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
 
             r1 = eia.Exec(menuItems, Keys.LShiftKey, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(false);
@@ -73,8 +85,8 @@ namespace Pg01Tests.Models
             r1.Status.Is(ExecStatus.None);
 
             r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Up);
-            r1.ShouldCancel.Is(false);
-            r1.Status.Is(ExecStatus.None);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.LoadGroup);
 
             r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(false);
@@ -84,7 +96,8 @@ namespace Pg01Tests.Models
             r1.ShouldCancel.Is(false);
             r1.Status.Is(ExecStatus.None);
 
-            r1 = eia.Exec(menuItems, Keys.D, NativeMethods.KeyboardUpDown.Down);
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Down);
+            r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadGroup);
             r1.NextBank.IsNull();
@@ -212,7 +225,15 @@ namespace Pg01Tests.Models
                 "Send Up",
                 new ActionItem {ActionType = ActionType.Send, ActionValue = "Val1", NextBank = "Bank1"},
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadGroup, "Bank1", ActionType.Send, "Val1", NativeMethods.KeyboardUpDown.Up)
+                new ExecResult(true, ExecStatus.LoadGroup, "Bank1", ActionType.Send, "Val1",
+                    NativeMethods.KeyboardUpDown.Up)
+            },
+            new object[]
+            {
+                "Send Down",
+                new ActionItem {ActionType = ActionType.Send, ActionValue = "Val1", NextBank = "Bank1"},
+                NativeMethods.KeyboardUpDown.Down,
+                new ExecResult(true)
             },
             new object[]
             {
@@ -235,7 +256,7 @@ namespace Pg01Tests.Models
                     ExecResult expected) =>
                 {
                     var actual = sm.ExecCore(actionItem, upDown);
-                    actual.ActionType.Is(expected.ActionType,caseName);
+                    actual.ActionType.Is(expected.ActionType, caseName);
                     actual.UpDown.Is(expected.UpDown, caseName);
                     actual.Status.Is(expected.Status, caseName);
                 });
