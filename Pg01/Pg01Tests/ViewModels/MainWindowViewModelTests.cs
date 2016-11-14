@@ -126,5 +126,41 @@ namespace Pg01Tests.ViewModels
             vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
             vm.BankName.Is("(default)");
         }
+
+
+        [TestMethod]
+        [Description("リセットキーでメニューを閉じる機能の検証")]
+        public void MenuResetTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig07);
+
+            var model = new Model(config);
+            var vm = new MainWindowViewModel(model);
+            vm.Initialize();
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
+            vm.ApplicationGroupName.Is("CLIP STUDIO PAINT B");
+            vm.BankName.Is("(default)");
+            vm.Buttons.Count.Is(3);
+            vm.Buttons[2].Key.Is("NumPad3");
+            vm.Buttons[2].LabelText.Is("メニューB");
+            vm.Buttons[2].ActionItem.ActionType.Is(ActionType.Menu);
+            vm.Buttons[2].ActionItem.ActionValue.Is("menu01");
+            vm.Buttons[2].ActionItem.NextBank.IsNull();
+
+            model.ProcAction(vm.Buttons[2].ActionItem, NativeMethods.KeyboardUpDown.Up);
+
+            model.IsMenuVisible.Is(true);
+            model.Menu.Name.Is("menu01");
+            model.Menu.MenuItem.Count.Is(2);
+            model.Menu.MenuItem[0].LabelText.Is("閉じる");
+
+            model.Basic.ResetKey.Is("NumPad5");
+
+            var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
+            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
+            vm.BankName.Is("(default)");
+            model.IsMenuVisible.Is(false);
+        }
     }
 }
