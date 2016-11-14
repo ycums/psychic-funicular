@@ -18,11 +18,16 @@ namespace Pg01.Models
     {
         #region Initialize & Finalize
 
-        public Model()
+        public Model() : this(ConfigUtil.LoadDefaultConfigFile())
+        {
+        }
+
+        public Model(Config config)
         {
             _skc = new SendKeyCode();
             _stateMachine = new StateMachine();
-            Config = ConfigUtil.LoadDefaultConfigFile();
+            _WindowInfo = new WindowInfo("","");
+            Config = config;
         }
 
         #endregion
@@ -79,16 +84,6 @@ namespace Pg01.Models
             ProcessExecResult(result);
         }
 
-        public void LoadApplicationGroup(string exeName, string windowText)
-        {
-            var q1 =
-                ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
-                                              string.Equals(ag.MatchingRoule.ExeName, exeName,
-                                                  StringComparison.CurrentCultureIgnoreCase))
-                    .Where(ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowText, p)));
-            ApplicationGroup = q1.FirstOrDefault();
-        }
-
         #endregion
 
         #region Private Functions
@@ -135,10 +130,10 @@ namespace Pg01.Models
             }
         }
 
-        private void LoadConfig()
+        private void LoadConfig(Config config)
         {
-            Basic = _Config.Basic;
-            ApplicationGroups = _Config.ApplicationGroups;
+            Basic = config.Basic;
+            ApplicationGroups = config.ApplicationGroups;
         }
 
         private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
@@ -153,6 +148,17 @@ namespace Pg01.Models
             if (bankName == null)
                 bankName = "";
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
+        }
+
+        private void LoadApplicationGroup(WindowInfo windowInfo)
+        {
+            var q1 =
+                ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
+                                              string.Equals(ag.MatchingRoule.ExeName, windowInfo.ExeName,
+                                                  StringComparison.CurrentCultureIgnoreCase))
+                    .Where(
+                        ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowName, p)));
+            ApplicationGroup = q1.FirstOrDefault();
         }
 
         #endregion
@@ -172,7 +178,7 @@ namespace Pg01.Models
                     return;
                 _Config = value;
 
-                LoadConfig();
+                LoadConfig(_Config);
 
                 RaisePropertyChanged();
             }
@@ -233,7 +239,24 @@ namespace Pg01.Models
             }
         }
 
-        public List<ApplicationGroup> ApplicationGroups { get; set; }
+        #endregion
+
+        #region ApplicationGroups変更通知プロパティ
+
+        private List<ApplicationGroup> _ApplicationGroups;
+
+        public List<ApplicationGroup> ApplicationGroups
+        {
+            get { return _ApplicationGroups; }
+            set
+            {
+                if (_ApplicationGroups == value)
+                    return;
+                _ApplicationGroups = value;
+                LoadApplicationGroup(_WindowInfo);
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -285,6 +308,25 @@ namespace Pg01.Models
                 if (_Menu == value)
                     return;
                 _Menu = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region WindowInfo変更通知プロパティ
+
+        private WindowInfo _WindowInfo;
+
+        public WindowInfo WindowInfo
+        {
+            get { return _WindowInfo; }
+            set
+            {
+                if (_WindowInfo == value)
+                    return;
+                _WindowInfo = value;
+                LoadApplicationGroup(_WindowInfo);
                 RaisePropertyChanged();
             }
         }

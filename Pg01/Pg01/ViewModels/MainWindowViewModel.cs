@@ -22,6 +22,15 @@ namespace Pg01.ViewModels
     {
         #region Initialize & Finalize
 
+        public MainWindowViewModel(Model model)
+        {
+            _model = model;
+        }
+
+        public MainWindowViewModel() : this(new Model())
+        {
+        }
+
         public void Initialize()
         {
 #if False
@@ -32,12 +41,16 @@ namespace Pg01.ViewModels
             {
                 {() => _model.Basic, UpdateBasic},
                 {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
+                {
+                    () => _model.Bank,
+                    (sender, args) => BankName = string.IsNullOrEmpty(_model.Bank.Name) ? "(default)" : _model.Bank.Name
+                },
                 {() => _model.IsMenuVisible, IsMenuVisibleChanged}
             };
 
             UpdateBasic(_model, null);
 
-            _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            _model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
         }
 
         private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -86,7 +99,7 @@ namespace Pg01.ViewModels
 
         #region Fields
 
-        private readonly Model _model = new Model();
+        private readonly Model _model;
         [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
@@ -123,6 +136,24 @@ namespace Pg01.ViewModels
                 if (_ApplicationGroupName == value)
                     return;
                 _ApplicationGroupName = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region BankName変更通知プロパティ
+
+        private string _BankName;
+
+        public string BankName
+        {
+            get { return _BankName; }
+            set
+            {
+                if (_BankName == value)
+                    return;
+                _BankName = value;
                 RaisePropertyChanged();
             }
         }
@@ -308,7 +339,8 @@ namespace Pg01.ViewModels
 
         private ViewModelCommand _ReloadCommand;
 
-        public ViewModelCommand ReloadCommand => _ReloadCommand ?? (_ReloadCommand = new ViewModelCommand(Reload, CanReload));
+        public ViewModelCommand ReloadCommand
+            => _ReloadCommand ?? (_ReloadCommand = new ViewModelCommand(Reload, CanReload));
 
         public bool CanReload()
         {

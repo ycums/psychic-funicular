@@ -89,6 +89,7 @@
     <Compile Include="ViewModels\IButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="Models\WindowInfo.cs" />
     <Compile Include="Views\Behaviors\KeyboardHookBehavior.cs" />
     <Compile Include="Views\Behaviors\NonActiveWindowBehavior.cs" />
     <Compile Include="Views\Behaviors\Util\NativeMethods.cs" />
