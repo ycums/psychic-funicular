@@ -50,7 +50,7 @@ namespace Pg01.Models
             };
 
             if (keyCode == Keys.Escape)
-                return new ExecResult(false, ExecStatus.LoadGroup, string.Empty);
+                return new ExecResult(false, ExecStatus.LoadBank, string.Empty);
 
             if (!modifilers.Contains(keyCode))
             {
@@ -100,7 +100,7 @@ namespace Pg01.Models
                         case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.None, "", ActionType.Key, item.ActionValue, kud);
                         case NativeMethods.KeyboardUpDown.Up:
-                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank, ActionType.Send,
+                            return new ExecResult(true, ExecStatus.LoadBank, item.NextBank, ActionType.Send,
                                 item.ActionValue, kud);
                         default:
                             return new ExecResult(true);
@@ -109,14 +109,31 @@ namespace Pg01.Models
                     switch (kud)
                     {
                         case NativeMethods.KeyboardUpDown.Up:
-                            return new ExecResult(true, ExecStatus.LoadGroup, item.NextBank,
+                            return new ExecResult(true, ExecStatus.LoadBank, item.NextBank,
                                 ActionType.Send, item.ActionValue, kud);
                         default:
                             return new ExecResult(true);
                     }
+                case ActionType.Menu:
+                    switch (kud)
+                    {
+                        case NativeMethods.KeyboardUpDown.Up:
+                            return new ExecResult(true, ExecStatus.LoadBank, "",
+                                ActionType.Menu, item.ActionValue, kud);
+                        default:
+                            return new ExecResult(true);
+                    }
+                case ActionType.None:
+                    switch (kud)
+                    {
+                        case NativeMethods.KeyboardUpDown.Up:
+                            return new ExecResult(true, ExecStatus.LoadBank, "",
+                                ActionType.None, item.ActionValue, kud);
+                        default:
+                            return new ExecResult(true);
+                    }
                 default:
-                    return new ExecResult(true, ExecStatus.None, "",
-                        ActionType.Menu, item.ActionValue, kud);
+                    return new ExecResult(true);
             }
         }
 

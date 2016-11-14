@@ -229,7 +229,6 @@ namespace Pg01.ViewModels
         {
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
-            _model.IsMenuVisible = false;
         }
 
         #endregion

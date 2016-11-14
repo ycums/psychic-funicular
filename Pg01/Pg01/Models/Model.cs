@@ -26,7 +26,7 @@ namespace Pg01.Models
         {
             _skc = new SendKeyCode();
             _stateMachine = new StateMachine();
-            _WindowInfo = new WindowInfo("","");
+            _WindowInfo = new WindowInfo("", "");
             Config = config;
         }
 
@@ -124,8 +124,12 @@ namespace Pg01.Models
             }
             switch (result.Status)
             {
-                case ExecStatus.LoadGroup:
+                case ExecStatus.LoadBank:
                     LoadBank(_ApplicationGroup, result.NextBank);
+                    if (result.ActionType != ActionType.Menu)
+                    {
+                        IsMenuVisible = false;
+                    }
                     break;
             }
         }
