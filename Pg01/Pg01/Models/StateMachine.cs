@@ -37,7 +37,7 @@ namespace Pg01.Models
 
         #region Functions
 
-        public ExecResult Exec(List<Entry> entries, Keys keyCode, NativeMethods.KeyboardUpDown upDown)
+        public ExecResult Exec(List<Entry> entries, Keys keyCode, NativeMethods.KeyboardUpDown upDown, string resetKey = "")
         {
             if (entries == null) return new ExecResult(false);
 
@@ -49,7 +49,7 @@ namespace Pg01.Models
                 Keys.ControlKey, Keys.ShiftKey
             };
 
-            if (keyCode == Keys.Escape)
+            if (keyCode == Keys.Escape || SendKeyCode.Conv(keyCode) == resetKey)
                 return new ExecResult(false, ExecStatus.LoadBank, string.Empty);
 
             if (!modifilers.Contains(keyCode))

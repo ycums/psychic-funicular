@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Windows.Forms;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
 using Pg01.ViewModels;
 using Pg01.Views.Behaviors.Util;
@@ -97,6 +98,33 @@ namespace Pg01Tests.ViewModels
             vm.Buttons[0].ActionItem.ActionValue.Is(" B");
 
         }
+        [TestMethod]
+        [Description("リセットキーでBankをリセットする機能の検証")]
+        public void BankResetTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig07);
 
+            var model = new Model(config);
+            var vm = new MainWindowViewModel(model);
+            vm.Initialize();
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
+            vm.ApplicationGroupName.Is("CLIP STUDIO PAINT B");
+            vm.BankName.Is("(default)");
+            vm.Buttons.Count.Is(3);
+            vm.Buttons[0].Key.Is("NumPad9");
+            vm.Buttons[0].LabelText.Is("前景B");
+            vm.Buttons[0].ActionItem.ActionType.Is(ActionType.Send);
+            vm.Buttons[0].ActionItem.ActionValue.Is(" B");
+            vm.Buttons[0].ActionItem.NextBank.Is("曲線");
+            model.ProcAction(vm.Buttons[0].ActionItem, NativeMethods.KeyboardUpDown.Up);
+            vm.BankName.Is("曲線");
+
+            model.Basic.ResetKey.Is("NumPad5");
+
+            var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
+            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
+            vm.BankName.Is("(default)");
+        }
     }
 }

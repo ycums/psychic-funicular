@@ -202,5 +202,29 @@ namespace Pg01Tests.Properties {
                 return ResourceManager.GetString("TestConfig06", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///
+        ///&lt;Config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;Basic&gt;
+        ///    &lt;Title&gt;Title01&lt;/Title&gt;
+        ///    &lt;ResetKey Key=&quot;NumPad5&quot; /&gt;
+        ///    &lt;Buttons&gt;
+        ///      &lt;Button X=&quot;0&quot; Y=&quot;0&quot; Key=&quot;NumPad9&quot; /&gt;
+        ///      &lt;Button X=&quot;0&quot; Y=&quot;1&quot; Key=&quot;NumPad6&quot; /&gt;
+        ///      &lt;Button X=&quot;0&quot; Y=&quot;2&quot; Key=&quot;NumPad3&quot; /&gt;
+        ///    &lt;/Buttons&gt;
+        ///    &lt;WindowLocation X=&quot;99999&quot; Y=&quot;0&quot; /&gt;
+        ///  &lt;/Basic&gt;
+        ///  &lt;ApplicationGroups&gt;
+        ///    &lt;ApplicationGroup Name=&quot;CLIP STUDIO PAINT B&quot;&gt;
+        ///      &lt;MatchingRou [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TestConfig07 {
+            get {
+                return ResourceManager.GetString("TestConfig07", resourceCulture);
+            }
+        }
     }
 }
