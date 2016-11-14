@@ -86,8 +86,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\KeyboardHookBehavior.cs" />
-    <Compile Include="Behaviors\Util\NativeMethods.cs" />
+    <Compile Include="ViewModels\IButtonItemViewModel.cs" />
+    <Compile Include="ViewModels\MenuItemViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="Views\Behaviors\KeyboardHookBehavior.cs" />
+    <Compile Include="Views\Behaviors\NonActiveWindowBehavior.cs" />
+    <Compile Include="Views\Behaviors\Util\NativeMethods.cs" />
+    <Compile Include="Views\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,19 +120,23 @@
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\StateMachine.cs" />
-    <Compile Include="Models\Util\ISendKeyCode.cs" />
     <Compile Include="Models\Util\SendKeyCode.cs" />
     <Compile Include="Models\Util\Util.cs" />
     <Compile Include="ViewModels\ButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\IpcObjectSender.cs" />
-    <Compile Include="Behaviors\Util\KeyboardHook.cs" />
-    <Compile Include="Behaviors\Util\KeyboardHookedEventArgs.cs" />
+    <Compile Include="Views\Behaviors\Util\KeyboardHook.cs" />
+    <Compile Include="Views\Behaviors\Util\KeyboardHookedEventArgs.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

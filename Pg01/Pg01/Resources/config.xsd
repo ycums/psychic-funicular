@@ -87,7 +87,7 @@
                                 <xsd:element name="MenuItem">
                                   <xsd:complexType>
                                     <xsd:sequence>
-                                      <xsd:element name="Action">
+                                      <xsd:element name="ActionItem">
                                         <xsd:complexType>
                                           <xsd:attribute name="ActionType" type="xsd:string" use="required" />
                                         </xsd:complexType>

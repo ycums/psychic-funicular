@@ -17,16 +17,26 @@ namespace Pg01.Models
         public string LabelText { get; set; }
 
         [XmlIgnore]
-        public Color BackColor { get; set; }
+        public Brush Background { get; set; }
 
         [XmlAttribute("BackColor")]
         public string LabelColorAsString
         {
-            get { return Util.Util.ConvertToString(BackColor); }
-            set { BackColor = Util.Util.ConvertFromString<Color>(value); }
+            get { return Util.Util.ConvertToString(Background); }
+            set { Background = Util.Util.ConvertFromString<Brush>(value); }
         }
 
         [XmlElement]
-        public ActionItem Action { get; set; }
+        public ActionItem ActionItem { get; set; }
+
+        [XmlIgnore]
+        public Brush Foreground
+        {
+            get
+            {
+                var b = Background as SolidColorBrush;
+                return b != null ? new SolidColorBrush(Util.Util.GetDisplayForeColor(b.Color)) : Brushes.Black;
+            }
+        }
     }
 }

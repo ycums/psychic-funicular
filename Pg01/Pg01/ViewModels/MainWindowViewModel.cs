@@ -1,5 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
@@ -9,8 +12,10 @@ using Livet.EventListeners;
 using Livet.Messaging;
 using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
-using Pg01.Behaviors.Util;
 using Pg01.Models;
+using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.ViewModels
 {
@@ -20,25 +25,48 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_config)
+#if DEBUG
+            var path = ConfigUtil.GetConfigFilePath();
+            File.Delete(path);
+#endif
+            _listener = new PropertyChangedEventListener(_model)
             {
-                () => _config.Basic,
-                UpdateBasic
+                {() => _model.Basic, UpdateBasic},
+                {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
+                {() => _model.IsMenuVisible, IsMenuVisibleChanged}
             };
 
-            UpdateBasic(null, null);
+            UpdateBasic(_model, null);
+
+            _model.LoadApplicationGroup("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+        }
+
+        private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var model = sender as Model;
+            if (model != null)
+                if (model.IsMenuVisible)
+                {
+                    var vm = new MenuViewModel(model);
+                    Messenger.Raise(new TransitionMessage(vm, "OpenMenuMessage"));
+                }
         }
 
         private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Title = _config.Basic.Title;
-            Buttons =
-                new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                    _config.Basic.Buttons.Select(x => new ButtonItemViewModel(x)).ToArray());
-            ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
-            ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
-            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
-            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            var model = sender as Model;
+
+            if (model != null)
+            {
+                Title = model.Basic.Title;
+                Buttons =
+                    new ObservableSynchronizedCollection<ButtonItemViewModel>(
+                        model.Basic.Buttons.Select(x => new ButtonItemViewModel(model, x)).ToArray());
+                ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+                ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            }
         }
 
         #endregion
@@ -47,19 +75,19 @@ namespace Pg01.ViewModels
 
         private void CorrectY()
         {
-            Y = Math.Min(Math.Max(0, _config.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
         }
 
         private void CorrectX()
         {
-            X = Math.Min(Math.Max(0, _config.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
         }
 
         #endregion
 
         #region Fields
 
-        private readonly Config _config = new Config();
+        private readonly Model _model = new Model();
         [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
@@ -78,6 +106,24 @@ namespace Pg01.ViewModels
                 if (_Title == value)
                     return;
                 _Title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ApplicationGroupName変更通知プロパティ
+
+        private string _ApplicationGroupName;
+
+        public string ApplicationGroupName
+        {
+            get { return _ApplicationGroupName; }
+            set
+            {
+                if (_ApplicationGroupName == value)
+                    return;
+                _ApplicationGroupName = value;
                 RaisePropertyChanged();
             }
         }
@@ -226,7 +272,7 @@ namespace Pg01.ViewModels
                 if (_Event == value)
                     return;
                 _Event = value;
-                _config.SetEvent(_Event);
+                _model.SetEvent(_Event);
                 RaisePropertyChanged();
             }
         }
@@ -253,7 +299,7 @@ namespace Pg01.ViewModels
         {
             if (m.Response == null)
                 return;
-            if (!_config.LoadFile(m.Response[0]))
+            if (!_model.LoadFile(m.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
         }
 
@@ -275,7 +321,7 @@ namespace Pg01.ViewModels
         {
             if (parameter.Response == null)
                 return;
-            if (!_config.SaveFile(parameter.Response[0]))
+            if (!_model.SaveFile(parameter.Response[0]))
                 Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
         }
 

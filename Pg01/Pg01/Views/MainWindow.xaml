@@ -4,17 +4,24 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:Pg01.ViewModels"
-        xmlns:behaviors="clr-namespace:Pg01.Behaviors"
+        xmlns:behaviors="clr-namespace:Pg01.Views.Behaviors"
+        xmlns:v="clr-namespace:Pg01.Views"
         SizeToContent="WidthAndHeight"
         MinHeight="200" MinWidth="200"
         Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
-        Title="Pg01">
+        Background="Transparent"
+        ShowInTaskbar="false"
+        WindowStyle="None"
+        AllowsTransparency="true"
+        Topmost="True"
+        Title="Pg01" Opacity="0.5">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <i:Interaction.Behaviors>
         <behaviors:KeyboardHookBehavior Event="{Binding Event, Mode=OneWayToSource}" />
+        <behaviors:NonActiveWindowBehavior />
     </i:Interaction.Behaviors>
 
     <i:Interaction.Triggers>
@@ -27,6 +34,7 @@
         <i:EventTrigger EventName="ContentRendered">
             <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize" />
         </i:EventTrigger>
+
 
         <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
         <i:EventTrigger EventName="Closed">
@@ -42,11 +50,20 @@
         <l:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
             <l:WindowInteractionMessageAction />
         </l:InteractionMessageTrigger>
+
+        <l:InteractionMessageTrigger MessageKey="OpenMenuMessage" Messenger="{Binding Messenger}">
+            <l:TransitionInteractionMessageAction WindowType="{x:Type v:Menu}" Mode="Modal" />
+        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Title}" />
+            <Border BorderBrush="#7F000000" BorderThickness="1">
+                <TextBlock Text="{Binding Title}" Background="White" />
+            </Border>
+            <Border BorderBrush="#7F000000" BorderThickness="1">
+                <TextBlock Text="{Binding ApplicationGroupName}" Background="White" />
+            </Border>
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -89,11 +106,13 @@
                     <DataTemplate>
                         <Button Content="{Binding LabelText}"
                                 IsEnabled="{Binding Enabled}"
-                                Background="{Binding BackColor}" />
+                                Foreground="{Binding Foreground}"
+                                Background="{Binding Background}"
+                                Command="{Binding ButtonCommand}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" />
+            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" Style="{DynamicResource ButtonStyle1}" />
         </StackPanel>
     </Grid>
 </Window>
