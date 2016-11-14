@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
+
+#endregion
 
 namespace Pg01Tests.Models
 {
@@ -19,9 +23,7 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.IsNull();
             model.Bank.IsNull();
 
-            model.LoadApplicationGroup(
-                "ClipStudioPaint.exe",
-                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
             model.ApplicationGroup.IsNotNull();
             model.ApplicationGroup.Name = "CLIP STUDIO PAINT";
             model.Bank.IsNotNull();

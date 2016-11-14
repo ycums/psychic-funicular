@@ -44,7 +44,7 @@ namespace Pg01.ViewModels
             //
             Enabled = true;
             ActionItem = _item.ActionItem;
-            Foreground = _item.Foreground; 
+            Foreground = _item.Foreground;
             Background = _item.Background;
             LabelText = _item.LabelText;
         }
@@ -53,24 +53,23 @@ namespace Pg01.ViewModels
 
         #region Properties
 
-
         #region Foreground変更通知プロパティ
+
         private Brush _Foreground;
 
         public Brush Foreground
         {
-            get
-            { return _Foreground; }
+            get { return _Foreground; }
             set
-            { 
-                if (_Foreground == value)
+            {
+                if (Equals(_Foreground, value))
                     return;
                 _Foreground = value;
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
+        #endregion
 
         #region Enabled変更通知プロパティ
 
@@ -230,7 +229,6 @@ namespace Pg01.ViewModels
         {
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Down);
             _model.ProcAction(ActionItem, NativeMethods.KeyboardUpDown.Up);
-            _model.IsMenuVisible = false;
         }
 
         #endregion

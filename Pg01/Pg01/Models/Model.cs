@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +9,8 @@ using Livet;
 using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
 
+#endregion
+
 namespace Pg01.Models
 {
     [Serializable]
@@ -14,13 +18,16 @@ namespace Pg01.Models
     {
         #region Initialize & Finalize
 
-        public Model()
+        public Model() : this(ConfigUtil.LoadDefaultConfigFile())
+        {
+        }
+
+        public Model(Config config)
         {
             _skc = new SendKeyCode();
             _stateMachine = new StateMachine();
-            var config = ConfigUtil.LoadDefaultConfigFile();
-            Basic = config.Basic;
-            ApplicationGroups = config.ApplicationGroups;
+            _WindowInfo = new WindowInfo("", "");
+            Config = config;
         }
 
         #endregion
@@ -77,16 +84,6 @@ namespace Pg01.Models
             ProcessExecResult(result);
         }
 
-        public void LoadApplicationGroup(string exeName, string windowText)
-        {
-            var q1 =
-                ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
-                                              string.Equals(ag.MatchingRoule.ExeName, exeName,
-                                                  StringComparison.CurrentCultureIgnoreCase))
-                    .Where(ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowText, p)));
-            ApplicationGroup = q1.FirstOrDefault();
-        }
-
         #endregion
 
         #region Private Functions
@@ -127,10 +124,20 @@ namespace Pg01.Models
             }
             switch (result.Status)
             {
-                case ExecStatus.LoadGroup:
+                case ExecStatus.LoadBank:
                     LoadBank(_ApplicationGroup, result.NextBank);
+                    if (result.ActionType != ActionType.Menu)
+                    {
+                        IsMenuVisible = false;
+                    }
                     break;
             }
+        }
+
+        private void LoadConfig(Config config)
+        {
+            Basic = config.Basic;
+            ApplicationGroups = config.ApplicationGroups;
         }
 
         private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
@@ -147,11 +154,41 @@ namespace Pg01.Models
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 
+        private void LoadApplicationGroup(WindowInfo windowInfo)
+        {
+            var q1 =
+                ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
+                                              string.Equals(ag.MatchingRoule.ExeName, windowInfo.ExeName,
+                                                  StringComparison.CurrentCultureIgnoreCase))
+                    .Where(
+                        ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowName, p)));
+            ApplicationGroup = q1.FirstOrDefault();
+        }
+
         #endregion
 
         #region Properties
 
-        private Config Config { get; set; }
+        #region Config変更通知プロパティ
+
+        private Config _Config;
+
+        public Config Config
+        {
+            get { return _Config; }
+            set
+            {
+                if (_Config == value)
+                    return;
+                _Config = value;
+
+                LoadConfig(_Config);
+
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
 
         #region ApplicationGroup変更通知プロパティ
 
@@ -206,7 +243,24 @@ namespace Pg01.Models
             }
         }
 
-        public List<ApplicationGroup> ApplicationGroups { get; set; }
+        #endregion
+
+        #region ApplicationGroups変更通知プロパティ
+
+        private List<ApplicationGroup> _ApplicationGroups;
+
+        public List<ApplicationGroup> ApplicationGroups
+        {
+            get { return _ApplicationGroups; }
+            set
+            {
+                if (_ApplicationGroups == value)
+                    return;
+                _ApplicationGroups = value;
+                LoadApplicationGroup(_WindowInfo);
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -258,6 +312,25 @@ namespace Pg01.Models
                 if (_Menu == value)
                     return;
                 _Menu = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region WindowInfo変更通知プロパティ
+
+        private WindowInfo _WindowInfo;
+
+        public WindowInfo WindowInfo
+        {
+            get { return _WindowInfo; }
+            set
+            {
+                if (_WindowInfo == value)
+                    return;
+                _WindowInfo = value;
+                LoadApplicationGroup(_WindowInfo);
                 RaisePropertyChanged();
             }
         }

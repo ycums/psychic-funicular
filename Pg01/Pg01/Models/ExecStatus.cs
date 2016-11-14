@@ -2,7 +2,7 @@
 {
     public enum ExecStatus
     {
-        LoadGroup,
+        LoadBank,
         None
     }
 }

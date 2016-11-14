@@ -64,6 +64,9 @@
             <Border BorderBrush="#7F000000" BorderThickness="1">
                 <TextBlock Text="{Binding ApplicationGroupName}" Background="White" />
             </Border>
+            <Border BorderBrush="#7F000000" BorderThickness="1">
+                <TextBlock Text="{Binding BankName}" Background="White" />
+            </Border>
             <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -76,6 +79,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+            <Button Content="再読み込み(_R)" IsEnabled="{Binding ReloadCommand.CanExecute}" Command="{Binding ReloadCommand}"/>
             <Button Content="保存 (_S)" IsEnabled="{Binding SaveCommand.CanExecute}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">

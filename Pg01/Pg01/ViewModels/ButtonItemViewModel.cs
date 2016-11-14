@@ -97,7 +97,7 @@ namespace Pg01.ViewModels
             get { return _Foreground; }
             set
             {
-                if (_Foreground == value)
+                if (Equals(_Foreground, value))
                     return;
                 _Foreground = value;
                 RaisePropertyChanged();
