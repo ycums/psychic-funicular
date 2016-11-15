@@ -127,7 +127,7 @@ namespace Pg01.Models
                     switch (kud)
                     {
                         case NativeMethods.KeyboardUpDown.Up:
-                            return new ExecResult(true, ExecStatus.LoadBank, "",
+                            return new ExecResult(true, ExecStatus.LoadBank, item.NextBank,
                                 ActionType.None, item.ActionValue, kud);
                         default:
                             return new ExecResult(true);

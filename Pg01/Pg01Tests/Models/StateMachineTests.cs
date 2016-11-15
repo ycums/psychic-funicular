@@ -286,16 +286,16 @@ namespace Pg01Tests.Models
             new object[]
             {
                 "None Down",
-                new ActionItem {ActionType = ActionType.None, ActionValue = "Menu1", NextBank = ""},
+                new ActionItem {ActionType = ActionType.None, ActionValue = "Menu1", NextBank = "Bank1"},
                 NativeMethods.KeyboardUpDown.Down,
                 new ExecResult(true)
             },
             new object[]
             {
                 "None Up",
-                new ActionItem {ActionType = ActionType.None, ActionValue = "Menu1", NextBank = ""},
+                new ActionItem {ActionType = ActionType.None, ActionValue = "Menu1", NextBank = "Bank1"},
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadBank, "", ActionType.None, "Menu1", NativeMethods.KeyboardUpDown.Up)
+                new ExecResult(true, ExecStatus.LoadBank, "Bank1", ActionType.None, "Menu1", NativeMethods.KeyboardUpDown.Up)
             },
         };
 
@@ -314,6 +314,8 @@ namespace Pg01Tests.Models
                     actual.ActionType.Is(expected.ActionType, caseName);
                     actual.UpDown.Is(expected.UpDown, caseName);
                     actual.Status.Is(expected.Status, caseName);
+                    actual.ShouldCancel.Is(expected.ShouldCancel, caseName);
+                    actual.NextBank.Is(expected.NextBank, caseName);
                 });
         }
 
