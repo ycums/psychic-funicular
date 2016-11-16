@@ -1,23 +1,17 @@
+#region
+
 using System;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interactivity;
 using System.Windows.Interop;
+using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.Views.Behaviors
 {
     public class NonActiveWindowBehavior : Behavior<Window>
     {
-        [DllImport("user32.dll")]
-        private static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        private const int GWL_EXSTYLE = -20;
-
-        private const int WS_EX_NOACTIVATE = 0x08000000;
-
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -33,7 +27,8 @@ namespace Pg01.Views.Behaviors
         private void AssociatedObject_SourceInitialized(object sender, EventArgs e)
         {
             var helper = new WindowInteropHelper(AssociatedObject);
-            SetWindowLong(helper.Handle, GWL_EXSTYLE, GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+            NativeMethods.SetWindowLong(helper.Handle, NativeMethods.GWL_EXSTYLE,
+                NativeMethods.GetWindowLong(helper.Handle, NativeMethods.GWL_EXSTYLE) | NativeMethods.WS_EX_NOACTIVATE);
         }
     }
 }

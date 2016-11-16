@@ -1,21 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Pg01.Views.Behaviors.Util;
+
+#endregion
 
 namespace Pg01.Models.Util
 {
     public class SendKeyCode : ISendKeyCode
     {
-        #region DllImport
-
-        [DllImport("user32.dll")]
-        public static extern uint keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-
-        #endregion
-
         #region Tables
 
         private readonly Dictionary<string, Keys> _dicKeys = new Dictionary<string, Keys>
@@ -79,7 +75,7 @@ namespace Pg01.Models.Util
             return k.Between(Keys.D0, Keys.D9) ? k.ToString().Substring(1) : k.ToString();
         }
 
-        public byte Conv(string str)
+        private byte Conv(string str)
         {
             var b = (byte) Keys.Space;
             if (_dicKeys.ContainsKey(str))
@@ -104,10 +100,10 @@ namespace Pg01.Models.Util
             switch (keyboardUpDown)
             {
                 case NativeMethods.KeyboardUpDown.Down:
-                    keybd_event(p, 0, KEYEVENTF_KEYDOWN, (UIntPtr) 0);
+                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYDOWN, (UIntPtr) 0);
                     break;
                 case NativeMethods.KeyboardUpDown.Up:
-                    keybd_event(p, 0, KEYEVENTF_KEYUP, (UIntPtr) 0);
+                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYUP, (UIntPtr) 0);
                     break;
             }
         }

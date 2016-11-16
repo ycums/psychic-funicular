@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+#endregion
 
 // ReSharper disable UnusedMember.Global
 
@@ -80,7 +84,7 @@ namespace Pg01.Views.Behaviors.Util
         #region "DllImport"
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(
+        internal static extern IntPtr SetWindowsHookEx(
             int hookType,
             DelegateKeyboardHook hookDelegate,
             IntPtr hInstance,
@@ -103,6 +107,15 @@ namespace Pg01.Views.Behaviors.Util
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        [DllImport("user32.dll")]
+        public static extern uint keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
         #endregion
 
         #region "定数定義"
@@ -115,6 +128,8 @@ namespace Pg01.Views.Behaviors.Util
         private const int WA_INACTIVE = 0;
         // ReSharper restore UnusedMember.Local
 
+        public const int GWL_EXSTYLE = -20;
+        public const int WS_EX_NOACTIVATE = 0x08000000;
         #endregion
 
         #region "Delegates"

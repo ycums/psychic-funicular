@@ -13,7 +13,6 @@ using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models
 {
-    [Serializable]
     public class Model : NotificationObject
     {
         #region Initialize & Finalize
@@ -152,8 +151,7 @@ namespace Pg01.Models
 
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
-            if (bankName == null)
-                bankName = "";
+            if (bankName == null) return;
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 

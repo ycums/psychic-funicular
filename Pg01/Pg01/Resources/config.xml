@@ -39,6 +39,9 @@
           <Entry Trigger="NumPad6" LabelText="背景02" BackColor="#FF00F000">
             <ActionItem ActionType="Send" ActionValue="信彦" NextBank="Bank02" />
           </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー02" BackColor="#FFFF0000">
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
         </Bank>
       </Banks>
       <Menus>
