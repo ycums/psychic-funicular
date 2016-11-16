@@ -73,7 +73,7 @@ namespace Pg01.Models
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown, Basic.ResetKey);
+            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown, Basic.ResetKey, IsMenuVisible);
             e.Cancel = result.ShouldCancel;
             ProcessExecResult(result);
         }
@@ -125,11 +125,14 @@ namespace Pg01.Models
             switch (result.Status)
             {
                 case ExecStatus.LoadBank:
-                    LoadBank(_ApplicationGroup, result.NextBank);
                     if (result.ActionType != ActionType.Menu)
                     {
+                        LoadBank(_ApplicationGroup, result.NextBank);
                         IsMenuVisible = false;
                     }
+                    break;
+                case ExecStatus.CloseMenu:
+                    IsMenuVisible = false;
                     break;
             }
         }

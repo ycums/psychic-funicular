@@ -224,7 +224,7 @@ namespace Pg01Tests.Models
 
             r1 = eia.Exec(menuItems, Keys.LControlKey, NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(false);
-            r1.Status.Is(ExecStatus.None); 
+            r1.Status.Is(ExecStatus.None);
 
             // 長期間同じキーをDownしていると Down イベントは複数回発生するが、
             // Up イベントは1度しか発生しない
@@ -239,6 +239,54 @@ namespace Pg01Tests.Models
             r1 = eia.Exec(menuItems, Keys.S, NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadBank);
+        }
+
+        [TestMethod]
+        [Description("リセットキーに対する動作の検証")]
+        public void ExecResetMenu()
+        {
+            var eia = new StateMachine();
+            var config = ConfigUtil.Deserialize(Resources.TestConfig07);
+            var bank = config.ApplicationGroups[0].Banks[4];
+            bank.Name.Is("Bank2");
+
+            var entries = bank.Entries;
+            entries.Count.Is(1);
+
+            config.Basic.ResetKey.Is("NumPad5");
+
+
+            //
+            // Menu 非表示中
+            //
+            // ReSharper disable RedundantArgumentDefaultValue
+            var r1 = eia.Exec( entries, Keys.NumPad5, NativeMethods.KeyboardUpDown.Down,
+                resetKey: config.Basic.ResetKey,
+                isMenuVisible: false);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec( entries, Keys.NumPad5, NativeMethods.KeyboardUpDown.Up,
+                resetKey: config.Basic.ResetKey,
+                isMenuVisible: false);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.LoadBank);
+            // ReSharper restore RedundantArgumentDefaultValue
+
+            //
+            // Menu 表示中
+            //
+            r1 = eia.Exec( entries, Keys.NumPad5, NativeMethods.KeyboardUpDown.Down,
+                resetKey: config.Basic.ResetKey,
+                isMenuVisible: true);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = eia.Exec( entries, Keys.NumPad5, NativeMethods.KeyboardUpDown.Up,
+                resetKey: config.Basic.ResetKey,
+                isMenuVisible: true);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.CloseMenu);
         }
 
         #endregion
@@ -295,8 +343,9 @@ namespace Pg01Tests.Models
                 "None Up",
                 new ActionItem {ActionType = ActionType.None, ActionValue = "Menu1", NextBank = "Bank1"},
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadBank, "Bank1", ActionType.None, "Menu1", NativeMethods.KeyboardUpDown.Up)
-            },
+                new ExecResult(true, ExecStatus.LoadBank, "Bank1", ActionType.None, "Menu1",
+                    NativeMethods.KeyboardUpDown.Up)
+            }
         };
 
         [TestMethod]

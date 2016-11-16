@@ -123,7 +123,7 @@ namespace Pg01Tests.ViewModels
             model.Basic.ResetKey.Is("NumPad5");
 
             var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
-            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
+            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
             vm.BankName.Is("(default)");
         }
 
@@ -158,7 +158,7 @@ namespace Pg01Tests.ViewModels
             model.Basic.ResetKey.Is("NumPad5");
 
             var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
-            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
+            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
             vm.BankName.Is("(default)");
             model.IsMenuVisible.Is(false);
         }
@@ -186,7 +186,7 @@ namespace Pg01Tests.ViewModels
             model.ProcAction(vm.Buttons[1].ActionItem, NativeMethods.KeyboardUpDown.Up);
 
             vm.BankName.Is("Bank2");
-            vm.Buttons.Count.Is(1);
+            vm.Buttons.Count.Is(3);
 
             vm.Buttons[2].Key.Is("NumPad3");
             vm.Buttons[2].LabelText.Is("メニューB");
@@ -200,11 +200,12 @@ namespace Pg01Tests.ViewModels
             model.Menu.Name.Is("menu01");
             model.Menu.MenuItem.Count.Is(2);
             model.Menu.MenuItem[0].LabelText.Is("閉じる");
+            model.Bank.Name.Is("Bank2");
 
             model.Basic.ResetKey.Is("NumPad5");
 
             var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
-            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state);
+            vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
             vm.BankName.Is("Bank2");
             model.IsMenuVisible.Is(false);
         }

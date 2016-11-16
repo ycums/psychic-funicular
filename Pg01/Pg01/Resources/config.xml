@@ -7,7 +7,6 @@
       <Button X="0" Y="0" Key="NumPad9" />
       <Button X="0" Y="1" Key="NumPad6" />
       <Button X="0" Y="2" Key="NumPad3" />
-      <Button X="0" Y="3" Key="NumPad5" />
       <Button X="8" Y="8" Key="NumPad8" />
     </Buttons>
     <WindowLocation X="99999" Y="0" />
