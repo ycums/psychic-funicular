@@ -164,7 +164,9 @@ namespace Pg01.Models
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
             if (bankName == null) return;
-            Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
+            if (applicationGroup != null)
+                Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
+            Bank = null;
         }
 
         private void LoadApplicationGroup(WindowInfo windowInfo)

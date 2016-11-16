@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
-using Pg01.Models.Util;
 using Pg01.ViewModels;
 using Pg01.Views.Behaviors.Util;
 using Pg01Tests.Properties;
@@ -260,17 +259,6 @@ namespace Pg01Tests.ViewModels
 
             vm.BankName.Is("Bank2");
             model.IsMenuVisible.Is(false);
-        }
-    }
-
-    public class DummySendKeyCode : ISendKeyCode
-    {
-        public void SendKey(string str, NativeMethods.KeyboardUpDown keyboardUpDown)
-        {
-        }
-
-        public void SendWait(string p)
-        {
         }
     }
 }
