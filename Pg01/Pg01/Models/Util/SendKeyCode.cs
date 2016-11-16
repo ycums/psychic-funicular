@@ -7,7 +7,7 @@ using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models.Util
 {
-    public class SendKeyCode 
+    public class SendKeyCode : ISendKeyCode
     {
         #region DllImport
 

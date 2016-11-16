@@ -18,13 +18,13 @@ namespace Pg01.Models
     {
         #region Initialize & Finalize
 
-        public Model() : this(ConfigUtil.LoadDefaultConfigFile())
+        public Model() : this(ConfigUtil.LoadDefaultConfigFile(), new SendKeyCode())
         {
         }
 
-        public Model(Config config)
+        public Model(Config config, ISendKeyCode skc)
         {
-            _skc = new SendKeyCode();
+            _skc = skc;
             _stateMachine = new StateMachine();
             _WindowInfo = new WindowInfo("", "");
             Config = config;
@@ -36,7 +36,7 @@ namespace Pg01.Models
 
         private readonly StateMachine _stateMachine;
         [UsedImplicitly] private int _keySending;
-        private readonly SendKeyCode _skc;
+        private readonly ISendKeyCode _skc;
 
         #endregion
 

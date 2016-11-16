@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
+using Pg01.Models.Util;
 using Pg01.ViewModels;
 using Pg01.Views.Behaviors.Util;
 using Pg01Tests.Properties;
@@ -16,7 +17,7 @@ namespace Pg01Tests.ViewModels
             var configA = ConfigUtil.Deserialize(Resources.TestConfig05);
             var configB = ConfigUtil.Deserialize(Resources.TestConfig06);
 
-            var model = new Model(configA);
+            var model = new Model(configA, new DummySendKeyCode());
             var vm = new MainWindowViewModel(model);
             vm.Initialize();
             model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -63,7 +64,7 @@ namespace Pg01Tests.ViewModels
             var configA = ConfigUtil.Deserialize(Resources.TestConfig05);
             var configB = ConfigUtil.Deserialize(Resources.TestConfig06);
 
-            var model = new Model(configA);
+            var model = new Model(configA, new DummySendKeyCode());
             var vm = new MainWindowViewModel(model);
             vm.Initialize();
             model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -103,8 +104,7 @@ namespace Pg01Tests.ViewModels
         public void BankResetTest()
         {
             var config = ConfigUtil.Deserialize(Resources.TestConfig07);
-
-            var model = new Model(config);
+            var model = new Model(config, new DummySendKeyCode());
             var vm = new MainWindowViewModel(model);
             vm.Initialize();
             model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -122,11 +122,10 @@ namespace Pg01Tests.ViewModels
 
             model.Basic.ResetKey.Is("NumPad5");
 
-            var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
+            var state = new NativeMethods.KeyboardState { KeyCode = Keys.NumPad5 };
             vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
             vm.BankName.Is("(default)");
         }
-
 
         [TestMethod]
         [Description("リセットキーでメニューを閉じる機能の検証")]
@@ -134,7 +133,7 @@ namespace Pg01Tests.ViewModels
         {
             var config = ConfigUtil.Deserialize(Resources.TestConfig07);
 
-            var model = new Model(config);
+            var model = new Model(config, new DummySendKeyCode());
             var vm = new MainWindowViewModel(model);
             vm.Initialize();
             model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -169,7 +168,7 @@ namespace Pg01Tests.ViewModels
         {
             var config = ConfigUtil.Deserialize(Resources.TestConfig07);
 
-            var model = new Model(config);
+            var model = new Model(config, new DummySendKeyCode());
             var vm = new MainWindowViewModel(model);
             vm.Initialize();
             model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -208,6 +207,17 @@ namespace Pg01Tests.ViewModels
             vm.Event = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
             vm.BankName.Is("Bank2");
             model.IsMenuVisible.Is(false);
+        }
+    }
+
+    public class DummySendKeyCode : ISendKeyCode
+    {
+        public void SendKey(string str, NativeMethods.KeyboardUpDown keyboardUpDown)
+        {
+        }
+
+        public void SendWait(string p)
+        {
         }
     }
 }
