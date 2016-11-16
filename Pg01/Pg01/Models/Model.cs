@@ -13,18 +13,17 @@ using Pg01.Views.Behaviors.Util;
 
 namespace Pg01.Models
 {
-    [Serializable]
     public class Model : NotificationObject
     {
         #region Initialize & Finalize
 
-        public Model() : this(ConfigUtil.LoadDefaultConfigFile())
+        public Model() : this(ConfigUtil.LoadDefaultConfigFile(), new SendKeyCode())
         {
         }
 
-        public Model(Config config)
+        public Model(Config config, ISendKeyCode skc)
         {
-            _skc = new SendKeyCode();
+            _skc = skc;
             _stateMachine = new StateMachine();
             _WindowInfo = new WindowInfo("", "");
             Config = config;
@@ -36,7 +35,7 @@ namespace Pg01.Models
 
         private readonly StateMachine _stateMachine;
         [UsedImplicitly] private int _keySending;
-        private readonly SendKeyCode _skc;
+        private readonly ISendKeyCode _skc;
 
         #endregion
 
@@ -73,7 +72,7 @@ namespace Pg01.Models
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown);
+            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown, Basic.ResetKey, IsMenuVisible);
             e.Cancel = result.ShouldCancel;
             ProcessExecResult(result);
         }
@@ -125,11 +124,14 @@ namespace Pg01.Models
             switch (result.Status)
             {
                 case ExecStatus.LoadBank:
-                    LoadBank(_ApplicationGroup, result.NextBank);
                     if (result.ActionType != ActionType.Menu)
                     {
+                        LoadBank(_ApplicationGroup, result.NextBank);
                         IsMenuVisible = false;
                     }
+                    break;
+                case ExecStatus.CloseMenu:
+                    IsMenuVisible = false;
                     break;
             }
         }
@@ -149,8 +151,7 @@ namespace Pg01.Models
 
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
-            if (bankName == null)
-                bankName = "";
+            if (bankName == null) return;
             Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
         }
 

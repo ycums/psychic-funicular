@@ -37,7 +37,8 @@ namespace Pg01.Models
 
         #region Functions
 
-        public ExecResult Exec(List<Entry> entries, Keys keyCode, NativeMethods.KeyboardUpDown upDown)
+        public ExecResult Exec(List<Entry> entries, Keys keyCode, NativeMethods.KeyboardUpDown upDown,
+            string resetKey = "", bool isMenuVisible = false)
         {
             if (entries == null) return new ExecResult(false);
 
@@ -49,8 +50,14 @@ namespace Pg01.Models
                 Keys.ControlKey, Keys.ShiftKey
             };
 
-            if (keyCode == Keys.Escape)
-                return new ExecResult(false, ExecStatus.LoadBank, string.Empty);
+            if (SendKeyCode.Conv(keyCode) == resetKey)
+            {
+                if (upDown == NativeMethods.KeyboardUpDown.Down)
+                    return new ExecResult(true);
+                return isMenuVisible
+                    ? new ExecResult(true, ExecStatus.CloseMenu, string.Empty, ActionType.None, string.Empty, upDown)
+                    : new ExecResult(true, ExecStatus.LoadBank, string.Empty, ActionType.None, string.Empty, upDown);
+            }
 
             if (!modifilers.Contains(keyCode))
             {
@@ -127,7 +134,7 @@ namespace Pg01.Models
                     switch (kud)
                     {
                         case NativeMethods.KeyboardUpDown.Up:
-                            return new ExecResult(true, ExecStatus.LoadBank, "",
+                            return new ExecResult(true, ExecStatus.LoadBank, item.NextBank,
                                 ActionType.None, item.ActionValue, kud);
                         default:
                             return new ExecResult(true);

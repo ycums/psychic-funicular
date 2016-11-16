@@ -8,7 +8,7 @@ namespace Pg01.Views.Behaviors.Util
         private readonly NativeMethods.KeyboardMessage _message;
         private NativeMethods.KeyboardState _state;
 
-        internal KeyboardHookedEventArgs(
+        public KeyboardHookedEventArgs(
             NativeMethods.KeyboardMessage message,
             ref NativeMethods.KeyboardState state
             )

@@ -76,7 +76,10 @@ namespace Pg01.ViewModels
 
             if ((model != null) && !model.IsMenuVisible)
             {
-                Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+                DispatcherHelper.UIDispatcher.BeginInvoke((Action)(() =>
+                {
+                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+                }));
             }
         }
 

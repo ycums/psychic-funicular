@@ -2,7 +2,8 @@
 {
     public enum ExecStatus
     {
+        None,
         LoadBank,
-        None
+        CloseMenu
     }
 }

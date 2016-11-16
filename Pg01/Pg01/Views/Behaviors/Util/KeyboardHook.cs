@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Pg01.Views.Behaviors.Util
 {
-    [DefaultEvent("KeyboardHooked")]
-    public sealed class KeyboardHook
+    public sealed class KeyboardHook:IDisposable
     {
         #region Events
 
@@ -65,8 +63,7 @@ namespace Pg01.Views.Behaviors.Util
                 }
             }
         }
-
-        ~KeyboardHook()
+        public void Dispose()
         {
             if (_keyHookDelegate.IsAllocated)
             {
