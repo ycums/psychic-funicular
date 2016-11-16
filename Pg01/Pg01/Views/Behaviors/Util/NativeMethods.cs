@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 #endregion
@@ -116,6 +117,36 @@ namespace Pg01.Views.Behaviors.Util
         [DllImport("user32.dll")]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpStr, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowTextLength(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetClassName(IntPtr hWnd, StringBuilder lpStr, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        internal static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetParent(IntPtr hWnd);
+
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
+
+        [DllImport("psapi.dll")]
+        internal static extern uint GetModuleFileNameEx(IntPtr hWnd, IntPtr hModule, StringBuilder lpFileName, int nSize);
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool CloseHandle(IntPtr handle);
+
         #endregion
 
         #region "定数定義"
@@ -130,6 +161,7 @@ namespace Pg01.Views.Behaviors.Util
 
         public const int GWL_EXSTYLE = -20;
         public const int WS_EX_NOACTIVATE = 0x08000000;
+
         #endregion
 
         #region "Delegates"

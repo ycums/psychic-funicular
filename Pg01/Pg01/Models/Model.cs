@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Timers;
 using JetBrains.Annotations;
 using Livet;
 using Pg01.Models.Util;
@@ -27,12 +29,15 @@ namespace Pg01.Models
             _stateMachine = new StateMachine();
             _WindowInfo = new WindowInfo("", "");
             Config = config;
+            _timer = new Timer(100);
+            _timer.Elapsed += _timer_Elapsed;
         }
 
         #endregion
 
         #region Fields
 
+        private readonly Timer _timer;
         private readonly StateMachine _stateMachine;
         [UsedImplicitly] private int _keySending;
         private readonly ISendKeyCode _skc;
@@ -86,6 +91,13 @@ namespace Pg01.Models
         #endregion
 
         #region Private Functions
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            var exeName = Path.GetFileName(ForegroundWidowInfo.GetExeName());
+            var windowText = ForegroundWidowInfo.GetWindowText();
+            WindowInfo = new WindowInfo(exeName, windowText);
+        }
 
         private void ProcessExecResult(ExecResult result)
         {
@@ -162,7 +174,7 @@ namespace Pg01.Models
                                               string.Equals(ag.MatchingRoule.ExeName, windowInfo.ExeName,
                                                   StringComparison.CurrentCultureIgnoreCase))
                     .Where(
-                        ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowName, p)));
+                        ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowText, p)));
             ApplicationGroup = q1.FirstOrDefault();
         }
 
@@ -328,10 +340,26 @@ namespace Pg01.Models
             get { return _WindowInfo; }
             set
             {
-                if (_WindowInfo == value)
-                    return;
+                if ((_WindowInfo.ExeName == value.ExeName) && (_WindowInfo.ExeName == value.ExeName)) return;
                 _WindowInfo = value;
+                Debug.WriteLine($"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
                 LoadApplicationGroup(_WindowInfo);
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Timer変更通知プロパティ
+
+        public bool TimerEnabled
+        {
+            get { return _timer.Enabled; }
+            set
+            {
+                if (_timer.Enabled == value)
+                    return;
+                _timer.Enabled = value;
                 RaisePropertyChanged();
             }
         }

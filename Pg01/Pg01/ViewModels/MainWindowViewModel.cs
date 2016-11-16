@@ -34,10 +34,6 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-#if DEBUG
-            var path = ConfigUtil.GetConfigFilePath();
-            File.Delete(path);
-#endif
             _listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
@@ -51,7 +47,7 @@ namespace Pg01.ViewModels
 
             UpdateBasic(_model, null);
 
-            _model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            _model.TimerEnabled = true;
         }
 
         private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
