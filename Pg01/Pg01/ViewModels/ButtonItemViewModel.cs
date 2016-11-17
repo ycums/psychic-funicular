@@ -27,21 +27,21 @@ namespace Pg01.ViewModels
             {
                 try
                 {
-                    DispatcherHelper.UIDispatcher.BeginInvoke((Action) (() =>
-                        {
-                            Foreground = val.Foreground;
-                            Background = val.Background;
-                            LabelText = val.LabelText;
-                            ActionItem = val.ActionItem;
-                        }
-                    ));
-
+                    SetEntry(val);
                 }
-                catch (Exception)
+                catch (InvalidOperationException)
                 {
-                    // ignored
+                    DispatcherHelper.UIDispatcher.BeginInvoke((Action) (() => { SetEntry(val); }));
                 }
             }
+        }
+
+        private void SetEntry(Entry val)
+        {
+            Foreground = val.Foreground;
+            Background = val.Background;
+            LabelText = val.LabelText;
+            ActionItem = val.ActionItem;
         }
 
         #endregion
