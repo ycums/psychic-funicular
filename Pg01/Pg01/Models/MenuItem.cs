@@ -1,0 +1,42 @@
+﻿using System;
+using System.Windows.Media;
+using System.Xml.Serialization;
+
+namespace Pg01.Models
+{
+    [Serializable]
+    public class MenuItem
+    {
+        [XmlAttribute]
+        public double X { get; set; }
+
+        [XmlAttribute]
+        public double Y { get; set; }
+
+        [XmlAttribute]
+        public string LabelText { get; set; }
+
+        [XmlIgnore]
+        public Brush Background { get; set; }
+
+        [XmlAttribute("BackColor")]
+        public string LabelColorAsString
+        {
+            get { return Util.Util.ConvertToString(Background); }
+            set { Background = Util.Util.ConvertFromString<Brush>(value); }
+        }
+
+        [XmlElement]
+        public ActionItem ActionItem { get; set; }
+
+        [XmlIgnore]
+        public Brush Foreground
+        {
+            get
+            {
+                var b = Background as SolidColorBrush;
+                return b != null ? new SolidColorBrush(Util.Util.GetDisplayForeColor(b.Color)) : Brushes.Black;
+            }
+        }
+    }
+}
