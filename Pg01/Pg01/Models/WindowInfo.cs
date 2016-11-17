@@ -2,13 +2,13 @@
 {
     public class WindowInfo
     {
-        public WindowInfo(string exeName, string windowName)
+        public WindowInfo(string exeName, string windowText)
         {
             ExeName = exeName;
-            WindowName = windowName;
+            WindowText = windowText;
         }
 
-        public string WindowName { get; set; }
+        public string WindowText { get; set; }
 
         public string ExeName { get; set; }
     }

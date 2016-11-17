@@ -25,11 +25,23 @@ namespace Pg01.ViewModels
             Enabled = val != null;
             if (val != null)
             {
-                Foreground = val.Foreground;
-                Background = val.Background;
-                LabelText = val.LabelText;
-                ActionItem = val.ActionItem;
+                try
+                {
+                    SetEntry(val);
+                }
+                catch (InvalidOperationException)
+                {
+                    DispatcherHelper.UIDispatcher.BeginInvoke((Action) (() => { SetEntry(val); }));
+                }
             }
+        }
+
+        private void SetEntry(Entry val)
+        {
+            Foreground = val.Foreground;
+            Background = val.Background;
+            LabelText = val.LabelText;
+            ActionItem = val.ActionItem;
         }
 
         #endregion

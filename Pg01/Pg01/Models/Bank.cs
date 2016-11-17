@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+
+#endregion
 
 namespace Pg01.Models
 {
