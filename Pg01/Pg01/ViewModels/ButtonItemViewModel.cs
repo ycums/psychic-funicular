@@ -25,14 +25,22 @@ namespace Pg01.ViewModels
             Enabled = val != null;
             if (val != null)
             {
-                DispatcherHelper.UIDispatcher.BeginInvoke((Action)(() =>
-                    {
-                        Foreground = val.Foreground;
-                        Background = val.Background;
-                        LabelText = val.LabelText;
-                        ActionItem = val.ActionItem;
-                    }
-                ));
+                try
+                {
+                    DispatcherHelper.UIDispatcher.BeginInvoke((Action) (() =>
+                        {
+                            Foreground = val.Foreground;
+                            Background = val.Background;
+                            LabelText = val.LabelText;
+                            ActionItem = val.ActionItem;
+                        }
+                    ));
+
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
         }
 

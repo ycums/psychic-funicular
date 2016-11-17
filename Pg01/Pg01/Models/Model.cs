@@ -164,9 +164,13 @@ namespace Pg01.Models
         private void LoadBank(ApplicationGroup applicationGroup, string bankName)
         {
             if (bankName == null) return;
-            if (applicationGroup != null)
-                Bank = applicationGroup.Banks.Find(x => x.Name == bankName);
-            Bank = null;
+            Bank = applicationGroup.Banks.Any()
+                ? applicationGroup.Banks.Find(x => x.Name == bankName)
+                : new Bank
+                {
+                    Entries = new List<Entry>(),
+                    Name = ""
+                };
         }
 
         private void LoadApplicationGroup(WindowInfo windowInfo)
@@ -177,7 +181,16 @@ namespace Pg01.Models
                                                   StringComparison.CurrentCultureIgnoreCase))
                     .Where(
                         ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowText, p)));
-            ApplicationGroup = q1.FirstOrDefault();
+            var groups = q1 as ApplicationGroup[] ?? q1.ToArray();
+            ApplicationGroup = groups.Any()
+                ? groups.FirstOrDefault()
+                : new ApplicationGroup
+                {
+                    Name = "",
+                    MatchingRoule = new MatchingRoule(),
+                    Banks = new List<Bank>(),
+                    Menus = new List<Menu>()
+                };
         }
 
         #endregion
