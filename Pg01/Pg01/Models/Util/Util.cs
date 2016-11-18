@@ -1,14 +1,20 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 
+#endregion
+
 namespace Pg01.Models.Util
 {
-    internal static class Util
+    public static class Util
     {
+        public static readonly Brush DefaultBrush = new SolidColorBrush(Colors.LightGray);
+
         public static string ConvertToString<T>(T value)
         {
             return TypeDescriptor.GetConverter(typeof(T)).ConvertToString(value);
