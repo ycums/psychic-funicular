@@ -54,11 +54,11 @@
           </Entry>
         </Bank>
         <Bank Name="UndoRedo">
-          <Entry Trigger="NumPad9" LabelText="🔙" BackColor="#FAAA">
-            <ActionItem ActionType="Send" ActionValue="^z" />
-          </Entry>
-          <Entry Trigger="NumPad6" LabelText="Redo" BackColor="#F666">
+          <Entry Trigger="NumPad9" LabelText="Redo" BackColor="#F666">
             <ActionItem ActionType="Send" ActionValue="^y" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="🔙" BackColor="#FAAA">
+            <ActionItem ActionType="Send" ActionValue="^z" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="">
             <ActionItem ActionType="None" ActionValue="^d" />

@@ -2,8 +2,8 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
-using System.Windows;
 using System.Windows.Forms;
 using JetBrains.Annotations;
 using Livet;
@@ -25,18 +25,23 @@ namespace Pg01.ViewModels
 
             if (model != null)
             {
-                var items = model.Menu.MenuItem;
-                ButtonsOrigin = new Point(-items.Max(x => Math.Abs(x.X)), -items.Max(x => Math.Abs(x.Y)));
-                ButtonsContainerWidth = (-ButtonsOrigin.X*2 + 1)*ConstValues.ButtonWidth;
-                ButtonsContainerHeight = (-ButtonsOrigin.Y*2 + 1)*ConstValues.ButtonHeight;
-                Buttons =
-                    new ObservableSynchronizedCollection<MenuItemViewModel>(
-                        model.Menu.MenuItem.Select(x => new MenuItemViewModel(model, x, ButtonsOrigin)).ToArray());
-
                 var pos = Cursor.Position;
-                X = pos.X - Width/2;
-                Y = pos.Y - Height/2;
+                UpdateBasicCore(model, pos);
             }
+        }
+
+        public void UpdateBasicCore(Model model, Point pos)
+        {
+            var items = model.Menu.MenuItem;
+            ButtonsOrigin = new System.Windows.Point(-items.Max(x => Math.Abs(x.X)), -items.Max(x => Math.Abs(x.Y)));
+            ButtonsContainerWidth = (-ButtonsOrigin.X*2 + 1)*ConstValues.ButtonWidth;
+            ButtonsContainerHeight = (-ButtonsOrigin.Y*2 + 1)*ConstValues.ButtonHeight;
+            Buttons =
+                new ObservableSynchronizedCollection<MenuItemViewModel>(
+                    model.Menu.MenuItem.Select(x => new MenuItemViewModel(model, x, ButtonsOrigin)).ToArray());
+
+            X = pos.X - ButtonsContainerWidth/2;
+            Y = pos.Y - ButtonsContainerHeight/2;
         }
 
         #endregion
@@ -76,10 +81,8 @@ namespace Pg01.ViewModels
 
             if ((model != null) && !model.IsMenuVisible)
             {
-                DispatcherHelper.UIDispatcher.BeginInvoke((Action)(() =>
-                {
-                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
-                }));
+                DispatcherHelper.UIDispatcher.BeginInvoke(
+                    (Action) (() => { Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction")); }));
             }
         }
 
@@ -237,7 +240,7 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        public Point ButtonsOrigin { get; set; }
+        public System.Windows.Point ButtonsOrigin { get; set; }
 
         #endregion
 
