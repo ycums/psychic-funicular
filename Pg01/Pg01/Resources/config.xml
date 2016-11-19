@@ -10,6 +10,7 @@
       <Button X="0" Y="2" Key="NumPad3" />
     </Buttons>
     <WindowLocation X="0" Y="0" />
+    <ButtonsAlignment>Left</ButtonsAlignment>
   </Basic>
   <ApplicationGroups>
     <ApplicationGroup Name="CLIP STUDIO PAINT">

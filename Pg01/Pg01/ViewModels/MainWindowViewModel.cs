@@ -72,6 +72,7 @@ namespace Pg01.ViewModels
                         model.Basic.Buttons.Select(x => new ButtonItemViewModel(model, x)).ToArray());
                 ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
                 ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+                ButtonsAlignment = model.Basic.ButtonsAlignment;
                 X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
                 Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
             }
@@ -204,6 +205,24 @@ namespace Pg01.ViewModels
                 if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerHeight = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ButtonsAlignMent変更通知プロパティ
+
+        private HorizontalAlignment _buttonsAlignment;
+
+        public HorizontalAlignment ButtonsAlignment
+        {
+            get { return _buttonsAlignment; }
+            set
+            {
+                if (_buttonsAlignment == value)
+                    return;
+                _buttonsAlignment = value;
                 RaisePropertyChanged();
             }
         }

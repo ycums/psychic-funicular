@@ -76,8 +76,10 @@
                         Command="{Binding ReloadCommand}" />
                 <Button Grid.Column="1" Content="閉じる (_C)" Command="{Binding CloseCommand}" />
             </Grid>
-            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" Height="{Binding ButtonsContainerHeight}"
-                          Width="{Binding ButtonsContainerWidth}">
+            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" 
+                          Height="{Binding ButtonsContainerHeight}"
+                          Width="{Binding ButtonsContainerWidth}" 
+                          HorizontalAlignment="{Binding ButtonsAlignment}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas />
