@@ -65,11 +65,13 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding LabelText}"
-                            IsEnabled="{Binding Enabled}"
-                            Foreground="{Binding Foreground}"
-                            Background="{Binding Background}"
-                            Command="{Binding ButtonCommand}" />
+                    <Button
+                        IsEnabled="{Binding Enabled}"
+                        Foreground="{Binding Foreground}"
+                        Background="{Binding Background}"
+                        Command="{Binding ButtonCommand}">
+                        <TextBlock Text="{Binding LabelText}" TextWrapping="Wrap" TextAlignment="Center" />
+                    </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
