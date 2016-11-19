@@ -70,6 +70,9 @@ namespace Pg01.Models
                 if (mi1?.Trigger == null)
                     return new ExecResult(false);
 
+                if (mi1.ActionItem == null)
+                    return new ExecResult(false);
+
                 if (mi1.ActionItem.ActionType != ActionType.Send)
                     return ExecCore(mi1.ActionItem, upDown);
 
@@ -99,6 +102,8 @@ namespace Pg01.Models
 
         public ExecResult ExecCore(ActionItem item, NativeMethods.KeyboardUpDown kud)
         {
+            if (item == null) return new ExecResult(true);
+
             switch (item.ActionType)
             {
                 case ActionType.Key:

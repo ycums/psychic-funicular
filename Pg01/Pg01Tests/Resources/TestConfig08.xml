@@ -22,14 +22,13 @@
       </MatchingRoule>
       <Banks>
         <Bank Name="">
-            <Entry Trigger="NumPad9" LabelText="#F000" BackColor="#F000">
-            <ActionItem ActionType="Send" ActionValue=" B" NextBank="曲線" />
+          <Entry Trigger="NumPad9" LabelText="#F000" BackColor="#F000">
           </Entry>
-          <Entry Trigger="NumPad6" LabelText="No BackColor" >
+          <Entry Trigger="NumPad6" LabelText="No BackColor">
             <ActionItem ActionType="None" NextBank="Bank2" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="メニューB" BackColor="#FF0000FF">
-            <ActionItem ActionType="Menu" ActionValue="menu01"  />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
         <Bank Name="ほげ">
@@ -40,22 +39,21 @@
           <Entry Trigger="S" LabelText="曲線01B" BackColor="#FF0000FF">
             <ActionItem ActionType="Send" ActionValue="SendText" />
           </Entry>
-          <Entry Trigger="D" LabelText="曲線02B" >
+          <Entry Trigger="D" LabelText="曲線02B">
             <ActionItem ActionType="Send" ActionValue="SendText" />
           </Entry>
         </Bank>
         <Bank Name="Bank2">
           <Entry Trigger="NumPad3" LabelText="メニューB" BackColor="#FF0000FF">
-            <ActionItem ActionType="Menu" ActionValue="menu01"  />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
       </Banks>
       <Menus>
         <Menu Name="menu01">
           <MenuItem X="0" Y="0" LabelText="#F0F0" BackColor="#F0F0">
-            <ActionItem ActionType="None" />
           </MenuItem>
-          <MenuItem X="0" Y="0" LabelText="No BackColor" >
+          <MenuItem X="0" Y="0" LabelText="No BackColor">
             <ActionItem ActionType="None" />
           </MenuItem>
         </Menu>
