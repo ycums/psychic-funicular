@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Basic>
@@ -64,7 +64,6 @@
             <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
         </Bank>
-
         <Bank Name="BlushSize">
           <Entry Trigger="NumPad9" LabelText="👆" BackColor="#FFFF">
             <ActionItem ActionType="Send" ActionValue="5" />

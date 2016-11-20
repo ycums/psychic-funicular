@@ -46,11 +46,11 @@ namespace Pg01.Models
 #if !DEBUG
             if (!File.Exists(configFilePath))
 #endif
-                using (var writer = File.CreateText(configFilePath))
-                {
-                    writer.Write(Resources.config);
-                    writer.Flush();
-                }
+            using (var writer = File.CreateText(configFilePath))
+            {
+                writer.Write(Resources.config);
+                writer.Flush();
+            }
             return LoadConfigFile(configFilePath);
         }
 

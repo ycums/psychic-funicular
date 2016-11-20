@@ -5,6 +5,7 @@
         None,
         Send,
         Key,
-        Menu
+        Menu,
+        System
     }
 }

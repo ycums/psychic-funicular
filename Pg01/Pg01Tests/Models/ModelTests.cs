@@ -29,7 +29,8 @@ namespace Pg01Tests.Models
             model.Bank.Name.Is("");
 
             // 該当あり
-            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
             model.ApplicationGroup.IsNotNull();
             model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
             model.Bank.Name.Is("");
@@ -38,18 +39,28 @@ namespace Pg01Tests.Models
             model.Bank.Entries.Count.Is(3);
 
             model.Bank.Entries[0].LabelText.Is("#F000");
-            model.Bank.Entries[0].Background.ToString().Is(Util.ConvertFromString<Brush>("#F000").ToString());
+            model.Bank.Entries[0].Background.ToString()
+                .Is(Util.ConvertFromString<Brush>("#F000").ToString());
             model.Bank.Entries[0].Trigger.Is("NumPad9");
             model.Bank.Entries[0].ActionItem.IsNull();
 
             // Entry ボタンプレス時
-            model.ProcAction(model.Bank.Entries[0].ActionItem, NativeMethods.KeyboardUpDown.Down);
-            model.ProcAction(model.Bank.Entries[0].ActionItem, NativeMethods.KeyboardUpDown.Up);
+            model.ProcAction(model.Bank.Entries[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(model.Bank.Entries[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
 
             // Entry キープレス時
-            var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
-            model.SetEvent(new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyDown, ref state));
-            model.SetEvent(new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state));
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.NumPad5
+            };
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref state));
 
             var menus = model.ApplicationGroup.Menus;
             menus.Count.Is(1);
@@ -58,12 +69,15 @@ namespace Pg01Tests.Models
 
             var items = menus[0].MenuItem;
             items[0].LabelText.Is("#F0F0");
-            items[0].Background.ToString().Is(Util.ConvertFromString<Brush>("#F0F0").ToString());
+            items[0].Background.ToString()
+                .Is(Util.ConvertFromString<Brush>("#F0F0").ToString());
             items[0].ActionItem.IsNull();
 
             // MenuItem ボタンプレス時 (キープレスは今のところありえない）
-            model.ProcAction(items[0].ActionItem, NativeMethods.KeyboardUpDown.Down);
-            model.ProcAction(items[0].ActionItem, NativeMethods.KeyboardUpDown.Up);
+            model.ProcAction(items[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(items[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
         }
 
         [TestMethod]
@@ -78,12 +92,13 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name.Is("");
             model.Bank.Name.Is("");
 
-            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
             model.ApplicationGroup.IsNotNull();
             model.ApplicationGroup.Name = "CLIP STUDIO PAINT";
             model.Bank.IsNotNull();
             model.Bank.Name.Is("");
-            model.Bank.Entries.Count.Is(3);
+            model.Bank.Entries.Count.Is(4);
 
             model.IsMenuVisible.IsFalse();
         }
@@ -100,7 +115,8 @@ namespace Pg01Tests.Models
             model.Bank.Name.Is("");
 
             // 該当あり
-            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
             model.ApplicationGroup.IsNotNull();
             model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
             model.Bank.Name.Is("");
@@ -112,8 +128,13 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name.Is("");
             model.IsMenuVisible.IsFalse();
 
-            var state = new NativeMethods.KeyboardState {KeyCode = Keys.NumPad5};
-            var e = new KeyboardHookedEventArgs(NativeMethods.KeyboardMessage.KeyUp, ref state);
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.NumPad5
+            };
+            var e =
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref state);
             model.SetEvent(e);
         }
 
@@ -129,7 +150,8 @@ namespace Pg01Tests.Models
             model.Bank.Name.Is("");
 
             // 該当あり
-            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe", "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
             model.ApplicationGroup.IsNotNull();
             model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
             model.Bank.Name.Is("");
@@ -138,11 +160,13 @@ namespace Pg01Tests.Models
             model.Bank.Entries.Count.Is(3);
 
             model.Bank.Entries[0].LabelText.Is("#F000");
-            model.Bank.Entries[0].Background.ToString().Is(Util.ConvertFromString<Brush>("#F000").ToString());
+            model.Bank.Entries[0].Background.ToString()
+                .Is(Util.ConvertFromString<Brush>("#F000").ToString());
 
             model.Bank.Entries[1].LabelText.Is("No BackColor");
             model.Bank.Entries[1].Background.IsNotNull();
-            model.Bank.Entries[1].Background.ToString().Is(Util.DefaultBrush.ToString());
+            model.Bank.Entries[1].Background.ToString()
+                .Is(Util.DefaultBrush.ToString());
 
             var menus = model.ApplicationGroup.Menus;
             menus.Count.Is(1);
@@ -151,11 +175,94 @@ namespace Pg01Tests.Models
 
             var items = menus[0].MenuItem;
             items[0].LabelText.Is("#F0F0");
-            items[0].Background.ToString().Is(Util.ConvertFromString<Brush>("#F0F0").ToString());
+            items[0].Background.ToString()
+                .Is(Util.ConvertFromString<Brush>("#F0F0").ToString());
 
             items[1].LabelText.Is("No BackColor");
             items[1].Background.IsNotNull();
             items[1].Background.ToString().Is(Util.DefaultBrush.ToString());
+        }
+
+        [TestMethod]
+        [Description("システムコマンド「状態のキャンセル」を追加 #73")]
+        public void SystemCommandCancelTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig09);
+            var model = new Model(config, new DummySendKeyCode());
+            model.Basic.Title.Is("Sample01");
+            model.Basic.Buttons.Count.Is(4);
+            model.ApplicationGroups.IsNotNull();
+            model.ApplicationGroup.Name.Is("");
+            model.Bank.Name.Is("");
+
+            // 該当あり
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.IsNotNull();
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.IsMenuVisible.IsFalse();
+
+            model.Bank.Entries.Count.Is(4);
+
+            model.Bank.Entries[3].LabelText.Is("キャンセル");
+            model.Bank.Entries[3].Trigger.Is("NumPad5");
+            model.Bank.Entries[3].ActionItem.ActionType.Is(ActionType.System);
+            model.Bank.Entries[3].ActionItem.ActionValue.Is("Cancel");
+
+
+            //
+            // とりあえずエラーが出ないことを確認
+            //
+
+            // Entry ボタンプレス時
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+
+            // Entry キープレス時
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.NumPad5
+            };
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+
+            //
+            // メニューのリセットの確認
+            //
+            model.Bank.Entries[2].LabelText.Is("メニュー");
+            model.Bank.Entries[2].Trigger.Is("NumPad3");
+            model.Bank.Entries[2].ActionItem.ActionType.Is(ActionType.Menu);
+            model.Bank.Entries[2].ActionItem.ActionValue.Is("menu01");
+
+            // menu01 を読み込ませる
+            model.ProcAction(
+                model.Bank.Entries[2].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(
+                model.Bank.Entries[2].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+            model.IsMenuVisible.Is(true);
+            model.Menu.Name.Is("menu01");
+
+            // キャンセル処理させる
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+
+            model.IsMenuVisible.Is(false);
+            model.Bank.Name.Is("");
         }
     }
 }

@@ -19,9 +19,6 @@ namespace Pg01.Models
         public Location WindowLocation { get; set; }
 
         [XmlElement]
-        public string ResetKey { get; set; }
-
-        [XmlElement]
         public HorizontalAlignment ButtonsAlignment { get; set; }
     }
 }

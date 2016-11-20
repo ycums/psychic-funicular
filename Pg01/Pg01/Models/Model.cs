@@ -19,7 +19,8 @@ namespace Pg01.Models
     {
         #region Initialize & Finalize
 
-        public Model() : this(ConfigUtil.LoadDefaultConfigFile(), new SendKeyCode())
+        public Model()
+            : this(ConfigUtil.LoadDefaultConfigFile(), new SendKeyCode())
         {
         }
 
@@ -77,12 +78,16 @@ namespace Pg01.Models
         public void SetEvent(KeyboardHookedEventArgs e)
         {
             Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
-            var result = _stateMachine.Exec(_Bank.Entries, e.KeyCode, e.UpDown, Basic.ResetKey, IsMenuVisible);
+            var result =
+                _stateMachine.Exec(
+                    _Bank.Entries, e.KeyCode, e.UpDown,
+                    IsMenuVisible);
             e.Cancel = result.ShouldCancel;
             ProcessExecResult(result);
         }
 
-        public void ProcAction(ActionItem action, NativeMethods.KeyboardUpDown kud)
+        public void ProcAction(ActionItem action,
+            NativeMethods.KeyboardUpDown kud)
         {
             var result = _stateMachine.ExecCore(action, kud);
             ProcessExecResult(result);
@@ -132,6 +137,19 @@ namespace Pg01.Models
                     LoadMenu(_ApplicationGroup, result.ActionValue);
                     IsMenuVisible = true;
                     break;
+                case ActionType.System:
+                    switch (result.ActionValue)
+                    {
+                        case "Cancel":
+                            if (IsMenuVisible)
+                                IsMenuVisible = false;
+                            else
+                            {
+                                LoadBank(_ApplicationGroup, "");
+                            }
+                            return;
+                    }
+                    break;
             }
             switch (result.Status)
             {
@@ -142,9 +160,6 @@ namespace Pg01.Models
                         IsMenuVisible = false;
                     }
                     break;
-                case ExecStatus.CloseMenu:
-                    IsMenuVisible = false;
-                    break;
             }
         }
 
@@ -154,14 +169,16 @@ namespace Pg01.Models
             ApplicationGroups = config.ApplicationGroups;
         }
 
-        private void LoadMenu(ApplicationGroup applicationGroup, string menuName)
+        private void LoadMenu(ApplicationGroup applicationGroup,
+            string menuName)
         {
             if (menuName == null)
                 menuName = "";
             Menu = applicationGroup.Menus.Find(x => x.Name == menuName);
         }
 
-        private void LoadBank(ApplicationGroup applicationGroup, string bankName)
+        private void LoadBank(ApplicationGroup applicationGroup,
+            string bankName)
         {
             if (bankName == null) return;
             Bank = applicationGroup.Banks.Any()
@@ -176,11 +193,16 @@ namespace Pg01.Models
         private void LoadApplicationGroup(WindowInfo windowInfo)
         {
             var q1 =
-                ApplicationGroups.Where(ag => string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
-                                              string.Equals(ag.MatchingRoule.ExeName, windowInfo.ExeName,
-                                                  StringComparison.CurrentCultureIgnoreCase))
+                ApplicationGroups.Where(
+                        ag =>
+                            string.IsNullOrWhiteSpace(ag.MatchingRoule.ExeName) ||
+                            string.Equals(ag.MatchingRoule.ExeName,
+                                windowInfo.ExeName,
+                                StringComparison.CurrentCultureIgnoreCase))
                     .Where(
-                        ag => ag.MatchingRoule.WindowTitlePatterns.Exists(p => Util.Util.Like(windowInfo.WindowText, p)));
+                        ag =>
+                            ag.MatchingRoule.WindowTitlePatterns.Exists(
+                                p => Util.Util.Like(windowInfo.WindowText, p)));
             var groups = q1 as ApplicationGroup[] ?? q1.ToArray();
             ApplicationGroup = groups.Any()
                 ? groups.FirstOrDefault()
@@ -355,9 +377,11 @@ namespace Pg01.Models
             get { return _WindowInfo; }
             set
             {
-                if ((_WindowInfo.ExeName == value.ExeName) && (_WindowInfo.ExeName == value.ExeName)) return;
+                if ((_WindowInfo.ExeName == value.ExeName) &&
+                    (_WindowInfo.ExeName == value.ExeName)) return;
                 _WindowInfo = value;
-                Debug.WriteLine($"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
+                Debug.WriteLine(
+                    $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
                 LoadApplicationGroup(_WindowInfo);
                 RaisePropertyChanged();
             }
