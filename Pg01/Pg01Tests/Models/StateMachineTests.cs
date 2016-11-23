@@ -58,6 +58,68 @@ namespace Pg01Tests.Models
         }
 
         [TestMethod]
+        [TestCategory("Ctrl+S")]
+        [Description("Ctrl+S として有効な順序でキーを操作した場合、DPGest はキー操作に介入しない")]
+        public void ExecCtrlSTest01()
+        {
+            var machine = new StateMachine();
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var menuItems = config.ApplicationGroups[0].Banks[0].Entries;
+
+            var r1 = machine.Exec(menuItems, Keys.LControlKey,
+                NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(menuItems, Keys.S,
+                NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(menuItems, Keys.S,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(menuItems, Keys.LControlKey,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+        }
+
+        [TestMethod]
+        [TestCategory("Ctrl+S")]
+        [Description("Ctrl+S 用のブロックがすり抜けてしまう不具合の修正")]
+        public void ExecCtrlSTest02()
+        {
+            var machine = new StateMachine();
+            var config = ConfigUtil.Deserialize(Resources.TestConfig11);
+            var entries = config.ApplicationGroups[0].Banks[0].Entries;
+            entries[0].ActionItem.ActionType.Is(ActionType.None);
+            entries[0].ActionItem.ActionValue.IsNull();
+
+            var r1 = machine.Exec(entries, Keys.LControlKey,
+                NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(entries, Keys.S,
+                NativeMethods.KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(entries, Keys.S,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(entries, Keys.LControlKey,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.Status.Is(ExecStatus.None);
+        }
+
+        [TestMethod]
         [TestCategory("Ctrl+Shift+S")]
         [Description("Ctrl+Shift+S として無効な順序でキーを操作した場合、DPGest の機能が優先される")]
         [SuppressMessage("ReSharper", "RedundantAssignment")]

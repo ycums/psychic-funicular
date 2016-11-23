@@ -64,22 +64,28 @@ namespace Pg01.Models
                 if (mi1.ActionItem == null)
                     return new ExecResult(false);
 
-                if (mi1.ActionItem.ActionType != ActionType.Send)
-                    return ExecCore(mi1.ActionItem, upDown);
-
-                if (upDown == NativeMethods.KeyboardUpDown.Down)
+                switch (mi1.ActionItem.ActionType)
                 {
-                    if (0 != _downedModifierKeys.Count)
-                        return new ExecResult(false);
+                    case ActionType.Send:
+                        if (upDown == NativeMethods.KeyboardUpDown.Down)
+                        {
+                            if (0 != _downedModifierKeys.Count)
+                                return new ExecResult(false);
 
-                    _keySending++;
-                    return ExecCore(mi1.ActionItem, upDown);
+                            _keySending++;
+                            return ExecCore(mi1.ActionItem, upDown);
+                        }
+
+                        if (0 == _keySending)
+                            return new ExecResult(false);
+
+                        _keySending--;
+                        return ExecCore(mi1.ActionItem, upDown);
+                    case ActionType.None:
+                        return _downedModifierKeys.Count == 0
+                            ? ExecCore(mi1.ActionItem, upDown)
+                            : new ExecResult(false);
                 }
-
-                if (0 == _keySending)
-                    return new ExecResult(false);
-
-                _keySending--;
                 return ExecCore(mi1.ActionItem, upDown);
             }
 

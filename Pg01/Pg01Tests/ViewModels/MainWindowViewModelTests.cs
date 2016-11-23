@@ -367,5 +367,63 @@ namespace Pg01Tests.ViewModels
             vm.Buttons[0].Background.ToString()
                 .Is(Util.DefaultBrush.ToString());
         }
+
+        [TestMethod]
+        public void CtrlSTest01()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig04);
+            var model = new Model(config, new DummySendKeyCode());
+            var vm = new MainWindowViewModel(model);
+            vm.Initialize();
+            model.TimerEnabled = false; // 停止させないとステップ実行させたりするとおかしくなる
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            vm.ApplicationGroupName.Is("CLIP STUDIO PAINT");
+            vm.BankName.Is("(default)");
+            model.Bank.Entries.Count.Is(2);
+            vm.Buttons.Count.Is(5);
+            model.Bank.Entries[0].Trigger.Is("S");
+            model.Bank.Entries[0].ActionItem.NextBank.Is("曲線");
+
+            var ksLControl = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.LControlKey
+            };
+            var ksS = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.S
+            };
+
+            vm.Event =
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref ksLControl);
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Name.IsNot("曲線");
+            model.Bank.Name.Is("");
+
+            vm.Event=
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref ksS);
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Name.IsNot("曲線");
+            model.Bank.Name.Is("");
+
+            vm.Event=
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref ksS);
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Name.IsNot("曲線");
+            model.Bank.Name.Is("");
+
+            vm.Event =
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref ksLControl);
+            // これで Bank が "曲線" だとおかしい
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Name.IsNot("曲線");
+            model.Bank.Name.Is("");
+
+        }
     }
 }
