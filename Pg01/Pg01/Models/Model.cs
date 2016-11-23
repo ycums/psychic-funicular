@@ -77,7 +77,10 @@ namespace Pg01.Models
 
         public void SetEvent(KeyboardHookedEventArgs e)
         {
-            Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
+            if (_ApplicationGroup.Name != "")
+            {
+                Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
+            }
             var result =
                 _stateMachine.Exec(
                     _Bank.Entries, e.KeyCode, e.UpDown,

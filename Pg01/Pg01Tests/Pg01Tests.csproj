@@ -147,6 +147,9 @@
   <ItemGroup>
     <None Include="Resources\TestConfig09.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestConfig10.xml" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

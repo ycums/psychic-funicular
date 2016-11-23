@@ -43,7 +43,7 @@ namespace Pg01.Models
         public static Config LoadDefaultConfigFile()
         {
             var configFilePath = GetConfigFilePath();
-#if !DEBUG
+#if true
             if (!File.Exists(configFilePath))
 #endif
             using (var writer = File.CreateText(configFilePath))

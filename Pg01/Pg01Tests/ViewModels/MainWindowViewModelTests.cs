@@ -1,8 +1,10 @@
 ﻿#region
 
 using System.Windows.Forms;
+using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
+using Pg01.Models.Util;
 using Pg01.ViewModels;
 using Pg01.Views.Behaviors.Util;
 using Pg01Tests.Properties;
@@ -322,6 +324,48 @@ namespace Pg01Tests.ViewModels
 
             vm.BankName.Is("Bank2");
             model.IsMenuVisible.Is(false);
+        }
+
+        [TestMethod]
+        [Description("現在のBankに対応する項目が存在しないときに前のBankの項目名が残ってしまう不具合の修正 #58")]
+        public void NullMenuItemTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig10);
+
+            var model = new Model(config, new DummySendKeyCode());
+            var vm = new MainWindowViewModel(model);
+            vm.Initialize();
+            model.WindowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            vm.ApplicationGroupName.Is("CLIP STUDIO PAINT");
+            vm.BankName.Is("(default)");
+            model.Bank.Entries.Count.Is(4);
+            vm.Buttons.Count.Is(4);
+
+            vm.Buttons[0].Key.Is("NumPad9");
+            vm.Buttons[0].LabelText.Is("前景");
+            vm.Buttons[0].ActionItem.ActionType.Is(ActionType.None);
+            vm.Buttons[0].ActionItem.NextBank.Is("EmptyBank");
+            vm.Buttons[0].Background.ToString()
+                .Is(Util.ConvertFromString<Brush>("#F0F0").ToString());
+
+            model.ProcAction(vm.Buttons[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(vm.Buttons[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+
+            vm.BankName.Is("EmptyBank");
+            model.Bank.Entries.Count.Is(0);
+            vm.Buttons.Count.Is(4);
+
+            vm.Buttons[0].Key.Is("NumPad9");
+            vm.Buttons[0].LabelText.Is("");
+            vm.Buttons[0].ActionItem.ActionType.Is(ActionType.None);
+            vm.Buttons[0].ActionItem.ActionValue.Is("");
+            vm.Buttons[0].ActionItem.NextBank.IsNull();
+            vm.Buttons[0].Background.ToString()
+                .Is(Util.DefaultBrush.ToString());
         }
     }
 }

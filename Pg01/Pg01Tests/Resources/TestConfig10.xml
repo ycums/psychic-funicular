@@ -1,0 +1,46 @@
+﻿<?xml version="1.0"?>
+
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Basic>
+    <Title>Sample01</Title>
+    <Buttons>
+      <Button X="0" Y="0" Key="NumPad9" />
+      <Button X="0" Y="1" Key="NumPad6" />
+      <Button X="0" Y="2" Key="NumPad3" />
+      <Button X="0" Y="3" Key="NumPad5" />
+    </Buttons>
+    <WindowLocation X="0" Y="0" />
+    <ButtonsAlignment>Left</ButtonsAlignment>
+  </Basic>
+  <ApplicationGroups>
+    <ApplicationGroup Name="CLIP STUDIO PAINT">
+      <MatchingRoule>
+        <ExeName>ClipStudioPaint.exe</ExeName>
+        <WindowTitlePatterns>
+          <Pattern>*CLIP STUDIO PAINT</Pattern>
+          <Pattern>ショートカット設定</Pattern>
+        </WindowTitlePatterns>
+      </MatchingRoule>
+      <Banks>
+        <Bank Name="">
+          <Entry Trigger="NumPad9" LabelText="前景" BackColor="#F0F0">
+            <ActionItem ActionType="None" ActionValue="" NextBank="EmptyBank" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="透明">
+            <ActionItem ActionType="Send" ActionValue="c" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー">
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="キャンセル">
+            <ActionItem ActionType="System" ActionValue="Cancel" />
+          </Entry>
+        </Bank>
+        <Bank Name="EmptyBank">
+        </Bank>
+      </Banks>
+      <Menus>
+      </Menus>
+    </ApplicationGroup>
+  </ApplicationGroups>
+</Config>

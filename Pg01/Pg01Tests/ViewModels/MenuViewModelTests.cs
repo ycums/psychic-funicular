@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pg01.Models;
+using Pg01.Models.Util;
 using Pg01.ViewModels;
 
 namespace Pg01Tests.ViewModels
@@ -71,5 +73,6 @@ namespace Pg01Tests.ViewModels
             vm.X.Is(expectedX);
             vm.Y.Is(expectedY);
         }
+
     }
 }

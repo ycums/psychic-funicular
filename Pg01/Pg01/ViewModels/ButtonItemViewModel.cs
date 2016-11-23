@@ -8,6 +8,7 @@ using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
 using Pg01.Models;
+using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
 
 #endregion
@@ -23,16 +24,29 @@ namespace Pg01.ViewModels
             var val = _model.Bank.Entries.Find(x => x.Trigger == Key);
 
             Enabled = val != null;
-            if (val != null)
+
+            if (val == null)
             {
-                try
+                val = new Entry
                 {
-                    SetEntry(val);
-                }
-                catch (InvalidOperationException)
-                {
-                    DispatcherHelper.UIDispatcher.BeginInvoke((Action) (() => { SetEntry(val); }));
-                }
+                    Background = Util.DefaultBrush,
+                    LabelText = "",
+                    ActionItem = new ActionItem
+                    {
+                        ActionType = ActionType.None,
+                        ActionValue = ""
+                    }
+                };
+            }
+
+            try
+            {
+                SetEntry(val);
+            }
+            catch (InvalidOperationException)
+            {
+                DispatcherHelper.UIDispatcher.BeginInvoke(
+                    (Action) (() => { SetEntry(val); }));
             }
         }
 
@@ -270,7 +284,9 @@ namespace Pg01.ViewModels
 
         private ViewModelCommand _ButtonCommand;
 
-        public ViewModelCommand ButtonCommand => _ButtonCommand ?? (_ButtonCommand = new ViewModelCommand(Button));
+        public ViewModelCommand ButtonCommand
+            =>
+            _ButtonCommand ?? (_ButtonCommand = new ViewModelCommand(Button));
 
         public void Button()
         {
