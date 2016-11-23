@@ -106,6 +106,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Util\ISendKeyCode.cs" />
     <Compile Include="ViewModels\IButtonItemViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />

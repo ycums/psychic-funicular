@@ -36,12 +36,21 @@ namespace Pg01.ViewModels
             _listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
-                {() => _model.ApplicationGroup, (s, e) => ApplicationGroupName = _model.ApplicationGroup.Name},
+                {
+                    () => _model.ApplicationGroup,
+                    (s, e) =>
+                            ApplicationGroupName = _model.ApplicationGroup.Name
+                },
                 {
                     () => _model.Bank,
-                    (sender, args) => BankName = string.IsNullOrEmpty(_model.Bank.Name) ? "(default)" : _model.Bank.Name
+                    (sender, args) =>
+                        BankName =
+                            string.IsNullOrEmpty(_model.Bank.Name)
+                                ? "(default)"
+                                : _model.Bank.Name
                 },
-                {() => _model.IsMenuVisible, IsMenuVisibleChanged}
+                {() => _model.IsMenuVisible, IsMenuVisibleChanged},
+                {() => _model.Message, MassageChanged}
             };
 
             UpdateBasic(_model, null);
@@ -49,7 +58,23 @@ namespace Pg01.ViewModels
             _model.TimerEnabled = true;
         }
 
-        private void IsMenuVisibleChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private void MassageChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var m = _model.Message;
+            if (m != null)
+            {
+                //// SendWait() から上がってきた Message だと View が反応しない
+                //Messenger.Raise(
+                //    new InformationMessage(
+                //        m.Text, m.Caption, m.Image, "Information"));
+
+                // 上記の代替（暫定）
+                MessageBox.Show(m.Text, m.Caption, MessageBoxButton.OK, m.Image);
+            }
+        }
+
+        private void IsMenuVisibleChanged(object sender,
+            PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
             if (model != null)
@@ -60,7 +85,8 @@ namespace Pg01.ViewModels
                 }
         }
 
-        private void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private void UpdateBasic(object sender,
+            PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
 
@@ -69,12 +95,17 @@ namespace Pg01.ViewModels
                 Title = model.Basic.Title;
                 Buttons =
                     new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                        model.Basic.Buttons.Select(x => new ButtonItemViewModel(model, x)).ToArray());
-                ButtonsContainerHeight = Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
-                ButtonsContainerWidth = Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
+                        model.Basic.Buttons.Select(
+                            x => new ButtonItemViewModel(model, x)).ToArray());
+                ButtonsContainerHeight = 
+                    Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
+                ButtonsContainerWidth = 
+                    Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
                 ButtonsAlignment = model.Basic.ButtonsAlignment;
-                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
-                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X),
+                    SystemParameters.VirtualScreenWidth - Width);
+                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y),
+                    SystemParameters.VirtualScreenHeight - Height);
             }
         }
 
@@ -84,12 +115,14 @@ namespace Pg01.ViewModels
 
         private void CorrectY()
         {
-            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y), SystemParameters.VirtualScreenHeight - Height);
+            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y),
+                SystemParameters.VirtualScreenHeight - Height);
         }
 
         private void CorrectX()
         {
-            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X), SystemParameters.VirtualScreenWidth - Width);
+            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X),
+                SystemParameters.VirtualScreenWidth - Width);
         }
 
         #endregion
@@ -184,7 +217,8 @@ namespace Pg01.ViewModels
             get { return _ButtonsContainerWidth; }
             set
             {
-                if (Math.Abs(_ButtonsContainerWidth - value) < ConstValues.TOLERANCE)
+                if (Math.Abs(_ButtonsContainerWidth - value) <
+                    ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerWidth = value;
                 RaisePropertyChanged();
@@ -202,7 +236,8 @@ namespace Pg01.ViewModels
             get { return _ButtonsContainerHeight; }
             set
             {
-                if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
+                if (Math.Abs(_ButtonsContainerHeight - value) <
+                    ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerHeight = value;
                 RaisePropertyChanged();
@@ -333,7 +368,11 @@ namespace Pg01.ViewModels
         private ListenerCommand<OpeningFileSelectionMessage> _OpenCommand;
 
         public ListenerCommand<OpeningFileSelectionMessage> OpenCommand
-            => _OpenCommand ?? (_OpenCommand = new ListenerCommand<OpeningFileSelectionMessage>(Open, CanOpen));
+            =>
+            _OpenCommand ??
+            (_OpenCommand =
+                new ListenerCommand<OpeningFileSelectionMessage>(Open, CanOpen))
+            ;
 
         public bool CanOpen()
         {
@@ -345,7 +384,8 @@ namespace Pg01.ViewModels
             if (m.Response == null)
                 return;
             if (!_model.LoadFile(m.Response[0]))
-                Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+                Messenger.Raise(new InformationMessage("無効なファイル", "Error",
+                    MessageBoxImage.Error, "Information"));
         }
 
         #endregion
@@ -355,7 +395,9 @@ namespace Pg01.ViewModels
         private ViewModelCommand _ReloadCommand;
 
         public ViewModelCommand ReloadCommand
-            => _ReloadCommand ?? (_ReloadCommand = new ViewModelCommand(Reload, CanReload));
+            =>
+            _ReloadCommand ??
+            (_ReloadCommand = new ViewModelCommand(Reload, CanReload));
 
         public bool CanReload()
         {
@@ -375,7 +417,11 @@ namespace Pg01.ViewModels
         private ListenerCommand<SavingFileSelectionMessage> _SaveCommand;
 
         public ListenerCommand<SavingFileSelectionMessage> SaveCommand
-            => _SaveCommand ?? (_SaveCommand = new ListenerCommand<SavingFileSelectionMessage>(Save, CanSave));
+            =>
+            _SaveCommand ??
+            (_SaveCommand =
+                new ListenerCommand<SavingFileSelectionMessage>(Save, CanSave))
+            ;
 
         public bool CanSave()
         {
@@ -387,7 +433,8 @@ namespace Pg01.ViewModels
             if (parameter.Response == null)
                 return;
             if (!_model.SaveFile(parameter.Response[0]))
-                Messenger.Raise(new InformationMessage("無効なファイル", "Error", MessageBoxImage.Error, "Info"));
+                Messenger.Raise(new InformationMessage("無効なファイル", "Error",
+                    MessageBoxImage.Error, "Info"));
         }
 
         #endregion
@@ -396,11 +443,13 @@ namespace Pg01.ViewModels
 
         private ViewModelCommand _CloseCommand;
 
-        public ViewModelCommand CloseCommand => _CloseCommand ?? (_CloseCommand = new ViewModelCommand(Close));
+        public ViewModelCommand CloseCommand
+            => _CloseCommand ?? (_CloseCommand = new ViewModelCommand(Close));
 
         public void Close()
         {
-            Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction"));
+            Messenger.Raise(new WindowActionMessage(WindowAction.Close,
+                "WindowAction"));
         }
 
         #endregion

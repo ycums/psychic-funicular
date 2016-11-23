@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Timers;
+using System.Windows;
 using JetBrains.Annotations;
 using Livet;
 using Pg01.Models.Util;
@@ -55,7 +56,9 @@ namespace Pg01.Models
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Message =
+                    new Message(
+                        "File Loading Error", MessageBoxImage.Error, ex.Message);
                 return false;
             }
             return true;
@@ -127,9 +130,10 @@ namespace Pg01.Models
                             _keySending++;
                             _skc.SendWait(result.ActionValue);
                         }
-                        catch (ArgumentException aex)
+                        catch (Exception ex)
                         {
-                            Message = aex.Message;
+                            Message = new Message("Command Error",
+                                MessageBoxImage.Error, ex.Message);
                         }
                         finally
                         {
@@ -319,9 +323,9 @@ namespace Pg01.Models
 
         #region Message変更通知プロパティ
 
-        private string _Message;
+        private Message _Message;
 
-        public string Message
+        public Message Message
         {
             get { return _Message; }
             set
