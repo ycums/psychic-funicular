@@ -41,12 +41,12 @@ namespace Pg01.ViewModels
 
             try
             {
-                SetEntry(val);
-            }
-            catch (InvalidOperationException)
-            {
                 DispatcherHelper.UIDispatcher.BeginInvoke(
                     (Action) (() => { SetEntry(val); }));
+            }
+            catch (Exception)
+            {
+                SetEntry(val);
             }
         }
 

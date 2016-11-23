@@ -381,7 +381,7 @@ namespace Pg01.Models
             set
             {
                 if ((_WindowInfo.ExeName == value.ExeName) &&
-                    (_WindowInfo.ExeName == value.ExeName)) return;
+                    (_WindowInfo.WindowText == value.WindowText)) return;
                 _WindowInfo = value;
                 Debug.WriteLine(
                     $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
