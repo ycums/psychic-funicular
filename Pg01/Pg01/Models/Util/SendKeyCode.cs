@@ -30,7 +30,17 @@ namespace Pg01.Models.Util
             {"{F21}", Keys.F21},
             {"{F22}", Keys.F22},
             {"{F23}", Keys.F23},
-            {"{F24}", Keys.F24}
+            {"{F24}", Keys.F24},
+            {"{NumPad0}", Keys.NumPad0},
+            {"{NumPad1}", Keys.NumPad1},
+            {"{NumPad2}", Keys.NumPad2},
+            {"{NumPad3}", Keys.NumPad3},
+            {"{NumPad4}", Keys.NumPad4},
+            {"{NumPad5}", Keys.NumPad5},
+            {"{NumPad6}", Keys.NumPad6},
+            {"{NumPad7}", Keys.NumPad7},
+            {"{NumPad8}", Keys.NumPad8},
+            {"{NumPad9}", Keys.NumPad9},
         };
 
         private readonly Dictionary<string, byte> _dicVk = new Dictionary<string, byte>
@@ -48,7 +58,17 @@ namespace Pg01.Models.Util
             "{F21}",
             "{F22}",
             "{F23}",
-            "{F24}"
+            "{F24}",
+            "{NumPad0}",
+            "{NumPad1}",
+            "{NumPad2}",
+            "{NumPad3}",
+            "{NumPad4}",
+            "{NumPad5}",
+            "{NumPad6}",
+            "{NumPad7}",
+            "{NumPad8}",
+            "{NumPad9}",
         };
 
         #endregion
