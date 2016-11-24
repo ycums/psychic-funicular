@@ -1,0 +1,212 @@
+﻿<?xml version="1.0"?>
+
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Basic>
+    <Title>Sample12XXXXXXXX</Title>
+    <Buttons>
+      <Button X="0" Y="0" Key="NumPad9" />
+      <Button X="0" Y="1" Key="NumPad6" />
+      <Button X="0" Y="2" Key="NumPad3" />
+      <Button X="0" Y="3" Key="NumPad5" />
+    </Buttons>
+    <WindowLocation X="0" Y="0" />
+    <ButtonsAlignment>Left</ButtonsAlignment>
+  </Basic>
+  <ApplicationGroups>
+    <ApplicationGroup Name="CLIP STUDIO PAINT">
+      <MatchingRoule>
+        <ExeName>ClipStudioPaint.exe</ExeName>
+        <WindowTitlePatterns>
+          <Pattern>*CLIP STUDIO PAINT</Pattern>
+          <Pattern>ショートカット設定</Pattern>
+        </WindowTitlePatterns>
+      </MatchingRoule>
+      <Banks>
+        <Bank Name="">
+          <Entry Trigger="NumPad9" LabelText="前景" >
+            <ActionItem ActionType="Send" ActionValue="d" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="透明" >
+            <ActionItem ActionType="Send" ActionValue="c" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" >
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="再読み込み" >
+            <ActionItem ActionType="System" ActionValue="ReloadConfig" />
+          </Entry>
+        </Bank>
+        <Bank Name="Selection">
+          <Entry Trigger="NumPad9" LabelText="Enter" BackColor="#F0FF">
+            <ActionItem ActionType="Send" ActionValue="{Enter}" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="Esc" BackColor="#F0FF">
+            <ActionItem ActionType="Send" ActionValue="{Escape}" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" >
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="キャンセル" >
+            <ActionItem ActionType="System" ActionValue="Cancel" />
+          </Entry>
+        </Bank>
+        <Bank Name="Dialog">
+          <Entry Trigger="NumPad9" LabelText="Enter" BackColor="#F0FF">
+            <ActionItem ActionType="Send" ActionValue="{Enter}" NextBank="" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="Esc" BackColor="#F0FF">
+            <ActionItem ActionType="Send" ActionValue="{Escape}" NextBank="" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" >
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="キャンセル" >
+            <ActionItem ActionType="System" ActionValue="Cancel" />
+          </Entry>
+        </Bank>
+        <Bank Name="BlushSize">
+          <Entry Trigger="NumPad9" LabelText="👆" BackColor="#FFFF">
+            <ActionItem ActionType="Send" ActionValue="5" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="👇" BackColor="#FFFF">
+            <ActionItem ActionType="Send" ActionValue="3" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" >
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="キャンセル" >
+            <ActionItem ActionType="System" ActionValue="Cancel" />
+          </Entry>
+        </Bank>
+        <Bank Name="UndoRedo">
+          <Entry Trigger="NumPad9" LabelText="Redo" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="^y" />
+          </Entry>
+          <Entry Trigger="NumPad6" LabelText="Undo" BackColor="#FAAA">
+            <ActionItem ActionType="Send" ActionValue="^z" />
+          </Entry>
+          <Entry Trigger="NumPad3" LabelText="メニュー" >
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
+          </Entry>
+          <Entry Trigger="NumPad5" LabelText="キャンセル" >
+            <ActionItem ActionType="System" ActionValue="Cancel" />
+          </Entry>
+        </Bank>
+      </Banks>
+
+      <Menus>
+        <Menu Name="menu01">
+          <MenuItem X="-3" Y="-2" LabelText="0%" BackColor="#F888">
+            <ActionItem ActionType="Send" ActionValue="^{F1}" />
+          </MenuItem>
+          <MenuItem X="-2" Y="-2" LabelText="25%" BackColor="#F888">
+            <ActionItem ActionType="Send" ActionValue="^{F2}" />
+          </MenuItem>
+          <MenuItem X="-1" Y="-2" LabelText="50%" BackColor="#F888">
+            <ActionItem ActionType="Send" ActionValue="^{F3}" />
+          </MenuItem>
+          <MenuItem X="0" Y="-2" LabelText="75%" BackColor="#F888">
+            <ActionItem ActionType="Send" ActionValue="^{F4}" />
+          </MenuItem>
+          <MenuItem X="1" Y="-2" LabelText="100%" BackColor="#F888">
+            <ActionItem ActionType="Send" ActionValue="^{F5}" />
+          </MenuItem>
+          <MenuItem X="2" Y="-2" LabelText="新規レイヤー" BackColor="#FF88">
+            <ActionItem ActionType="Send" ActionValue="^N" />
+          </MenuItem>
+          <MenuItem X="3" Y="-2" LabelText="グループ化" BackColor="#F88F">
+            <ActionItem ActionType="Send"  ActionValue="^g"/>
+          </MenuItem>
+
+          <MenuItem X="-3" Y="-1" LabelText="レベル補正" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="^{F6}" NextBank="Dialog" />
+          </MenuItem>
+          <MenuItem X="-2" Y="-1" LabelText="ｺﾝﾄﾗｽﾄ" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="^{F7}" NextBank="Dialog" />
+          </MenuItem>
+          <MenuItem X="-1" Y="-1" LabelText="彩度" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="^u" NextBank="Dialog" />
+          </MenuItem>
+          <MenuItem X="0" Y="-1" LabelText="移動" BackColor="#F6F6">
+            <ActionItem ActionType="Send" ActionValue="m" />
+          </MenuItem>
+          <MenuItem X="1" Y="-1" LabelText=".png" BackColor="#F666">
+            <ActionItem ActionType="Key" ActionValue="{VK_100}" />
+          </MenuItem>
+          <MenuItem X="2" Y="-1" LabelText=".jpg" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="{VK_96}"/>
+          </MenuItem>
+          <MenuItem X="3" Y="-1" LabelText="保存" BackColor="#F666">
+            <ActionItem ActionType="Send" ActionValue="^s" />
+          </MenuItem>
+
+          <MenuItem X="3" Y="0" LabelText="No ActionItem">
+          </MenuItem>
+          <MenuItem X="2" Y="0" LabelText="Undo / Redo">
+            <ActionItem ActionType="None" ActionValue="" NextBank="UndoRedo" />
+          </MenuItem>
+          <MenuItem X="1" Y="0" LabelText="ブラシサイズ" BackColor="white">
+            <ActionItem ActionType="None" ActionValue="" NextBank="BlushSize" />
+          </MenuItem>
+          <MenuItem X="0" Y="0" LabelText="閉じる" BackColor="#FF0000FF">
+            <ActionItem ActionType="None" />
+          </MenuItem>
+          <MenuItem X="-1" Y="0" LabelText="多角形">
+            <ActionItem ActionType="Send" ActionValue="g" NextBank="Selection" />
+          </MenuItem>
+          <MenuItem X="-2" Y="0" LabelText="色選択">
+            <ActionItem ActionType="Send" ActionValue="u" NextBank="Selection" />
+          </MenuItem>
+          <MenuItem X="-3" Y="0" LabelText="投げ輪">
+            <ActionItem ActionType="Send" ActionValue="f" />
+          </MenuItem>
+
+          <MenuItem X="3" Y="1" LabelText="▲">
+            <ActionItem ActionType="Send" ActionValue="{F17}" />
+          </MenuItem>
+          <MenuItem X="2" Y="1" LabelText="■">
+            <ActionItem ActionType="Send" ActionValue="{F16}" />
+          </MenuItem>
+          <MenuItem X="1" Y="1" LabelText="筆圧">
+            <ActionItem ActionType="Send" ActionValue="a" />
+          </MenuItem>
+          <MenuItem X="0" Y="1" LabelText="中間">
+            <ActionItem ActionType="Send" ActionValue="{F15}" />
+          </MenuItem>
+          <MenuItem X="-1" Y="1" LabelText="ぼけ">
+            <ActionItem ActionType="Send" ActionValue="l" />
+          </MenuItem>
+          <MenuItem X="-2" Y="1" LabelText="水彩">
+            <ActionItem ActionType="Send" ActionValue="{F22}" />
+          </MenuItem>
+          <MenuItem X="-3" Y="1" LabelText="コンセプト">
+            <ActionItem ActionType="Send" ActionValue="{F23}" />
+          </MenuItem>
+
+          <MenuItem X="3" Y="2" LabelText="ペン入れ">
+            <ActionItem ActionType="Send" ActionValue="{F24}" />
+          </MenuItem>
+          <MenuItem X="2" Y="2" LabelText="区切り線">
+            <ActionItem ActionType="Send" ActionValue="." />
+          </MenuItem>
+          <MenuItem X="1" Y="2" LabelText="直線">
+            <ActionItem ActionType="Send" ActionValue="," />
+          </MenuItem>
+          <MenuItem X="0" Y="2" LabelText="グラデーション">
+            <ActionItem ActionType="Send" ActionValue="{F5}" />
+          </MenuItem>
+          <MenuItem X="-1" Y="2" LabelText="選択">
+            <ActionItem ActionType="Send" ActionValue="f" />
+          </MenuItem>
+          <MenuItem X="-2" Y="2" LabelText="塗り">
+            <ActionItem ActionType="Send" ActionValue="{F12}" />
+          </MenuItem>
+          <MenuItem X="-3" Y="2" LabelText="移動">
+            <ActionItem ActionType="Send" ActionValue="m" />
+          </MenuItem>
+
+        </Menu>
+      </Menus>
+    </ApplicationGroup>
+  </ApplicationGroups>
+</Config>

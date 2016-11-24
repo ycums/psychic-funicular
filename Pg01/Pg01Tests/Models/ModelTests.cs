@@ -98,7 +98,7 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name = "CLIP STUDIO PAINT";
             model.Bank.IsNotNull();
             model.Bank.Name.Is("");
-            model.Bank.Entries.Count.Is(4);
+            model.Bank.Entries.Count.Is(10);
 
             model.IsMenuVisible.IsFalse();
         }
@@ -263,6 +263,71 @@ namespace Pg01Tests.Models
 
             model.IsMenuVisible.Is(false);
             model.Bank.Name.Is("");
+        }
+
+        [TestMethod]
+        [Description("システムコマンド「ファイルの再読み込み」を追加 #74")]
+        public void SystemCommandReloadConfigTest()
+        {
+            var configB = ConfigUtil.Deserialize(Resources.TestConfig12);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+
+            var model = new Model();
+            var defaultConfigTitle = model.Basic.Title;
+            var configBTitle = "Sample12XXXXXXXX";
+
+            // 念のため確認
+            defaultConfigTitle.IsNot(configBTitle);
+
+            model.Config = configB;
+            model.Basic.Title.Is(configBTitle);
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(4);
+            model.Bank.Entries[3].LabelText.Is("再読み込み");
+            model.Bank.Entries[3].Trigger.Is("NumPad5");
+            model.Bank.Entries[3].ActionItem.ActionType.Is(ActionType.System);
+            model.Bank.Entries[3].ActionItem.ActionValue.Is("ReloadConfig");
+
+            // Entry ボタンプレス時
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(
+                model.Bank.Entries[3].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+
+            // デフォルトの config.xml が読み込まれていればOK
+            model.Basic.Title.Is(defaultConfigTitle);
+
+            // 再度 configB を読み込み
+            model.Config = configB;
+            model.Basic.Title.Is(configBTitle);
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(4);
+            model.Bank.Entries[3].LabelText.Is("再読み込み");
+            model.Bank.Entries[3].Trigger.Is("NumPad5");
+            model.Bank.Entries[3].ActionItem.ActionType.Is(ActionType.System);
+            model.Bank.Entries[3].ActionItem.ActionValue.Is("ReloadConfig");
+
+            // Entry キープレス時
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.NumPad5
+            };
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+
+            // デフォルトの config.xml が読み込まれていればOK
+            model.Basic.Title.Is(defaultConfigTitle);
         }
     }
 }

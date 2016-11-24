@@ -12,5 +12,7 @@ namespace Pg01.Models
         public const double ButtonHeight = 40;
         public const double TOLERANCE = 0.0001;
 
+        public const string SystemCommandCancel = "Cancel";
+        public const string SystemCommandReloadConfig = "ReloadConfig";
     }
 }

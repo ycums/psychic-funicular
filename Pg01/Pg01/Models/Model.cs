@@ -147,13 +147,16 @@ namespace Pg01.Models
                 case ActionType.System:
                     switch (result.ActionValue)
                     {
-                        case "Cancel":
+                        case ConstValues.SystemCommandCancel:
                             if (IsMenuVisible)
                                 IsMenuVisible = false;
                             else
                             {
                                 LoadBank(_ApplicationGroup, "");
                             }
+                            return;
+                        case ConstValues.SystemCommandReloadConfig:
+                            LoadFile(ConfigUtil.GetConfigFilePath());
                             return;
                     }
                     break;
@@ -176,7 +179,8 @@ namespace Pg01.Models
             ApplicationGroups = config.ApplicationGroups;
         }
 
-        private void LoadMenu(ApplicationGroup applicationGroup,
+        private void LoadMenu(
+            ApplicationGroup applicationGroup,
             string menuName)
         {
             if (menuName == null)
@@ -184,7 +188,8 @@ namespace Pg01.Models
             Menu = applicationGroup.Menus.Find(x => x.Name == menuName);
         }
 
-        private void LoadBank(ApplicationGroup applicationGroup,
+        private void LoadBank(
+            ApplicationGroup applicationGroup,
             string bankName)
         {
             if (bankName == null) return;
