@@ -115,10 +115,12 @@
     <Compile Include="Views\Behaviors\KeyboardHookBehavior.cs" />
     <Compile Include="Views\Behaviors\NonActiveWindowBehavior.cs" />
     <Compile Include="Models\Util\ForegroundWidowInfo.cs" />
+    <Compile Include="Views\Behaviors\OnMouseBehavior.cs" />
     <Compile Include="Views\Behaviors\Util\NativeMethods.cs" />
     <Compile Include="Views\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisibilityToOpacityConverter.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -33,6 +33,9 @@ namespace Pg01.Models
             Config = config;
             _timer = new Timer(100);
             _timer.Elapsed += _timer_Elapsed;
+
+            OnMouse = false;
+            AutoHide = true;
         }
 
         #endregion
@@ -227,6 +230,12 @@ namespace Pg01.Models
                 };
         }
 
+        private void UpdateMainWindowVisibility()
+        {
+            MainWindowVisibility = _OnMouse && _autoHide
+                ? Visibility.Hidden
+                : Visibility.Visible;
+        }
         #endregion
 
         #region Properties
@@ -383,6 +392,8 @@ namespace Pg01.Models
         #region WindowInfo変更通知プロパティ
 
         private WindowInfo _WindowInfo;
+        private Visibility _mainWindowVisibility;
+        private bool _autoHide;
 
         public WindowInfo WindowInfo
         {
@@ -411,6 +422,48 @@ namespace Pg01.Models
                 if (_timer.Enabled == value)
                     return;
                 _timer.Enabled = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        public Visibility MainWindowVisibility
+        {
+            get { return _mainWindowVisibility; }
+            set
+            {
+                if (_mainWindowVisibility == value) return;
+                _mainWindowVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool AutoHide
+        {
+            get { return _autoHide; }
+            set
+            {
+                if (_autoHide == value) return;
+                _autoHide = value;
+                UpdateMainWindowVisibility();
+                RaisePropertyChanged();
+            }
+        }
+
+        #region OnMouse変更通知プロパティ
+
+        private bool _OnMouse;
+
+        public bool OnMouse
+        {
+            get { return _OnMouse; }
+            set
+            {
+                if (_OnMouse == value)
+                    return;
+                _OnMouse = value;
+                UpdateMainWindowVisibility();
                 RaisePropertyChanged();
             }
         }

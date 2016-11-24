@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.IO;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -329,5 +330,39 @@ namespace Pg01Tests.Models
             // デフォルトの config.xml が読み込まれていればOK
             model.Basic.Title.Is(defaultConfigTitle);
         }
+
+        [TestMethod]
+        [Description("マウスオーバーでの自動非表示機能を追加する #49")]
+        public void AutoHideTest01()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig12);
+            var model = new Model(config, new DummySendKeyCode());
+
+            // 初期化チェック
+            model.AutoHide.Is(true); 
+            model.MainWindowVisibility.Is(Visibility.Visible);
+
+            // マウスカーソルが入った
+            model.OnMouse = true;
+            model.MainWindowVisibility.Is(Visibility.Hidden);
+
+            model.OnMouse = false;
+            model.MainWindowVisibility.Is(Visibility.Visible);
+
+            model.OnMouse = true;
+            model.MainWindowVisibility.Is(Visibility.Hidden);
+
+            // OnMouse==true の時に AutoHide が false になったら 
+            // MainWindowVisibility==Visible にならなければならない
+            model.AutoHide = false;
+            model.MainWindowVisibility.Is(Visibility.Visible);
+
+            model.AutoHide = true;
+            model.MainWindowVisibility.Is(Visibility.Hidden);
+
+            model.OnMouse = false;
+            model.MainWindowVisibility.Is(Visibility.Visible);
+        }
+
     }
 }

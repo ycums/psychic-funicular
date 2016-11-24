@@ -15,12 +15,14 @@
         WindowStyle="None"
         AllowsTransparency="true"
         Topmost="True"
-        Title="Pg01" Opacity="0.5">
+        Title="Pg01" Opacity="{Binding MainWindowVisibility, Converter={StaticResource VisibilityToOpacityConverter}}"
+        >
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <i:Interaction.Behaviors>
         <behaviors:KeyboardHookBehavior Event="{Binding Event, Mode=OneWayToSource}" />
+        <behaviors:OnMouseBehavior OnMouse="{Binding OnMouse, Mode=OneWayToSource}" />
         <behaviors:NonActiveWindowBehavior />
     </i:Interaction.Behaviors>
 
@@ -42,7 +44,6 @@
         </i:EventTrigger>
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
-
         <l:InteractionMessageTrigger  MessageKey="Information" Messenger="{Binding Messenger}">
             <l:InformationDialogInteractionMessageAction />
         </l:InteractionMessageTrigger>

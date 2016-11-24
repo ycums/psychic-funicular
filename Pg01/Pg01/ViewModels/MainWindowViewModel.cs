@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
@@ -50,7 +51,11 @@ namespace Pg01.ViewModels
                                 : _model.Bank.Name
                 },
                 {() => _model.IsMenuVisible, IsMenuVisibleChanged},
-                {() => _model.Message, MassageChanged}
+                {() => _model.Message, MassageChanged},
+                {
+                    () => _model.MainWindowVisibility,
+                    (s, e) => MainWindowVisibility = _model.MainWindowVisibility
+                }
             };
 
             UpdateBasic(_model, null);
@@ -97,9 +102,9 @@ namespace Pg01.ViewModels
                     new ObservableSynchronizedCollection<ButtonItemViewModel>(
                         model.Basic.Buttons.Select(
                             x => new ButtonItemViewModel(model, x)).ToArray());
-                ButtonsContainerHeight = 
+                ButtonsContainerHeight =
                     Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
-                ButtonsContainerWidth = 
+                ButtonsContainerWidth =
                     Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
                 ButtonsAlignment = model.Basic.ButtonsAlignment;
                 X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X),
@@ -359,6 +364,45 @@ namespace Pg01.ViewModels
 
         #endregion
 
+        #region Visibility変更通知プロパティ
+
+        private Visibility _mainWindowVisibility;
+
+        public Visibility MainWindowVisibility
+        {
+            get { return _mainWindowVisibility; }
+            set
+            {
+                if (_mainWindowVisibility == value)
+                    return;
+                _mainWindowVisibility = value;
+                Debug.WriteLine(value);
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region OnMouse変更通知プロパティ
+
+        private bool _OnMouse;
+
+        public bool OnMouse
+        {
+            get { return _OnMouse; }
+            set
+            {
+                if (_OnMouse == value)
+                    return;
+                _OnMouse = value;
+                Debug.WriteLine(value);
+                _model.OnMouse = _OnMouse;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -445,6 +489,8 @@ namespace Pg01.ViewModels
 
         public ViewModelCommand CloseCommand
             => _CloseCommand ?? (_CloseCommand = new ViewModelCommand(Close));
+
+
 
         public void Close()
         {
