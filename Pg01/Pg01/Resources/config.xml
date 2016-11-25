@@ -221,72 +221,72 @@
 
         <Bank Name="Selection">
           <Entry Trigger="NumPad9" LabelText="Enter" BackColor="#F0FF">
-            <ActionItem ActionType="Send" ActionValue="{Enter}" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="{Enter}" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="Esc" BackColor="#F0FF">
-            <ActionItem ActionType="Send" ActionValue="{Escape}" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="{Escape}" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="キャンセル">
-            <ActionItem ActionType="System" ActionValue="Cancel" NextBank="" />
+            <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
           <Entry Trigger="NumPad5" LabelText="メニュー">
-            <ActionItem ActionType="Menu" ActionValue="menu01" NextBank="" />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
         <Bank Name="Dialog">
           <Entry Trigger="NumPad9" LabelText="Enter" BackColor="#F0FF">
-            <ActionItem ActionType="Send" ActionValue="{Enter}" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="{Enter}" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="Esc" BackColor="#F0FF">
-            <ActionItem ActionType="Send" ActionValue="{Escape}" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="{Escape}" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="キャンセル">
-            <ActionItem ActionType="System" ActionValue="Cancel" NextBank="" />
+            <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
           <Entry Trigger="NumPad5" LabelText="メニュー">
-            <ActionItem ActionType="Menu" ActionValue="menu01" NextBank="" />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
         <Bank Name="BlushSize">
           <Entry Trigger="NumPad9" LabelText="👆" BackColor="#FFFF">
-            <ActionItem ActionType="Send" ActionValue="5" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="5" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="👇" BackColor="#FFFF">
-            <ActionItem ActionType="Send" ActionValue="3" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="3" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="キャンセル">
-            <ActionItem ActionType="System" ActionValue="Cancel" NextBank="" />
+            <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
           <Entry Trigger="NumPad5" LabelText="メニュー">
-            <ActionItem ActionType="Menu" ActionValue="menu01" NextBank="" />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
         <Bank Name="UndoRedo">
           <Entry Trigger="NumPad9" LabelText="Redo" BackColor="#F666">
-            <ActionItem ActionType="Send" ActionValue="^y" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="^y" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="Undo" BackColor="#FAAA">
-            <ActionItem ActionType="Send" ActionValue="^z" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="^z" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="キャンセル">
-            <ActionItem ActionType="System" ActionValue="Cancel" NextBank="" />
+            <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
           <Entry Trigger="NumPad5" LabelText="メニュー">
-            <ActionItem ActionType="Menu" ActionValue="menu01" NextBank="" />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
         <Bank Name="表示倍率">
           <Entry Trigger="NumPad9" LabelText="拡大" BackColor="#F666">
-            <ActionItem ActionType="Send" ActionValue="2" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="2" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="縮小" BackColor="#FAAA">
-            <ActionItem ActionType="Send" ActionValue="@" NextBank="" />
+            <ActionItem ActionType="Send" ActionValue="@" />
           </Entry>
           <Entry Trigger="NumPad3" LabelText="キャンセル">
-            <ActionItem ActionType="System" ActionValue="Cancel" NextBank="" />
+            <ActionItem ActionType="System" ActionValue="Cancel" />
           </Entry>
           <Entry Trigger="NumPad5" LabelText="メニュー">
-            <ActionItem ActionType="Menu" ActionValue="menu01" NextBank="" />
+            <ActionItem ActionType="Menu" ActionValue="menu01" />
           </Entry>
         </Bank>
       </Banks>
@@ -380,7 +380,7 @@
           </MenuItem>
 
           <MenuItem X="-4" Y="1" LabelText="B01" BackColor="#F33F">
-            <ActionItem ActionType="Send" ActionValue="w" NextBank=" q" />
+            <ActionItem ActionType="Send" ActionValue="w" NextBank="" />
           </MenuItem>
           <MenuItem X="-3" Y="1" LabelText="コンセプト">
             <ActionItem ActionType="Send" ActionValue="{F23}" NextBank="" />
