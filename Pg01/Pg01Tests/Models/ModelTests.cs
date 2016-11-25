@@ -332,6 +332,55 @@ namespace Pg01Tests.Models
         }
 
         [TestMethod]
+        [Description("自動非表示機能の有効・無効の切り替え #78")]
+        public void SystemCommandToggleAutoHideTest()
+        {
+            
+            var configB = ConfigUtil.Deserialize(Resources.TestConfig12);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+
+            var model = new Model(configB, new DummySendKeyCode());
+            var configBTitle = "Sample12XXXXXXXX";
+
+             model.AutoHide.Is(true);
+            model.Basic.Title.Is(configBTitle);
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(4);
+            model.Bank.Entries[0].LabelText.Is("自動非表示切り替え");
+            model.Bank.Entries[0].Trigger.Is("NumPad9");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.System);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is(ConstValues.SystemCommandToggleAutoHide);
+
+            // Entry ボタンプレス時
+            model.ProcAction(
+                model.Bank.Entries[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(
+                model.Bank.Entries[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Up);
+
+            model.AutoHide.Is(false);
+
+            // Entry キープレス時
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.NumPad9
+            };
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+            model.SetEvent(
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+
+            model.AutoHide.Is(true);
+
+        }
+
+        [TestMethod]
         [Description("マウスオーバーでの自動非表示機能を追加する #49")]
         public void AutoHideTest01()
         {

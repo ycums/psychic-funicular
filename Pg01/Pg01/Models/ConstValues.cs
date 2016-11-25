@@ -14,5 +14,6 @@ namespace Pg01.Models
 
         public const string SystemCommandCancel = "Cancel";
         public const string SystemCommandReloadConfig = "ReloadConfig";
+        public const string SystemCommandToggleAutoHide = "ToggleAutoHide";
     }
 }

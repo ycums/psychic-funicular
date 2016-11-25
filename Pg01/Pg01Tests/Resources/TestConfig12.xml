@@ -23,8 +23,8 @@
       </MatchingRoule>
       <Banks>
         <Bank Name="">
-          <Entry Trigger="NumPad9" LabelText="前景" >
-            <ActionItem ActionType="Send" ActionValue="d" />
+          <Entry Trigger="NumPad9" LabelText="自動非表示切り替え" >
+            <ActionItem ActionType="System" ActionValue="ToggleAutoHide" />
           </Entry>
           <Entry Trigger="NumPad6" LabelText="透明" >
             <ActionItem ActionType="Send" ActionValue="c" />

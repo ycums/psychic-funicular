@@ -157,10 +157,13 @@ namespace Pg01.Models
                             {
                                 LoadBank(_ApplicationGroup, "");
                             }
-                            return;
+                            break;
                         case ConstValues.SystemCommandReloadConfig:
                             LoadFile(ConfigUtil.GetConfigFilePath());
-                            return;
+                            break;
+                        case ConstValues.SystemCommandToggleAutoHide:
+                            AutoHide = !AutoHide;
+                            break;
                     }
                     break;
             }
