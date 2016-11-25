@@ -43,12 +43,14 @@ namespace Pg01.Models
         public static Config LoadDefaultConfigFile()
         {
             var configFilePath = GetConfigFilePath();
+#if true
             if (!File.Exists(configFilePath))
-                using (var writer = File.CreateText(configFilePath))
-                {
-                    writer.Write(Resources.config);
-                    writer.Flush();
-                }
+#endif
+            using (var writer = File.CreateText(configFilePath))
+            {
+                writer.Write(Resources.config);
+                writer.Flush();
+            }
             return LoadConfigFile(configFilePath);
         }
 
@@ -63,9 +65,9 @@ namespace Pg01.Models
             return config;
         }
 
-        #endregion
+#endregion
 
-        #region public static functions
+#region public static functions
 
         public static void Serialize(Config ags, Stream fs)
         {
@@ -91,6 +93,6 @@ namespace Pg01.Models
             return (Config) serializer.Deserialize(reader);
         }
 
-        #endregion
+#endregion
     }
 }

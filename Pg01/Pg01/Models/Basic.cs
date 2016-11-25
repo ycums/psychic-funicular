@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Xml.Serialization;
 using Livet;
 
@@ -18,6 +19,6 @@ namespace Pg01.Models
         public Location WindowLocation { get; set; }
 
         [XmlElement]
-        public string ResetKey { get; set; }
+        public HorizontalAlignment ButtonsAlignment { get; set; }
     }
 }

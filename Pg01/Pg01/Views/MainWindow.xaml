@@ -15,12 +15,14 @@
         WindowStyle="None"
         AllowsTransparency="true"
         Topmost="True"
-        Title="Pg01" Opacity="0.5">
+        Title="Pg01" Opacity="{Binding MainWindowVisibility, Converter={StaticResource VisibilityToOpacityConverter}}"
+        >
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <i:Interaction.Behaviors>
         <behaviors:KeyboardHookBehavior Event="{Binding Event, Mode=OneWayToSource}" />
+        <behaviors:OnMouseBehavior OnMouse="{Binding OnMouse, Mode=OneWayToSource}" />
         <behaviors:NonActiveWindowBehavior />
     </i:Interaction.Behaviors>
 
@@ -42,8 +44,7 @@
         </i:EventTrigger>
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
-
-        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Info">
+        <l:InteractionMessageTrigger  MessageKey="Information" Messenger="{Binding Messenger}">
             <l:InformationDialogInteractionMessageAction />
         </l:InteractionMessageTrigger>
 
@@ -67,32 +68,19 @@
             <Border BorderBrush="#7F000000" BorderThickness="1">
                 <TextBlock Text="{Binding BankName}" Background="White" />
             </Border>
-            <Button Content="開く(_O)" IsEnabled="{Binding OpenCommand.CanExecute}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <l:OpenFileDialogInteractionMessageAction>
-                            <l:DirectInteractionMessage CallbackCommand="{Binding OpenCommand}">
-                                <l:OpeningFileSelectionMessage Filter="設定ファイル(*.xml)|*.xml" Title="ファイルを開く"
-                                                               MultiSelect="False" />
-                            </l:DirectInteractionMessage>
-                        </l:OpenFileDialogInteractionMessageAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-            <Button Content="再読み込み(_R)" IsEnabled="{Binding ReloadCommand.CanExecute}" Command="{Binding ReloadCommand}"/>
-            <Button Content="保存 (_S)" IsEnabled="{Binding SaveCommand.CanExecute}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <l:SaveFileDialogInteractionMessageAction>
-                            <l:DirectInteractionMessage CallbackCommand="{Binding SaveCommand}">
-                                <l:SavingFileSelectionMessage Filter="設定ファイル(*.xml)|*.xml" Title="ファイルを開く" />
-                            </l:DirectInteractionMessage>
-                        </l:SaveFileDialogInteractionMessageAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" Height="{Binding ButtonsContainerHeight}"
-                          Width="{Binding ButtonsContainerWidth}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="再読み込み(_R)" IsEnabled="{Binding ReloadCommand.CanExecute}"
+                        Command="{Binding ReloadCommand}" />
+                <Button Grid.Column="1" Content="閉じる (_C)" Command="{Binding CloseCommand}" />
+            </Grid>
+            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" 
+                          Height="{Binding ButtonsContainerHeight}"
+                          Width="{Binding ButtonsContainerWidth}" 
+                          HorizontalAlignment="{Binding ButtonsAlignment}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas />
@@ -108,15 +96,16 @@
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding LabelText}"
-                                IsEnabled="{Binding Enabled}"
-                                Foreground="{Binding Foreground}"
-                                Background="{Binding Background}"
-                                Command="{Binding ButtonCommand}" />
+                        <Button
+                            IsEnabled="{Binding Enabled}"
+                            Foreground="{Binding Foreground}"
+                            Background="{Binding Background}"
+                            Command="{Binding ButtonCommand}">
+                            <TextBlock Text="{Binding LabelText}" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="閉じる (_C)" Command="{Binding CloseCommand}" Style="{DynamicResource ButtonStyle1}" />
         </StackPanel>
     </Grid>
 </Window>

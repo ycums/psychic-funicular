@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 using Pg01.Views.Behaviors.Util;
 
@@ -14,42 +13,65 @@ namespace Pg01.Models.Util
     {
         #region Tables
 
-        private readonly Dictionary<string, Keys> _dicKeys = new Dictionary<string, Keys>
-        {
-            {" ", Keys.Space},
-            {"{UP}", Keys.Up},
-            {"{DOWN}", Keys.Down},
-            {"{LEFT}", Keys.Left},
-            {"{RIGHT}", Keys.Right},
-            {"{ENTER}", Keys.Enter},
-            {"{F16}", Keys.F16},
-            {"{F17}", Keys.F17},
-            {"{F18}", Keys.F18},
-            {"{F19}", Keys.F19},
-            {"{F20}", Keys.F20},
-            {"{F21}", Keys.F21},
-            {"{F22}", Keys.F22},
-            {"{F23}", Keys.F23},
-            {"{F24}", Keys.F24}
-        };
+        private readonly Dictionary<string, Keys> _dicKeys = new Dictionary
+            <string, Keys>
+            {
+                {" ", Keys.Space},
+                {"{UP}", Keys.Up},
+                {"{DOWN}", Keys.Down},
+                {"{LEFT}", Keys.Left},
+                {"{RIGHT}", Keys.Right},
+                {"{ENTER}", Keys.Enter},
+                {"{F16}", Keys.F16},
+                {"{F17}", Keys.F17},
+                {"{F18}", Keys.F18},
+                {"{F19}", Keys.F19},
+                {"{F20}", Keys.F20},
+                {"{F21}", Keys.F21},
+                {"{F22}", Keys.F22},
+                {"{F23}", Keys.F23},
+                {"{F24}", Keys.F24},
+                {"{NumPad0}", Keys.NumPad0},
+                {"{NumPad1}", Keys.NumPad1},
+                {"{NumPad2}", Keys.NumPad2},
+                {"{NumPad3}", Keys.NumPad3},
+                {"{NumPad4}", Keys.NumPad4},
+                {"{NumPad5}", Keys.NumPad5},
+                {"{NumPad6}", Keys.NumPad6},
+                {"{NumPad7}", Keys.NumPad7},
+                {"{NumPad8}", Keys.NumPad8},
+                {"{NumPad9}", Keys.NumPad9}
+            };
 
-        private readonly Dictionary<string, byte> _dicVk = new Dictionary<string, byte>
-        {
-            {"{ALT}", VK_MENU}
-        };
+        private readonly Dictionary<string, byte> _dicVk = new Dictionary
+            <string, byte>
+            {
+                {"{ALT}", VK_MENU}
+            };
 
-        private readonly List<string> _sendWaitExtentionKeyList = new List<string>
-        {
-            "{F16}",
-            "{F17}",
-            "{F18}",
-            "{F19}",
-            "{F20}",
-            "{F21}",
-            "{F22}",
-            "{F23}",
-            "{F24}"
-        };
+        private readonly List<string> _sendWaitExtentionKeyList = new List
+            <string>
+            {
+                "{F16}",
+                "{F17}",
+                "{F18}",
+                "{F19}",
+                "{F20}",
+                "{F21}",
+                "{F22}",
+                "{F23}",
+                "{F24}",
+                "{NumPad0}",
+                "{NumPad1}",
+                "{NumPad2}",
+                "{NumPad3}",
+                "{NumPad4}",
+                "{NumPad5}",
+                "{NumPad6}",
+                "{NumPad7}",
+                "{NumPad8}",
+                "{NumPad9}"
+            };
 
         #endregion
 
@@ -72,7 +94,9 @@ namespace Pg01.Models.Util
 
         public static string Conv(Keys k)
         {
-            return k.Between(Keys.D0, Keys.D9) ? k.ToString().Substring(1) : k.ToString();
+            return k.Between(Keys.D0, Keys.D9)
+                ? k.ToString().Substring(1)
+                : k.ToString();
         }
 
         private byte Conv(string str)
@@ -94,20 +118,24 @@ namespace Pg01.Models.Util
             return b;
         }
 
-        public void SendKey(string str, NativeMethods.KeyboardUpDown keyboardUpDown)
+        public void SendKey(string str,
+            NativeMethods.KeyboardUpDown keyboardUpDown)
         {
             var p = Conv(str);
             switch (keyboardUpDown)
             {
                 case NativeMethods.KeyboardUpDown.Down:
-                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYDOWN, (UIntPtr) 0);
+                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYDOWN,
+                        (UIntPtr) 0);
                     break;
                 case NativeMethods.KeyboardUpDown.Up:
-                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYUP, (UIntPtr) 0);
+                    NativeMethods.keybd_event(p, 0, KEYEVENTF_KEYUP,
+                        (UIntPtr) 0);
                     break;
             }
         }
 
+        /// <exception cref="System.ArgumentException">想定されないpが指定された場合に発生します。</exception>
         public void SendWait(string p)
         {
             if (_sendWaitExtentionKeyList.Contains(p))
@@ -117,14 +145,7 @@ namespace Pg01.Models.Util
             }
             else
             {
-                try
-                {
-                    SendKeys.SendWait(p);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
+                SendKeys.SendWait(p);
             }
         }
 

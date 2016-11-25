@@ -1,12 +1,18 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows.Media;
 using System.Xml.Serialization;
+
+#endregion
 
 namespace Pg01.Models
 {
     [Serializable]
     public class MenuItem
     {
+        private Brush _background;
+
         [XmlAttribute]
         public double X { get; set; }
 
@@ -17,13 +23,22 @@ namespace Pg01.Models
         public string LabelText { get; set; }
 
         [XmlIgnore]
-        public Brush Background { get; set; }
+        public Brush Background
+        {
+            get { return _background ?? Util.Util.DefaultBrush; }
+            set { _background = value; }
+        }
 
         [XmlAttribute("BackColor")]
         public string LabelColorAsString
         {
             get { return Util.Util.ConvertToString(Background); }
-            set { Background = Util.Util.ConvertFromString<Brush>(value); }
+            set
+            {
+                Background = string.IsNullOrEmpty(value)
+                    ? Util.Util.DefaultBrush
+                    : Util.Util.ConvertFromString<Brush>(value);
+            }
         }
 
         [XmlElement]
