@@ -402,14 +402,14 @@ namespace Pg01Tests.ViewModels
             model.Bank.Name.IsNot("曲線");
             model.Bank.Name.Is("");
 
-            vm.Event=
+            vm.Event =
                 new KeyboardHookedEventArgs(
                     NativeMethods.KeyboardMessage.KeyDown, ref ksS);
             model.Bank.Entries.Count.Is(2);
             model.Bank.Name.IsNot("曲線");
             model.Bank.Name.Is("");
 
-            vm.Event=
+            vm.Event =
                 new KeyboardHookedEventArgs(
                     NativeMethods.KeyboardMessage.KeyUp, ref ksS);
             model.Bank.Entries.Count.Is(2);
@@ -423,7 +423,6 @@ namespace Pg01Tests.ViewModels
             model.Bank.Entries.Count.Is(2);
             model.Bank.Name.IsNot("曲線");
             model.Bank.Name.Is("");
-
         }
     }
 }

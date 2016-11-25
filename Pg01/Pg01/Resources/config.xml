@@ -435,7 +435,8 @@
           <MenuItem X="0" Y="3" LabelText="再読み込み" BackColor="#6F6">
             <ActionItem ActionType="System" ActionValue="ReloadConfig" NextBank="" />
           </MenuItem>
-          <MenuItem X="1" Y="3" LabelText="" BackColor="#6F6">
+          <MenuItem X="1" Y="3" LabelText="自動非表示切り替え" BackColor="#6F6">
+            <ActionItem ActionType="System" ActionValue="ToggleAutoHide" NextBank="" />
           </MenuItem>
           <MenuItem X="2" Y="3" LabelText="" BackColor="#6F6">
           </MenuItem>
