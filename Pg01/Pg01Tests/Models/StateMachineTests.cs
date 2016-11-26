@@ -131,21 +131,24 @@ namespace Pg01Tests.Models
             ExecResult r1 = null;
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Down);
-            r1 = machine.Exec(menuItems, Keys.S,
-                NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadBank);
             r1.NextBank.Is("曲線");
+            r1 = machine.Exec(menuItems, Keys.S,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
+
             machine.ClearInternalStatuses();
 
             var menuGroup = config.ApplicationGroups[0].Banks[3];
-            menuGroup.Name.Is(r1.NextBank);
+            menuGroup.Name.Is("曲線");
             menuItems = menuGroup.Entries;
 
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
 
             r1 = machine.Exec(menuItems, Keys.LShiftKey,
                 NativeMethods.KeyboardUpDown.Down);
@@ -160,7 +163,7 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
+            r1.Status.Is(ExecStatus.None);
 
             r1 = machine.Exec(menuItems, Keys.LControlKey,
                 NativeMethods.KeyboardUpDown.Up);
@@ -174,11 +177,13 @@ namespace Pg01Tests.Models
 
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Down);
-            r1 = machine.Exec(menuItems, Keys.S,
-                NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
             r1.Status.Is(ExecStatus.LoadBank);
             r1.NextBank.IsNull();
+            r1 = machine.Exec(menuItems, Keys.S,
+                NativeMethods.KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
             machine.ClearInternalStatuses();
         }
 
@@ -192,7 +197,8 @@ namespace Pg01Tests.Models
             var r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.IsNull();
 
             r1 = machine.Exec(menuItems, Keys.LShiftKey,
                 NativeMethods.KeyboardUpDown.Down);
@@ -207,8 +213,7 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
-            r1.NextBank.IsNull();
+            r1.Status.Is(ExecStatus.None);
         }
 
         [TestMethod]
@@ -221,7 +226,8 @@ namespace Pg01Tests.Models
             var r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.IsNull();
 
             r1 = machine.Exec(menuItems, Keys.LShiftKey,
                 NativeMethods.KeyboardUpDown.Down);
@@ -231,8 +237,7 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
-            r1.NextBank.IsNull();
+            r1.Status.Is(ExecStatus.None);
             machine.ClearInternalStatuses();
 
             r1 = machine.Exec(menuItems, Keys.LShiftKey,
@@ -258,13 +263,13 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.IsNull();
 
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
-            r1.NextBank.IsNull();
+            r1.Status.Is(ExecStatus.None);
             machine.ClearInternalStatuses();
 
             r1 = machine.Exec(menuItems, Keys.LShiftKey,
@@ -288,13 +293,14 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.IsNull();
 
             r1 = machine.Exec(menuItems, Keys.D4,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
-            r1.NextBank.IsNull();
+            r1.Status.Is(ExecStatus.None);
+            r1.NextBank.Is("");
             machine.ClearInternalStatuses();
 
             r1 = machine.Exec(menuItems, Keys.LWin,
@@ -335,12 +341,12 @@ namespace Pg01Tests.Models
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Down);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
 
             r1 = machine.Exec(menuItems, Keys.S,
                 NativeMethods.KeyboardUpDown.Up);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.LoadBank);
+            r1.Status.Is(ExecStatus.None);
         }
 
         [TestMethod]
@@ -367,12 +373,13 @@ namespace Pg01Tests.Models
                 NativeMethods.KeyboardUpDown.Down,
                 false);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
 
             r1 = machine.Exec(entries, Keys.NumPad5,
                 NativeMethods.KeyboardUpDown.Up,
                 false);
             r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
             // ReSharper restore RedundantArgumentDefaultValue
 
             //
@@ -382,12 +389,13 @@ namespace Pg01Tests.Models
                 NativeMethods.KeyboardUpDown.Down,
                 true);
             r1.ShouldCancel.Is(true);
-            r1.Status.Is(ExecStatus.None);
+            r1.Status.Is(ExecStatus.LoadBank);
 
             r1 = machine.Exec(entries, Keys.NumPad5,
                 NativeMethods.KeyboardUpDown.Up,
                 true);
             r1.ShouldCancel.Is(true);
+            r1.Status.Is(ExecStatus.None);
         }
 
         [TestMethod]
@@ -416,28 +424,16 @@ namespace Pg01Tests.Models
         {
             new object[]
             {
-                "Key Down",
+                "Key Up",
                 new ActionItem
                 {
                     ActionType = ActionType.Key,
                     ActionValue = "",
                     NextBank = ""
                 },
-                NativeMethods.KeyboardUpDown.Down,
+                NativeMethods.KeyboardUpDown.Up,
                 new ExecResult(true, ExecStatus.None, "", ActionType.Key, "",
-                    NativeMethods.KeyboardUpDown.Down)
-            },
-            new object[]
-            {
-                "Send Down",
-                new ActionItem
-                {
-                    ActionType = ActionType.Send,
-                    ActionValue = "Val1",
-                    NextBank = "Bank1"
-                },
-                NativeMethods.KeyboardUpDown.Down,
-                new ExecResult(true)
+                    NativeMethods.KeyboardUpDown.Up)
             },
             new object[]
             {
@@ -449,21 +445,21 @@ namespace Pg01Tests.Models
                     NextBank = "Bank1"
                 },
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadBank, "Bank1",
-                    ActionType.Send, "Val1",
-                    NativeMethods.KeyboardUpDown.Up)
+                new ExecResult(true)
             },
             new object[]
             {
-                "Menu Down",
+                "Send Down",
                 new ActionItem
                 {
-                    ActionType = ActionType.Menu,
-                    ActionValue = "Menu1",
-                    NextBank = ""
+                    ActionType = ActionType.Send,
+                    ActionValue = "Val1",
+                    NextBank = "Bank1"
                 },
                 NativeMethods.KeyboardUpDown.Down,
-                new ExecResult(true)
+                new ExecResult(true, ExecStatus.LoadBank, "Bank1",
+                    ActionType.Send, "Val1",
+                    NativeMethods.KeyboardUpDown.Down)
             },
             new object[]
             {
@@ -475,20 +471,20 @@ namespace Pg01Tests.Models
                     NextBank = ""
                 },
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadBank, "", ActionType.Menu,
-                    "Menu1", NativeMethods.KeyboardUpDown.Up)
+                new ExecResult(true)
             },
             new object[]
             {
-                "None Down",
+                "Menu Down",
                 new ActionItem
                 {
-                    ActionType = ActionType.None,
+                    ActionType = ActionType.Menu,
                     ActionValue = "Menu1",
-                    NextBank = "Bank1"
+                    NextBank = ""
                 },
                 NativeMethods.KeyboardUpDown.Down,
-                new ExecResult(true)
+                new ExecResult(true, ExecStatus.LoadBank, "", ActionType.Menu,
+                    "Menu1", NativeMethods.KeyboardUpDown.Down)
             },
             new object[]
             {
@@ -500,30 +496,42 @@ namespace Pg01Tests.Models
                     NextBank = "Bank1"
                 },
                 NativeMethods.KeyboardUpDown.Up,
-                new ExecResult(true, ExecStatus.LoadBank, "Bank1",
-                    ActionType.None, "Menu1",
-                    NativeMethods.KeyboardUpDown.Up)
-            },
-            new object[]
-            {
-                "Null ActionItem Up",
-                null,
-                NativeMethods.KeyboardUpDown.Up,
                 new ExecResult(true)
             },
             new object[]
             {
-                "System Up",
+                "None Down",
+                new ActionItem
+                {
+                    ActionType = ActionType.None,
+                    ActionValue = "Menu1",
+                    NextBank = "Bank1"
+                },
+                NativeMethods.KeyboardUpDown.Down,
+                new ExecResult(true, ExecStatus.LoadBank, "Bank1",
+                    ActionType.None, "Menu1",
+                    NativeMethods.KeyboardUpDown.Down)
+            },
+            new object[]
+            {
+                "Null ActionItem Down",
+                null,
+                NativeMethods.KeyboardUpDown.Down,
+                new ExecResult(true)
+            },
+            new object[]
+            {
+                "System Down",
                 new ActionItem
                 {
                     ActionType = ActionType.System,
                     ActionValue = "Cancel",
                     NextBank = null
                 },
-                NativeMethods.KeyboardUpDown.Up,
+                NativeMethods.KeyboardUpDown.Down,
                 new ExecResult(true, ExecStatus.LoadBank, null,
                     ActionType.System, "Cancel",
-                    NativeMethods.KeyboardUpDown.Up)
+                    NativeMethods.KeyboardUpDown.Down)
             }
         };
 

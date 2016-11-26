@@ -107,12 +107,12 @@ namespace Pg01.Models
                 case ActionType.Key:
                     switch (kud)
                     {
-                        case NativeMethods.KeyboardUpDown.Down:
+                        case NativeMethods.KeyboardUpDown.Up:
                             return new ExecResult(true, ExecStatus.None, "",
                                 ActionType.Key, item.ActionValue, kud);
-                        case NativeMethods.KeyboardUpDown.Up:
+                        case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.LoadBank,
-                                item.NextBank, ActionType.Send,
+                                item.NextBank, ActionType.Key,
                                 item.ActionValue, kud);
                         default:
                             return new ExecResult(true);
@@ -120,7 +120,7 @@ namespace Pg01.Models
                 default:
                     switch (kud)
                     {
-                        case NativeMethods.KeyboardUpDown.Up:
+                        case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.LoadBank,
                                 item.NextBank,
                                 item.ActionType, item.ActionValue, kud);
