@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Basic>
+    <Title>Title01</Title>
+    <Buttons>
+    </Buttons>
+    <WindowLocation X="99999" Y="0" />
+  </Basic>
+  <ApplicationGroups>
+    <ApplicationGroup Name="CLIP STUDIO PAINT">
+      <MatchingRoule>
+        <ExeName>ClipStudioPaint.exe</ExeName>
+        <WindowTitlePatterns>
+          <Pattern>*CLIP STUDIO PAINT</Pattern>
+          <Pattern>ショートカット設定</Pattern>
+        </WindowTitlePatterns>
+      </MatchingRoule>
+      <Banks>
+        <Bank Name="">
+          <Entry Trigger="F" LabelText="F">
+            <ActionItem ActionType="Send" ActionValue="g" NextBank="" />
+          </Entry>
+          <Entry Trigger="G" LabelText="F">
+            <ActionItem ActionType="Send" ActionValue="r" NextBank="" />
+          </Entry>
+          <Entry Trigger="H" LabelText="F">
+            <ActionItem ActionType="Send" ActionValue="12345" NextBank="" />
+          </Entry>
+        </Bank>
+      </Banks>
+      <Menus>
+      </Menus>
+    </ApplicationGroup>
+  </ApplicationGroups>
+</Config>

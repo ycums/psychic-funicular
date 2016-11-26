@@ -335,7 +335,6 @@ namespace Pg01Tests.Models
         [Description("自動非表示機能の有効・無効の切り替え #78")]
         public void SystemCommandToggleAutoHideTest()
         {
-            
             var configB = ConfigUtil.Deserialize(Resources.TestConfig12);
             var windowInfo = new WindowInfo("ClipStudioPaint.exe",
                 "新規ファイル.clip - CLIP STUDIO PAINT");
@@ -343,7 +342,7 @@ namespace Pg01Tests.Models
             var model = new Model(configB, new DummySendKeyCode());
             var configBTitle = "Sample12XXXXXXXX";
 
-             model.AutoHide.Is(true);
+            model.AutoHide.Is(true);
             model.Basic.Title.Is(configBTitle);
             model.WindowInfo = windowInfo;
             model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
@@ -352,7 +351,8 @@ namespace Pg01Tests.Models
             model.Bank.Entries[0].LabelText.Is("自動非表示切り替え");
             model.Bank.Entries[0].Trigger.Is("NumPad9");
             model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.System);
-            model.Bank.Entries[0].ActionItem.ActionValue.Is(ConstValues.SystemCommandToggleAutoHide);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is(
+                ConstValues.SystemCommandToggleAutoHide);
 
             // Entry ボタンプレス時
             model.ProcAction(
@@ -377,7 +377,6 @@ namespace Pg01Tests.Models
                     NativeMethods.KeyboardMessage.KeyUp, ref state));
 
             model.AutoHide.Is(true);
-
         }
 
         [TestMethod]
@@ -388,7 +387,7 @@ namespace Pg01Tests.Models
             var model = new Model(config, new DummySendKeyCode());
 
             // 初期化チェック
-            model.AutoHide.Is(true); 
+            model.AutoHide.Is(true);
             model.MainWindowVisibility.Is(Visibility.Visible);
 
             // マウスカーソルが入った
@@ -413,5 +412,83 @@ namespace Pg01Tests.Models
             model.MainWindowVisibility.Is(Visibility.Visible);
         }
 
+        [TestMethod]
+        [Description("#81 自分で出したイベントを自分でキャンセルしてしまう不具合の修正")]
+        public void SelfEventPathThroughTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig13);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(3);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is("g");
+            model.Bank.Entries[1].Trigger.Is("G");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("r");
+
+            var ksF = new NativeMethods.KeyboardState { KeyCode = Keys.F };
+            var ksG = new NativeMethods.KeyboardState { KeyCode = Keys.G };
+
+            // Fを押す
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref ksF));
+
+            // g を送出する
+            dsc.EventLog.Count.Is(1);
+            dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
+            dsc.EventLog[0].Value.Is("g");
+
+            // g を自分で受け取ってしまう
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref ksG));
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref ksG));
+
+            // g がキャンセルされて、r が送出されてしまっているとまずい。
+            // ただし、g が本当にキャンセルされているかどうかはこの層ではわからない。
+            // ここでは代替的に r が送出されていないことを確認する
+            dsc.EventLog.Count.Is(1);
+
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref ksF));
+            dsc.EventLog.Count.Is(1);
+        }
+
+        [TestMethod]
+        [Description("SendWait() がちゃんと呼ばれていることの確認")]
+        public void SendWaitCallTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig13);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(3);
+            model.Bank.Entries[2].Trigger.Is("H");
+            model.Bank.Entries[2].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[2].ActionItem.ActionValue.Is("12345");
+
+            var state = new NativeMethods.KeyboardState
+            {
+                KeyCode = Keys.H
+            };
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref state));
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref state));
+
+            dsc.EventLog.Count.Is(1);
+            dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
+            dsc.EventLog[0].Value.Is("12345");
+        }
     }
 }

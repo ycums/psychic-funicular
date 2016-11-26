@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -67,20 +68,31 @@ namespace Pg01.Models
                 switch (mi1.ActionItem.ActionType)
                 {
                     case ActionType.Send:
-                        if (upDown == NativeMethods.KeyboardUpDown.Down)
+                        switch (upDown)
                         {
-                            if (0 != _downedModifierKeys.Count)
-                                return new ExecResult(false);
+                            case NativeMethods.KeyboardUpDown.Down:
+                                if (0 != _downedModifierKeys.Count)
+                                    return new ExecResult(false);
 
-                            _keySending++;
-                            return ExecCore(mi1.ActionItem, upDown);
+                                _keySending++;
+                                if (1 != _keySending)
+                                    return new ExecResult(false);
+                                return ExecCore(mi1.ActionItem, upDown);
+
+                            case NativeMethods.KeyboardUpDown.Up:
+                                _keySending--;
+                                if (0 != _keySending)
+                                    return new ExecResult(false);
+                                return ExecCore(mi1.ActionItem, upDown);
+
+                            case NativeMethods.KeyboardUpDown.None:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(
+                                    nameof(upDown), upDown, null);
                         }
+                        break;
 
-                        if (0 == _keySending)
-                            return new ExecResult(false);
-
-                        _keySending--;
-                        return ExecCore(mi1.ActionItem, upDown);
                     case ActionType.None:
                         return _downedModifierKeys.Count == 0
                             ? ExecCore(mi1.ActionItem, upDown)

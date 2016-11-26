@@ -156,6 +156,11 @@
   <ItemGroup>
     <None Include="Resources\TestConfig12.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestConfig13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
