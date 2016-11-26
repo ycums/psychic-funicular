@@ -15,8 +15,8 @@ namespace Pg01.Models
     {
         #region Fields
 
-        private int _keySending;
         private HashSet<Keys> _downedModifierKeys;
+        private Keys _sendingKey;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace Pg01.Models
 
         public void ClearInternalStatuses()
         {
-            _keySending = 0;
+            _sendingKey = Keys.None;
             _downedModifierKeys = new HashSet<Keys>();
         }
 
@@ -53,6 +53,12 @@ namespace Pg01.Models
 
             if (!modifilers.Contains(keyCode))
             {
+                if (_sendingKey == keyCode)
+                {
+                    _sendingKey = Keys.None;
+                    return new ExecResult(true);
+                }
+
                 var keyStr = SendKeyCode.Conv(keyCode);
                 var query = from mi in entries
                     where mi.Trigger == keyStr
@@ -74,16 +80,16 @@ namespace Pg01.Models
                                 if (0 != _downedModifierKeys.Count)
                                     return new ExecResult(false);
 
-                                _keySending++;
-                                if (1 != _keySending)
-                                    return new ExecResult(false);
-                                return ExecCore(mi1.ActionItem, upDown);
+                                if (_sendingKey == Keys.None)
+                                {
+                                    _sendingKey = keyCode;
+                                    return ExecCore(mi1.ActionItem, upDown);
+                                }
+                                return new ExecResult(false);
 
                             case NativeMethods.KeyboardUpDown.Up:
-                                _keySending--;
-                                if (0 != _keySending)
-                                    return new ExecResult(false);
-                                return ExecCore(mi1.ActionItem, upDown);
+                                return new ExecResult(false);
+
 
                             case NativeMethods.KeyboardUpDown.None:
                                 break;

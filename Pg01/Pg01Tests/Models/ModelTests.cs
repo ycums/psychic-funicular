@@ -490,5 +490,82 @@ namespace Pg01Tests.Models
             dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
             dsc.EventLog[0].Value.Is("12345");
         }
+
+        [TestMethod]
+        [Description("LoadBank 直後の Send の不発を解決 #82")]
+        public void SendAfterLoadBankTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig14);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.None);
+            model.Bank.Entries[0].ActionItem.ActionValue.IsNull();
+            model.Bank.Entries[0].ActionItem.NextBank.Is("Bank01");
+            model.Bank.Entries[1].Trigger.Is("R");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("a");
+            model.Bank.Entries[1].ActionItem.NextBank.Is("");
+
+            var ksF = new NativeMethods.KeyboardState { KeyCode = Keys.F };
+            var ksG = new NativeMethods.KeyboardState { KeyCode = Keys.G };
+            var ksR = new NativeMethods.KeyboardState { KeyCode = Keys.R };
+
+            // Fを押す
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref ksF));
+            dsc.EventLog.Count.Is(0);
+
+            // この時点で LoadBank が完了していなければならない。
+            model.Bank.Name.Is("Bank01");
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries[0].Trigger.Is("G");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is("r");
+            model.Bank.Entries[0].ActionItem.NextBank.Is("");
+            model.Bank.Entries[1].Trigger.Is("R");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("b");
+            model.Bank.Entries[1].ActionItem.NextBank.Is("");
+
+            // f(down)のまま g(down) を送出する
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref ksG));
+
+            // この時に SendWait("r") が実行済みでなければならない。
+            dsc.EventLog.Count.Is(1);
+            dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
+            dsc.EventLog[0].Value.Is("r");
+
+            // 当然、LoadBank も完了済みでなければならない。
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
+
+            // 自分で出した r を受け取ってしまう。
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyDown, ref ksR));
+            dsc.EventLog.Count.Is(1);
+
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref ksR));
+            dsc.EventLog.Count.Is(1);
+
+            // g(up) と f(up) はどこかのタイミングで発生する。
+            // これらのいずれもキャンセルされなければならない。
+            // （ただし、ここではキャンセルされたかどうかを正確に把握できない）
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref ksG));
+            dsc.EventLog.Count.Is(1);
+
+            model.SetEvent(new KeyboardHookedEventArgs(
+                NativeMethods.KeyboardMessage.KeyUp, ref ksF));
+            dsc.EventLog.Count.Is(1);
+        }
     }
 }

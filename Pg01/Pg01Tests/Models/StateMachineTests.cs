@@ -460,6 +460,122 @@ namespace Pg01Tests.Models
             r1.ActionType.Is(ActionType.None);
         }
 
+
+        [TestMethod]
+        [Description("LoadBank 直後の Send の不発を解決 #82")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
+        public void SelfEventCancelTwiceTest()
+        {
+            ExecResult r1;
+
+            var machine = new StateMachine();
+            var config = ConfigUtil.Deserialize(Resources.TestConfig14);
+            var bank = config.ApplicationGroups[0].Banks[0];
+            bank.Name.Is("");
+
+            var entries = bank.Entries;
+            entries.Count.Is(2);
+            entries[0].Trigger.Is("F");
+            entries[0].ActionItem.ActionType.Is(ActionType.None);
+            entries[0].ActionItem.ActionValue.IsNull();
+            entries[0].ActionItem.NextBank.Is("Bank01");
+            entries[1].Trigger.Is("R");
+            entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            entries[1].ActionItem.ActionValue.Is("a");
+
+            // F を Down する
+            r1 = machine.Exec(entries, Keys.F, KeyboardUpDown.Down);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.Is("Bank01");
+
+            // Bank01 がロードされる
+            bank = config.ApplicationGroups[0].Banks[1];
+            bank.Name.Is("Bank01");
+            entries = bank.Entries;
+            entries.Count.Is(2);
+            entries[0].Trigger.Is("G");
+            entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            entries[0].ActionItem.ActionValue.Is("r");
+            entries[0].ActionItem.NextBank.Is("");
+            entries[1].Trigger.Is("R");
+            entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            entries[1].ActionItem.ActionValue.Is("b");
+
+            // g(down)
+            r1 = machine.Exec(entries, Keys.G, KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(true);
+            r1.ActionType.Is(ActionType.Send);
+            r1.ActionValue.Is("r");
+            r1.Status.Is(ExecStatus.LoadBank);
+
+            // r が発生して、これを受け取ってしまう。
+            r1 = machine.Exec(entries, Keys.R, KeyboardUpDown.Down);
+
+            // r はキャンセルしてはいけない
+            r1.ShouldCancel.Is(false);
+            r1.ActionType.Is(ActionType.None);
+            r1.Status.Is(ExecStatus.None);
+
+            // 同上
+            r1 = machine.Exec(entries, Keys.R, KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.ActionType.Is(ActionType.None);
+            r1.Status.Is(ExecStatus.None);
+
+            // このあたりで default Bank がロードされる
+            bank = config.ApplicationGroups[0].Banks[0];
+            bank.Name.Is("");
+            entries = bank.Entries;
+            entries.Count.Is(2);
+
+            r1 = machine.Exec(entries, Keys.G, KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(true);
+
+            r1 = machine.Exec(entries, Keys.F, KeyboardUpDown.Up);
+
+            //
+            // ここから2週目
+            //
+
+            // F を Down する
+            r1 = machine.Exec(entries, Keys.F, KeyboardUpDown.Down);
+            r1.Status.Is(ExecStatus.LoadBank);
+            r1.NextBank.Is("Bank01");
+
+            // Bank01 がロードされる
+            bank = config.ApplicationGroups[0].Banks[1];
+            bank.Name.Is("Bank01");
+            entries = bank.Entries;
+            entries.Count.Is(2);
+
+            // g(down)
+            r1 = machine.Exec(entries, Keys.G, KeyboardUpDown.Down);
+            r1.ShouldCancel.Is(true);
+            r1.ActionType.Is(ActionType.Send);
+            r1.ActionValue.Is("r");
+            r1.Status.Is(ExecStatus.LoadBank);
+
+            // r が発生して、これを受け取ってしまう。
+            r1 = machine.Exec(entries, Keys.R, KeyboardUpDown.Down);
+
+            // r はキャンセルしてはいけない
+            r1.ShouldCancel.Is(false);
+            r1.ActionType.Is(ActionType.None);
+            r1.Status.Is(ExecStatus.None);
+
+            // 同上
+            r1 = machine.Exec(entries, Keys.R, KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(false);
+            r1.ActionType.Is(ActionType.None);
+            r1.Status.Is(ExecStatus.None);
+
+            r1 = machine.Exec(entries, Keys.G, KeyboardUpDown.Up);
+            r1.ShouldCancel.Is(true);
+
+            r1 = machine.Exec(entries, Keys.F, KeyboardUpDown.Up);
+        }
+
         #endregion
 
         #region Test ExecCore
