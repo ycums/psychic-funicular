@@ -83,6 +83,8 @@ namespace Pg01.Models
 
         public void SetEvent(KeyboardHookedEventArgs e)
         {
+            if (_keySending != 0) return;
+
             if (_ApplicationGroup.Name != "")
             {
                 Debug.WriteLine($"{e.KeyCode} {e.UpDown}");

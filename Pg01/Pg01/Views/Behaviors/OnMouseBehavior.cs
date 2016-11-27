@@ -1,12 +1,10 @@
 #region
 
 using System;
-using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interactivity;
 using System.Windows.Threading;
-using Timer = System.Timers.Timer;
 
 #endregion
 
@@ -39,7 +37,7 @@ namespace Pg01.Views.Behaviors
             var w = AssociatedObject;
             var rect = new Rect(w.Left, w.Top, w.Width, w.Height);
             var pos = Cursor.Position;
-            OnMouse = rect.Contains(new Point(pos.X,pos.Y));
+            OnMouse = rect.Contains(new Point(pos.X, pos.Y));
         }
 
         protected override void OnAttached()
