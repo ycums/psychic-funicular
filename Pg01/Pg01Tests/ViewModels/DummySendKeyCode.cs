@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
@@ -14,15 +15,20 @@ namespace Pg01Tests.ViewModels
         {
             None,
             SendKey,
-            SendWait
+            SendWait,
+            Lambda
         }
+
+        public Action SendWaitLambda;
 
         public DummySendKeyCode()
         {
             EventLog = new List<Event>();
+            SendWaitLambdaExceptions = new List<Exception>();
         }
 
         public List<Event> EventLog { get; set; }
+        public List<Exception> SendWaitLambdaExceptions { get; set; }
 
         public void SendKey(string str,
             NativeMethods.KeyboardUpDown keyboardUpDown)
@@ -34,6 +40,19 @@ namespace Pg01Tests.ViewModels
         {
             EventLog.Add(new Event(EventType.SendWait, p,
                 NativeMethods.KeyboardUpDown.None));
+
+            if (SendWaitLambda != null)
+            {
+                try
+                {
+
+                    SendWaitLambda?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    SendWaitLambdaExceptions.Add(ex);
+                }
+            }
         }
 
         public class Event

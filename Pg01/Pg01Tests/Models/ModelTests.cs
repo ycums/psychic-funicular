@@ -10,6 +10,7 @@ using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
 using Pg01Tests.Properties;
 using Pg01Tests.ViewModels;
+using static Pg01.Views.Behaviors.Util.NativeMethods;
 
 #endregion
 
@@ -47,21 +48,21 @@ namespace Pg01Tests.Models
 
             // Entry ボタンプレス時
             model.ProcAction(model.Bank.Entries[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(model.Bank.Entries[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
 
             // Entry キープレス時
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.NumPad5
             };
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+                    KeyboardMessage.KeyDown, ref state));
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+                    KeyboardMessage.KeyUp, ref state));
 
             var menus = model.ApplicationGroup.Menus;
             menus.Count.Is(1);
@@ -76,9 +77,9 @@ namespace Pg01Tests.Models
 
             // MenuItem ボタンプレス時 (キープレスは今のところありえない）
             model.ProcAction(items[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(items[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
         }
 
         [TestMethod]
@@ -129,13 +130,13 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name.Is("");
             model.IsMenuVisible.IsFalse();
 
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.NumPad5
             };
             var e =
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyUp, ref state);
+                    KeyboardMessage.KeyUp, ref state);
             model.SetEvent(e);
         }
 
@@ -219,22 +220,22 @@ namespace Pg01Tests.Models
             // Entry ボタンプレス時
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
 
             // Entry キープレス時
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.NumPad5
             };
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+                    KeyboardMessage.KeyDown, ref state));
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+                    KeyboardMessage.KeyUp, ref state));
 
             //
             // メニューのリセットの確認
@@ -247,20 +248,20 @@ namespace Pg01Tests.Models
             // menu01 を読み込ませる
             model.ProcAction(
                 model.Bank.Entries[2].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(
                 model.Bank.Entries[2].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
             model.IsMenuVisible.Is(true);
             model.Menu.Name.Is("menu01");
 
             // キャンセル処理させる
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
 
             model.IsMenuVisible.Is(false);
             model.Bank.Name.Is("");
@@ -295,10 +296,10 @@ namespace Pg01Tests.Models
             // Entry ボタンプレス時
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(
                 model.Bank.Entries[3].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
 
             // デフォルトの config.xml が読み込まれていればOK
             model.Basic.Title.Is(defaultConfigTitle);
@@ -316,16 +317,16 @@ namespace Pg01Tests.Models
             model.Bank.Entries[3].ActionItem.ActionValue.Is("ReloadConfig");
 
             // Entry キープレス時
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.NumPad5
             };
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+                    KeyboardMessage.KeyDown, ref state));
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+                    KeyboardMessage.KeyUp, ref state));
 
             // デフォルトの config.xml が読み込まれていればOK
             model.Basic.Title.Is(defaultConfigTitle);
@@ -357,24 +358,24 @@ namespace Pg01Tests.Models
             // Entry ボタンプレス時
             model.ProcAction(
                 model.Bank.Entries[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Down);
+                KeyboardUpDown.Down);
             model.ProcAction(
                 model.Bank.Entries[0].ActionItem,
-                NativeMethods.KeyboardUpDown.Up);
+                KeyboardUpDown.Up);
 
             model.AutoHide.Is(false);
 
             // Entry キープレス時
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.NumPad9
             };
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyDown, ref state));
+                    KeyboardMessage.KeyDown, ref state));
             model.SetEvent(
                 new KeyboardHookedEventArgs(
-                    NativeMethods.KeyboardMessage.KeyUp, ref state));
+                    KeyboardMessage.KeyUp, ref state));
 
             model.AutoHide.Is(true);
         }
@@ -432,12 +433,12 @@ namespace Pg01Tests.Models
             model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
             model.Bank.Entries[1].ActionItem.ActionValue.Is("r");
 
-            var ksF = new NativeMethods.KeyboardState { KeyCode = Keys.F };
-            var ksG = new NativeMethods.KeyboardState { KeyCode = Keys.G };
+            var ksF = new KeyboardState {KeyCode = Keys.F};
+            var ksG = new KeyboardState {KeyCode = Keys.G};
 
             // Fを押す
             model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyDown, ref ksF));
+                KeyboardMessage.KeyDown, ref ksF));
 
             // g を送出する
             dsc.EventLog.Count.Is(1);
@@ -445,18 +446,20 @@ namespace Pg01Tests.Models
             dsc.EventLog[0].Value.Is("g");
 
             // g を自分で受け取ってしまう
-            model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyDown, ref ksG));
-            model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyUp, ref ksG));
+            var e1 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksG);
+            model.SetEvent(e1);
+            var e2 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksG);
+            model.SetEvent(e2);
 
             // g がキャンセルされて、r が送出されてしまっているとまずい。
-            // ただし、g が本当にキャンセルされているかどうかはこの層ではわからない。
-            // ここでは代替的に r が送出されていないことを確認する
             dsc.EventLog.Count.Is(1);
+            e1.Cancel.Is(false);
+            e2.Cancel.Is(false);
 
             model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyUp, ref ksF));
+                KeyboardMessage.KeyUp, ref ksF));
             dsc.EventLog.Count.Is(1);
         }
 
@@ -477,18 +480,251 @@ namespace Pg01Tests.Models
             model.Bank.Entries[2].ActionItem.ActionType.Is(ActionType.Send);
             model.Bank.Entries[2].ActionItem.ActionValue.Is("12345");
 
-            var state = new NativeMethods.KeyboardState
+            var state = new KeyboardState
             {
                 KeyCode = Keys.H
             };
             model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyDown, ref state));
+                KeyboardMessage.KeyDown, ref state));
             model.SetEvent(new KeyboardHookedEventArgs(
-                NativeMethods.KeyboardMessage.KeyUp, ref state));
+                KeyboardMessage.KeyUp, ref state));
 
             dsc.EventLog.Count.Is(1);
             dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
             dsc.EventLog[0].Value.Is("12345");
+        }
+
+        [TestMethod]
+        [Description("LoadBank 直後の Send の不発を解決 #82")]
+        public void SendAfterLoadBankTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig14);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.None);
+            model.Bank.Entries[0].ActionItem.ActionValue.IsNull();
+            model.Bank.Entries[0].ActionItem.NextBank.Is("Bank01");
+            model.Bank.Entries[1].Trigger.Is("R");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("a");
+            model.Bank.Entries[1].ActionItem.NextBank.Is("");
+
+            var ksF = new KeyboardState {KeyCode = Keys.F};
+            var ksG = new KeyboardState {KeyCode = Keys.G};
+            var ksR = new KeyboardState {KeyCode = Keys.R};
+
+            // Fを押す
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksF));
+            dsc.EventLog.Count.Is(0);
+
+            // この時点で LoadBank が完了していなければならない。
+            model.Bank.Name.Is("Bank01");
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries[0].Trigger.Is("G");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is("r");
+            model.Bank.Entries[0].ActionItem.NextBank.Is("");
+            model.Bank.Entries[1].Trigger.Is("R");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("b");
+            model.Bank.Entries[1].ActionItem.NextBank.Is("");
+
+            // f(down)のまま g(down) を送出する
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksG));
+
+            // この時に SendWait("r") が実行済みでなければならない。
+            dsc.EventLog.Count.Is(1);
+            dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
+            dsc.EventLog[0].Value.Is("r");
+
+            // 当然、LoadBank も完了済みでなければならない。
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
+
+            // 自分で出した r を受け取ってしまう。
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksR));
+            dsc.EventLog.Count.Is(1);
+
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksR));
+            dsc.EventLog.Count.Is(1);
+
+            // g(up) と f(up) はどこかのタイミングで発生する。
+            // これらのいずれもキャンセルされなければならない。
+            var e1 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksG);
+            model.SetEvent(e1);
+            e1.Cancel.Is(true);
+            dsc.EventLog.Count.Is(1);
+
+            var e2 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksF);
+            model.SetEvent(e2);
+            e2.Cancel.Is(true);
+            dsc.EventLog.Count.Is(1);
+        }
+
+
+        [TestMethod]
+        [Description(
+             "#83 メニューボタンの項目のうち、現在のBankに別の機能が割り当てられていると SendWait() が発生しない")]
+        public void ProceActionTest()
+        {
+            var config = ConfigUtil.Deserialize(Resources.TestConfig15);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(2);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is("a");
+            model.Bank.Entries[1].Trigger.Is("G");
+            model.Bank.Entries[1].ActionItem.ActionType.Is(ActionType.Menu);
+            model.Bank.Entries[1].ActionItem.ActionValue.Is("01");
+
+            var action = model.Bank.Entries[1].ActionItem;
+            model.ProcAction(action, KeyboardUpDown.Down);
+            model.ProcAction(action, KeyboardUpDown.Up);
+
+            model.Menu.Name.Is("01");
+            model.Menu.MenuItem.Count.Is(1);
+            model.Menu.MenuItem[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Menu.MenuItem[0].ActionItem.ActionValue.Is("f");
+
+            /*
+             処理の時系列が反転するけれども、
+             dsc.SendWaitLambda に処理をセットしておくと SendWait() の中で呼び
+             出される。
+             これにより、ProcAction() 中で呼び出される SendWait() の中から呼び
+             出されたイベントが model の中に到達してそれがキャンセルされずに、
+             操作対象のアプリケーションに届くことを 確認できる。
+             検証に失敗した場合は dsc.SendWaitLambdaExceptions に記録されるので、
+             件数を検証する必要がある。
+            */
+            dsc.SendWaitLambda = () =>
+            {
+                var ksF = new KeyboardState {KeyCode = Keys.F};
+
+                var e1 = new KeyboardHookedEventArgs(
+                    KeyboardMessage.KeyDown, ref ksF);
+                model.SetEvent(e1);
+                e1.Cancel.Is(false);
+                dsc.EventLog.Count.Is(1);
+
+                var e2 = new KeyboardHookedEventArgs(
+                    KeyboardMessage.KeyUp, ref ksF);
+                model.SetEvent(e2);
+                e2.Cancel.Is(false);
+                dsc.EventLog.Count.Is(1);
+            };
+
+            // action を呼び出す。この中で SendWait() が呼び出されて、
+            // dsc.SendWaitLambda が呼び出され、上記の検証が走る
+            action = model.Menu.MenuItem[0].ActionItem;
+            model.ProcAction(action, KeyboardUpDown.Down);
+            dsc.SendWaitLambda = null; // 余分に呼び出されないようにクリア
+            dsc.SendWaitLambdaExceptions.Count.Is(0);
+            dsc.EventLog.Count.Is(1);
+            dsc.EventLog[0].Type.Is(DummySendKeyCode.EventType.SendWait);
+            dsc.EventLog[0].Value.Is("f");
+
+            model.ProcAction(action, KeyboardUpDown.Up);
+            dsc.EventLog.Count.Is(1);
+        }
+
+        [TestMethod]
+        [Description("キー自身を呼び出すとおかしくなる気がする")]
+        public void SendSelfKeyTest()
+        {
+            var ksF = new KeyboardState {KeyCode = Keys.F};
+            var config = ConfigUtil.Deserialize(Resources.TestConfig16);
+            var dsc = new DummySendKeyCode();
+            var model = new Model(config, dsc);
+            var windowInfo = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            model.WindowInfo = windowInfo;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(1);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.None);
+            model.Bank.Entries[0].ActionItem.ActionValue.IsNull();
+            model.Bank.Entries[0].ActionItem.NextBank.Is("Bank02");
+
+            // f(down) -> f(up)
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksF));
+            model.SetEvent(new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksF));
+            dsc.EventLog.Count.Is(0);
+
+            model.Bank.Name.Is("Bank02");
+            model.Bank.Entries.Count.Is(1);
+            model.Bank.Entries[0].Trigger.Is("F");
+            model.Bank.Entries[0].ActionItem.ActionType.Is(ActionType.Send);
+            model.Bank.Entries[0].ActionItem.ActionValue.Is("f");
+            model.Bank.Entries[0].ActionItem.NextBank.Is("");
+
+            /*
+             処理の時系列が反転するけれども、
+             dsc.SendWaitLambda に処理をセットしておくと SendWait() の中で呼び
+             出される。
+             これにより、ProcAction() 中で呼び出される SendWait() の中から呼び
+             出されたイベントが model の中に到達してそれがキャンセルされずに、
+             操作対象のアプリケーションに届くことを 確認できる。
+             検証に失敗した場合は dsc.SendWaitLambdaExceptions に記録されるので、
+             件数を検証する必要がある。
+            */
+            dsc.SendWaitLambda = () =>
+            {
+                var ksF2 = new KeyboardState {KeyCode = Keys.F};
+                var e1 = new KeyboardHookedEventArgs(
+                    KeyboardMessage.KeyDown, ref ksF2);
+                model.SetEvent(e1);
+                e1.Cancel.Is(false);
+                dsc.EventLog.Count.Is(1);
+
+                var e2 = new KeyboardHookedEventArgs(
+                    KeyboardMessage.KeyUp, ref ksF2);
+                model.SetEvent(e2);
+                e2.Cancel.Is(false);
+                dsc.EventLog.Count.Is(1);
+            };
+
+            // action を呼び出す。この中で SendWait() が呼び出されて、
+            // dsc.SendWaitLambda が呼び出され、上記の検証が走る
+            var e3 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyDown, ref ksF);
+            model.SetEvent(e3);
+            e3.Cancel.Is(true);
+            dsc.SendWaitLambda = null; // 余分に呼び出されないようにクリア
+            dsc.SendWaitLambdaExceptions.Count.Is(0);
+            dsc.EventLog.Count.Is(1);
+
+            // ここらへんで LoadBank が起こる
+            model.Bank.Name.Is("");
+            model.Bank.Entries.Count.Is(1);
+
+            // 最後にユーザー入力の f(up) が来る
+            var e4 = new KeyboardHookedEventArgs(
+                KeyboardMessage.KeyUp, ref ksF);
+            model.SetEvent(e4);
+            e4.Cancel.Is(true);
+            dsc.EventLog.Count.Is(1);
         }
     }
 }
