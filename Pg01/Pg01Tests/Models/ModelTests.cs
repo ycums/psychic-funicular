@@ -123,12 +123,14 @@ namespace Pg01Tests.Models
             model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT B");
             model.Bank.Name.Is("");
             model.IsMenuVisible.IsFalse();
+            model.MainWindowVisibility.Is(Visibility.Visible);
 
             // 該当なし
             model.WindowInfo = new WindowInfo("booboo.exe", "BOOBOO PAINT");
             model.ApplicationGroups.IsNotNull();
             model.ApplicationGroup.Name.Is("");
             model.IsMenuVisible.IsFalse();
+            model.MainWindowVisibility.Is(Visibility.Hidden);
 
             var state = new KeyboardState
             {
@@ -389,6 +391,10 @@ namespace Pg01Tests.Models
 
             // 初期化チェック
             model.AutoHide.Is(true);
+            model.MainWindowVisibility.Is(Visibility.Hidden);
+
+            model.WindowInfo =
+                new WindowInfo("ClipStudioPaint.exe", "CLIP STUDIO PAINT");
             model.MainWindowVisibility.Is(Visibility.Visible);
 
             // マウスカーソルが入った

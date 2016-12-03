@@ -237,10 +237,13 @@ namespace Pg01.Models
 
         private void UpdateMainWindowVisibility()
         {
-            MainWindowVisibility = _OnMouse && _autoHide
-                ? Visibility.Hidden
-                : Visibility.Visible;
+            if (string.IsNullOrEmpty(_ApplicationGroup.Name))
+                MainWindowVisibility = Visibility.Hidden;
+            else if (_OnMouse && _autoHide)
+                MainWindowVisibility = Visibility.Hidden;
+            else MainWindowVisibility = Visibility.Visible;
         }
+
         #endregion
 
         #region Properties
@@ -409,6 +412,7 @@ namespace Pg01.Models
                 Debug.WriteLine(
                     $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
                 LoadApplicationGroup(_WindowInfo);
+                UpdateMainWindowVisibility();
                 RaisePropertyChanged();
             }
         }
