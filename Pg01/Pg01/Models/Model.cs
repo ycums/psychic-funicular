@@ -367,8 +367,6 @@ namespace Pg01.Models
             get { return _IsMenuVisible; }
             set
             {
-                if (_IsMenuVisible == value)
-                    return;
                 _IsMenuVisible = value;
                 RaisePropertyChanged();
             }
