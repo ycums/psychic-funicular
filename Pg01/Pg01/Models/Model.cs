@@ -83,6 +83,8 @@ namespace Pg01.Models
 
         public void SetEvent(KeyboardHookedEventArgs e)
         {
+            if (_keySending != 0) return;
+
             if (_ApplicationGroup.Name != "")
             {
                 Debug.WriteLine($"{e.KeyCode} {e.UpDown}");
@@ -235,10 +237,13 @@ namespace Pg01.Models
 
         private void UpdateMainWindowVisibility()
         {
-            MainWindowVisibility = _OnMouse && _autoHide
-                ? Visibility.Hidden
-                : Visibility.Visible;
+            if (string.IsNullOrEmpty(_ApplicationGroup.Name))
+                MainWindowVisibility = Visibility.Hidden;
+            else if (_OnMouse && _autoHide)
+                MainWindowVisibility = Visibility.Hidden;
+            else MainWindowVisibility = Visibility.Visible;
         }
+
         #endregion
 
         #region Properties
@@ -365,8 +370,6 @@ namespace Pg01.Models
             get { return _IsMenuVisible; }
             set
             {
-                if (_IsMenuVisible == value)
-                    return;
                 _IsMenuVisible = value;
                 RaisePropertyChanged();
             }
@@ -409,6 +412,7 @@ namespace Pg01.Models
                 Debug.WriteLine(
                     $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
                 LoadApplicationGroup(_WindowInfo);
+                UpdateMainWindowVisibility();
                 RaisePropertyChanged();
             }
         }

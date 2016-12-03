@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,8 +15,8 @@ namespace Pg01.Models
     {
         #region Fields
 
-        private int _keySending;
         private HashSet<Keys> _downedModifierKeys;
+        private Keys _sendingKey;
 
         #endregion
 
@@ -29,7 +30,7 @@ namespace Pg01.Models
 
         public void ClearInternalStatuses()
         {
-            _keySending = 0;
+            _sendingKey = Keys.None;
             _downedModifierKeys = new HashSet<Keys>();
         }
 
@@ -52,6 +53,12 @@ namespace Pg01.Models
 
             if (!modifilers.Contains(keyCode))
             {
+                if (_sendingKey == keyCode)
+                {
+                    _sendingKey = Keys.None;
+                    return new ExecResult(true);
+                }
+
                 var keyStr = SendKeyCode.Conv(keyCode);
                 var query = from mi in entries
                     where mi.Trigger == keyStr
@@ -67,20 +74,31 @@ namespace Pg01.Models
                 switch (mi1.ActionItem.ActionType)
                 {
                     case ActionType.Send:
-                        if (upDown == NativeMethods.KeyboardUpDown.Down)
+                        switch (upDown)
                         {
-                            if (0 != _downedModifierKeys.Count)
+                            case NativeMethods.KeyboardUpDown.Down:
+                                if (0 != _downedModifierKeys.Count)
+                                    return new ExecResult(false);
+
+                                if (_sendingKey == Keys.None)
+                                {
+                                    _sendingKey = keyCode;
+                                    return ExecCore(mi1.ActionItem, upDown);
+                                }
                                 return new ExecResult(false);
 
-                            _keySending++;
-                            return ExecCore(mi1.ActionItem, upDown);
+                            case NativeMethods.KeyboardUpDown.Up:
+                                return new ExecResult(false);
+
+
+                            case NativeMethods.KeyboardUpDown.None:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(
+                                    nameof(upDown), upDown, null);
                         }
+                        break;
 
-                        if (0 == _keySending)
-                            return new ExecResult(false);
-
-                        _keySending--;
-                        return ExecCore(mi1.ActionItem, upDown);
                     case ActionType.None:
                         return _downedModifierKeys.Count == 0
                             ? ExecCore(mi1.ActionItem, upDown)
@@ -107,12 +125,12 @@ namespace Pg01.Models
                 case ActionType.Key:
                     switch (kud)
                     {
-                        case NativeMethods.KeyboardUpDown.Down:
+                        case NativeMethods.KeyboardUpDown.Up:
                             return new ExecResult(true, ExecStatus.None, "",
                                 ActionType.Key, item.ActionValue, kud);
-                        case NativeMethods.KeyboardUpDown.Up:
+                        case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.LoadBank,
-                                item.NextBank, ActionType.Send,
+                                item.NextBank, ActionType.Key,
                                 item.ActionValue, kud);
                         default:
                             return new ExecResult(true);
@@ -120,7 +138,7 @@ namespace Pg01.Models
                 default:
                     switch (kud)
                     {
-                        case NativeMethods.KeyboardUpDown.Up:
+                        case NativeMethods.KeyboardUpDown.Down:
                             return new ExecResult(true, ExecStatus.LoadBank,
                                 item.NextBank,
                                 item.ActionType, item.ActionValue, kud);

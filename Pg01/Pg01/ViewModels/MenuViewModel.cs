@@ -19,7 +19,8 @@ namespace Pg01.ViewModels
     {
         #region Private Functions
 
-        public void UpdateBasic(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        public void UpdateBasic(object sender,
+            PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
 
@@ -33,12 +34,20 @@ namespace Pg01.ViewModels
         public void UpdateBasicCore(Model model, Point pos)
         {
             var items = model.Menu.MenuItem;
-            ButtonsOrigin = new System.Windows.Point(-items.Max(x => Math.Abs(x.X)), -items.Max(x => Math.Abs(x.Y)));
-            ButtonsContainerWidth = (-ButtonsOrigin.X*2 + 1)*ConstValues.ButtonWidth;
-            ButtonsContainerHeight = (-ButtonsOrigin.Y*2 + 1)*ConstValues.ButtonHeight;
+            ButtonsOrigin =
+                new System.Windows.Point(
+                    -items.Max(x => Math.Abs(x.X)),
+                    -items.Max(x => Math.Abs(x.Y)));
+            ButtonsContainerWidth = 
+                (-ButtonsOrigin.X*2 + 1)* ConstValues.ButtonWidth;
+            ButtonsContainerHeight = 
+                (-ButtonsOrigin.Y*2 + 1)*
+                                     ConstValues.ButtonHeight;
             Buttons =
                 new ObservableSynchronizedCollection<MenuItemViewModel>(
-                    model.Menu.MenuItem.Select(x => new MenuItemViewModel(model, x, ButtonsOrigin)).ToArray());
+                    model.Menu.MenuItem.Select(
+                            x => new MenuItemViewModel(model, x, ButtonsOrigin))
+                        .ToArray());
 
             X = pos.X - ButtonsContainerWidth/2;
             Y = pos.Y - ButtonsContainerHeight/2;
@@ -70,19 +79,33 @@ namespace Pg01.ViewModels
             _listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
-                {() => _model.IsMenuVisible, Closing}
+                {() => _model.IsMenuVisible, IsMenuVisibleChangedEventHandler}
             };
             UpdateBasic(_model, null);
         }
 
-        private void Closing(object sender, PropertyChangedEventArgs e)
+        private void IsMenuVisibleChangedEventHandler(object sender,
+            PropertyChangedEventArgs e)
         {
             var model = sender as Model;
 
-            if ((model != null) && !model.IsMenuVisible)
+            if (model != null)
             {
-                DispatcherHelper.UIDispatcher.BeginInvoke(
-                    (Action) (() => { Messenger.Raise(new WindowActionMessage(WindowAction.Close, "WindowAction")); }));
+                if (model.IsMenuVisible)
+                {
+                    UpdateBasic(sender,e);
+                }
+                else
+                {
+                    DispatcherHelper.UIDispatcher.BeginInvoke(
+                        (Action)
+                        (() =>
+                        {
+                            Messenger.Raise(
+                                new WindowActionMessage(WindowAction.Close,
+                                    "WindowAction"));
+                        }));
+                }
             }
         }
 
@@ -213,7 +236,8 @@ namespace Pg01.ViewModels
             get { return _ButtonsContainerWidth; }
             set
             {
-                if (Math.Abs(_ButtonsContainerWidth - value) < ConstValues.TOLERANCE)
+                if (Math.Abs(_ButtonsContainerWidth - value) <
+                    ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerWidth = value;
                 RaisePropertyChanged();
@@ -231,7 +255,8 @@ namespace Pg01.ViewModels
             get { return _ButtonsContainerHeight; }
             set
             {
-                if (Math.Abs(_ButtonsContainerHeight - value) < ConstValues.TOLERANCE)
+                if (Math.Abs(_ButtonsContainerHeight - value) <
+                    ConstValues.TOLERANCE)
                     return;
                 _ButtonsContainerHeight = value;
                 RaisePropertyChanged();

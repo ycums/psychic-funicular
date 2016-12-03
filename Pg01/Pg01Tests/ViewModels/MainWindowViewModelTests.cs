@@ -51,6 +51,8 @@ namespace Pg01Tests.ViewModels
             // Config リロード 時 Bankリセット機能
             vm.Buttons[0].ActionItem.NextBank.Is("曲線");
             model.ProcAction(vm.Buttons[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(vm.Buttons[0].ActionItem,
                 NativeMethods.KeyboardUpDown.Up);
             vm.BankName.Is("曲線");
 
@@ -85,12 +87,16 @@ namespace Pg01Tests.ViewModels
             vm.Buttons[2].ActionItem.ActionValue.Is("menu01");
 
             model.ProcAction(vm.Buttons[2].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(vm.Buttons[2].ActionItem,
                 NativeMethods.KeyboardUpDown.Up);
             model.IsMenuVisible.Is(true);
             // vm は MenuViewModel のインスタンスを公開していないのでとりあえずモデルだけ操作してみる
             model.Menu.Name.Is("menu01");
             model.Menu.MenuItem.Count.Is(2);
             model.Menu.MenuItem[0].LabelText.Is("閉じる");
+            model.ProcAction(model.Menu.MenuItem[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
             model.ProcAction(model.Menu.MenuItem[0].ActionItem,
                 NativeMethods.KeyboardUpDown.Up);
             model.IsMenuVisible.Is(false);
@@ -129,6 +135,8 @@ namespace Pg01Tests.ViewModels
             vm.Buttons[0].ActionItem.ActionValue.Is(" B");
             vm.Buttons[0].ActionItem.NextBank.Is("曲線");
             model.ProcAction(vm.Buttons[0].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(vm.Buttons[0].ActionItem,
                 NativeMethods.KeyboardUpDown.Up);
 
             // "曲線" Bank の Entries[2] に
@@ -146,6 +154,9 @@ namespace Pg01Tests.ViewModels
             {
                 KeyCode = Keys.NumPad5
             };
+            vm.Event =
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state);
             vm.Event =
                 new KeyboardHookedEventArgs(
                     NativeMethods.KeyboardMessage.KeyUp, ref state);
@@ -176,6 +187,8 @@ namespace Pg01Tests.ViewModels
             vm.Buttons[2].ActionItem.NextBank.IsNull();
 
             model.ProcAction(vm.Buttons[2].ActionItem,
+                NativeMethods.KeyboardUpDown.Down);
+            model.ProcAction(vm.Buttons[2].ActionItem,
                 NativeMethods.KeyboardUpDown.Up);
 
             model.IsMenuVisible.Is(true);
@@ -194,6 +207,9 @@ namespace Pg01Tests.ViewModels
             {
                 KeyCode = Keys.NumPad5
             };
+            vm.Event =
+                new KeyboardHookedEventArgs(
+                    NativeMethods.KeyboardMessage.KeyDown, ref state);
             vm.Event =
                 new KeyboardHookedEventArgs(
                     NativeMethods.KeyboardMessage.KeyUp, ref state);
