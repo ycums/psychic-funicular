@@ -45,7 +45,7 @@ namespace GcTest.ViewModels
         #region Fields
 
         private bool _canDoSomething = true;
-        //private readonly Model _model;
+        private readonly Model _model;
 
         #endregion
 
@@ -53,28 +53,27 @@ namespace GcTest.ViewModels
 
         public DetailWindowViewModel(Model model, MainWindowViewModel parent)
         {
-            //_model = model;
+            _model = model;
             Parent = parent;
             ViewModelManager.AddEntryViewModel(this);
             NotifyDebugInfo.WriteLine(
                 "Create ViewModel: DetailWindowViewModel");
             _TestMessage = "テスト";
 
-            //    var listener = new PropertyChangedEventListener(model)
-            //    {
-            //        {
-            //            () => model.ClickCount,
-            //            (sender, e) => ClickCountChangedEventHandler()
-            //        }
-            //    };
-            //    CompositeDisposable.Add(listener);
-            //
+            var listener = new PropertyChangedEventListener(model)
+                {
+                    {
+                        () => model.ClickCount,
+                        (sender, e) => ClickCountChangedEventHandler()
+                    }
+                };
+            CompositeDisposable.Add(listener);
         }
 
-        //private void ClickCountChangedEventHandler()
-        //{
-        //    if (_model != null) ClickCount = _model.ClickCount;
-        //}
+        private void ClickCountChangedEventHandler()
+        {
+            if (_model != null) ClickCount = _model.ClickCount;
+        }
 
         ~DetailWindowViewModel()
         {
@@ -128,6 +127,7 @@ namespace GcTest.ViewModels
                 // MainWindowViewModel の「すべて閉じる」ボタンの実行可否が変化したことを通知します
                 Parent.CloseDetailWindowsCommand.RaiseCanExecuteChanged();
             }
+            CompositeDisposable.Dispose();
         }
 
         #endregion
