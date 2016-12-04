@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -104,6 +105,7 @@ namespace Pg01.ViewModels
                 }
                 else
                 {
+                    Debug.Write("Close");
                     DispatcherHelper.UIDispatcher.BeginInvoke(
                         (Action)
                         (() =>

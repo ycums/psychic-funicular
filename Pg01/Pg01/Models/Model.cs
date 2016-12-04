@@ -281,7 +281,6 @@ namespace Pg01.Models
                 if (_ApplicationGroup == value)
                     return;
                 _ApplicationGroup = value;
-                IsMenuVisible = false;  
                 LoadBank(_ApplicationGroup, "");
                 RaisePropertyChanged();
             }
@@ -373,6 +372,7 @@ namespace Pg01.Models
             {
                 if (_IsMenuVisible == value && value == false) return;
                 _IsMenuVisible = value;
+                Debug.WriteLine($"IsMenuVisible: {value}");
                 RaisePropertyChanged();
             }
         }
@@ -413,6 +413,7 @@ namespace Pg01.Models
                 _WindowInfo = value;
                 Debug.WriteLine(
                     $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
+                IsMenuVisible = false;
                 LoadApplicationGroup(_WindowInfo);
                 UpdateMainWindowVisibility();
                 RaisePropertyChanged();
