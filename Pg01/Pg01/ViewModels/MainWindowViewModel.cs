@@ -25,6 +25,7 @@ namespace Pg01.ViewModels
         #region Fields
 
         private readonly Model _model;
+        private MenuViewModel _menuViewModel;
 
         #endregion
 
@@ -104,9 +105,10 @@ namespace Pg01.ViewModels
                 {
                     Debug.WriteLine(
                         @"Messenger.Raise(new TransitionMessage(vm, ""OpenMenuMessage""));");
-                    var vm = new MenuViewModel(model);
+                    if(_menuViewModel == null) _menuViewModel = new MenuViewModel(model);
                     Messenger.Raise(
-                        new TransitionMessage(vm, "OpenMenuMessage"));
+                        new TransitionMessage(
+                            _menuViewModel, "OpenMenuMessage"));
                 }
         }
 

@@ -118,13 +118,6 @@ namespace Pg01.ViewModels
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            Debug.WriteLine("MenuViewModel Disposed");
-            _model.IsMenuVisible = false;
-            base.Dispose(disposing);
-        }
-
         #endregion
 
         #region Properties
@@ -292,8 +285,8 @@ namespace Pg01.ViewModels
 
         public void OnWindowClosed()
         {
-            CompositeDisposable.Dispose();
-            ViewModelManager.RemoveEntryViewModel(this);
+            //CompositeDisposable.Dispose();
+            //ViewModelManager.RemoveEntryViewModel(this);
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 #endregion
 
@@ -14,17 +15,27 @@ namespace Pg01Util
         private static readonly Dictionary<Type, int> Counter =
             new Dictionary<Type, int>();
 
+        private static readonly Semaphore Sem = new Semaphore(1, 1);
+
         #region Private Functions
 
         public static void Dump()
         {
-            var sb = new StringBuilder();
-            sb.Append("[ObjectCount] ");
-            foreach (var i in Counter)
+            Sem.WaitOne();
+            try
             {
-                sb.Append($"{i.Key}: {i.Value:000}  ");
+                var sb = new StringBuilder();
+                sb.Append("[ObjectCount] ");
+                foreach (var i in Counter)
+                {
+                    sb.Append($"{i.Key}: {i.Value:000}  ");
+                }
+                Debug.WriteLine(sb.ToString());
             }
-            Debug.WriteLine(sb.ToString());
+            finally
+            {
+                Sem.Release();
+            }
         }
 
         #endregion
@@ -33,21 +44,37 @@ namespace Pg01Util
 
         public static void CountUp(Type type)
         {
-            if (!Counter.ContainsKey(type))
+            Sem.WaitOne();
+            try
             {
-                Counter[type] = 0;
+                if (!Counter.ContainsKey(type))
+                {
+                    Counter[type] = 0;
+                }
+                Counter[type] += 1;
             }
-            Counter[type] += 1;
+            finally
+            {
+                Sem.Release();
+            }
             Dump();
         }
 
         public static void CountDown(Type type)
         {
-            if (!Counter.ContainsKey(type))
+            Sem.WaitOne();
+            try
             {
-                Counter[type] = 0;
+                if (!Counter.ContainsKey(type))
+                {
+                    Counter[type] = 0;
+                }
+                Counter[type] -= 1;
             }
-            Counter[type] -= 1;
+            finally
+            {
+                Sem.Release();
+            }
             Dump();
         }
 
