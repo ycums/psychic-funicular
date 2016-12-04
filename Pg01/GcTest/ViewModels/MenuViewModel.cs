@@ -16,7 +16,6 @@ namespace GcTest.ViewModels
 {
     public class MenuViewModel : ViewModel
     {
-
         #region EventHandlers
 
         private void ChildVisibilityChangedHandler(
@@ -50,12 +49,13 @@ namespace GcTest.ViewModels
 
         public MenuViewModel(Model model)
         {
-            //var listener = new PropertyChangedEventListener(model);
-            ////{
-            ////    {() => model.ChilidVisibility, ChildVisibilityChangedHandler},
-            ////    {() => model.Count, CountChangedHandler}
-            ////};
-            //CompositeDisposable.Add(listener);
+            ViewModelManager.AddEntryViewModel(this);
+            var listener = new PropertyChangedEventListener(model)
+            {
+                { () => model.ChilidVisibility, ChildVisibilityChangedHandler},
+                { () => model.Count, CountChangedHandler}
+            };
+            CompositeDisposable.Add(listener);
             _Visibility = Visibility.Visible;
         }
 
@@ -63,17 +63,10 @@ namespace GcTest.ViewModels
         {
         }
 
-
         ~MenuViewModel()
         {
             Debug.WriteLine("MenuViewModel Destructor");
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    CompositeDisposable.Dispose();
-        //    base.Dispose(disposing);
-        //}
 
         #endregion
 
@@ -132,6 +125,23 @@ namespace GcTest.ViewModels
         {
             Messenger.Raise(
                 new WindowActionMessage(WindowAction.Close, "WindowAction"));
+        }
+
+        #endregion
+
+        #region OnClosedWindowCommand
+
+        private ViewModelCommand _OnClosedWindowCommand;
+
+        public ViewModelCommand OnClosedWindowCommand
+            => _OnClosedWindowCommand ??
+               (_OnClosedWindowCommand =
+                   new ViewModelCommand(OnClosedWindow));
+
+        public void OnClosedWindow()
+        {
+            ViewModelManager.RemoveEntryViewModel(this);
+            CompositeDisposable.Dispose();
         }
 
         #endregion

@@ -5,7 +5,9 @@
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:vm="clr-namespace:GcTest.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behavior="clr-namespace:GcTest.Behavior"
+        mc:Ignorable="d"
         d:DataContext="{d:DesignInstance {x:Type vm:MenuViewModel}}" Width="400" Height="250"
         Visibility="{Binding Visibility}">
     <i:Interaction.Triggers>
@@ -19,9 +21,8 @@
             <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize" />
         </i:EventTrigger>
 
-        <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
         <i:EventTrigger EventName="Closed">
-            <l:DataContextDisposeAction />
+            <behavior:CommandExecuteAction Command="{Binding OnClosedWindowCommand}" />
         </i:EventTrigger>
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->

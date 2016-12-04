@@ -126,9 +126,9 @@ namespace GcTest.ViewModels
 
         public void Do()
         {
-            var vm = new MenuViewModel(_model);
             Messenger.Raise(
-                new TransitionMessage(vm, "OpenMenuMessage"));
+                new TransitionMessage(
+                    new MenuViewModel(_model), "OpenMenuMessage"));
         }
 
         #endregion
