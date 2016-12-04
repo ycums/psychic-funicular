@@ -50,12 +50,12 @@ namespace GcTest.ViewModels
 
         public MenuViewModel(Model model)
         {
-            var listener = new PropertyChangedEventListener(model);
-            //{
-            //    {() => model.ChilidVisibility, ChildVisibilityChangedHandler},
-            //    {() => model.Count, CountChangedHandler}
-            //};
-            CompositeDisposable.Add(listener);
+            //var listener = new PropertyChangedEventListener(model);
+            ////{
+            ////    {() => model.ChilidVisibility, ChildVisibilityChangedHandler},
+            ////    {() => model.Count, CountChangedHandler}
+            ////};
+            //CompositeDisposable.Add(listener);
             _Visibility = Visibility.Visible;
         }
 
@@ -68,6 +68,12 @@ namespace GcTest.ViewModels
         {
             Debug.WriteLine("MenuViewModel Destructor");
         }
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    CompositeDisposable.Dispose();
+        //    base.Dispose(disposing);
+        //}
 
         #endregion
 
