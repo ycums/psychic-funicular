@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using JetBrains.Annotations;
 using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
@@ -21,6 +20,12 @@ namespace Pg01.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        #region Fields
+
+        private readonly Model _model;
+
+        #endregion
+
         #region Initialize & Finalize
 
         public MainWindowViewModel(Model model)
@@ -34,7 +39,7 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_model)
+            var listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
                 {
@@ -54,9 +59,11 @@ namespace Pg01.ViewModels
                 {() => _model.Message, MassageChanged},
                 {
                     () => _model.MainWindowVisibility,
-                    (s, e) => MainWindowVisibility = _model.MainWindowVisibility
+                    (s, e) =>
+                            MainWindowVisibility = _model.MainWindowVisibility
                 }
             };
+            CompositeDisposable.Add(listener);
 
             UpdateBasic(_model, null);
 
@@ -68,30 +75,30 @@ namespace Pg01.ViewModels
             var m = _model.Message;
             if (m != null)
             {
-                //// SendWait() から上がってきた Message だと View が反応しない
-                //Messenger.Raise(
-                //    new InformationMessage(
-                //        m.Text, m.Caption, m.Image, "Information"));
-
-                // 上記の代替（暫定）
-                MessageBox.Show(m.Text, m.Caption, MessageBoxButton.OK, m.Image);
+                Messenger.Raise(
+                    new InformationMessage(
+                        m.Text, m.Caption, m.Image, "Information"));
             }
         }
 
-        private void IsMenuVisibleChanged(object sender,
+        private void IsMenuVisibleChanged(
+            object sender,
             PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
             if (model != null)
                 if (model.IsMenuVisible)
                 {
+                    Debug.WriteLine(
+                        @"Messenger.Raise(new TransitionMessage(vm, ""OpenMenuMessage""));");
                     var vm = new MenuViewModel(model);
-                    Messenger.Raise(new TransitionMessage(vm, "OpenMenuMessage"));
+                    Messenger.Raise(
+                        new TransitionMessage(vm, "OpenMenuMessage"));
                 }
         }
 
-        private void UpdateBasic(object sender,
-            PropertyChangedEventArgs propertyChangedEventArgs)
+        private void UpdateBasic(
+            object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
 
@@ -107,9 +114,11 @@ namespace Pg01.ViewModels
                 ButtonsContainerWidth =
                     Buttons.Max(x => x.X) + ConstValues.ButtonWidth;
                 ButtonsAlignment = model.Basic.ButtonsAlignment;
-                X = Math.Min(Math.Max(0, model.Basic.WindowLocation.X),
+                X = Math.Min(
+                    Math.Max(0, model.Basic.WindowLocation.X),
                     SystemParameters.VirtualScreenWidth - Width);
-                Y = Math.Min(Math.Max(0, model.Basic.WindowLocation.Y),
+                Y = Math.Min(
+                    Math.Max(0, model.Basic.WindowLocation.Y),
                     SystemParameters.VirtualScreenHeight - Height);
             }
         }
@@ -120,22 +129,17 @@ namespace Pg01.ViewModels
 
         private void CorrectY()
         {
-            Y = Math.Min(Math.Max(0, _model.Basic.WindowLocation.Y),
+            Y = Math.Min(
+                Math.Max(0, _model.Basic.WindowLocation.Y),
                 SystemParameters.VirtualScreenHeight - Height);
         }
 
         private void CorrectX()
         {
-            X = Math.Min(Math.Max(0, _model.Basic.WindowLocation.X),
+            X = Math.Min(
+                Math.Max(0, _model.Basic.WindowLocation.X),
                 SystemParameters.VirtualScreenWidth - Width);
         }
-
-        #endregion
-
-        #region Fields
-
-        private readonly Model _model;
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
@@ -428,8 +432,10 @@ namespace Pg01.ViewModels
             if (m.Response == null)
                 return;
             if (!_model.LoadFile(m.Response[0]))
-                Messenger.Raise(new InformationMessage("無効なファイル", "Error",
-                    MessageBoxImage.Error, "Information"));
+                Messenger.Raise(
+                    new InformationMessage(
+                        "無効なファイル", "Error",
+                        MessageBoxImage.Error, "Information"));
         }
 
         #endregion
@@ -477,8 +483,10 @@ namespace Pg01.ViewModels
             if (parameter.Response == null)
                 return;
             if (!_model.SaveFile(parameter.Response[0]))
-                Messenger.Raise(new InformationMessage("無効なファイル", "Error",
-                    MessageBoxImage.Error, "Info"));
+                Messenger.Raise(
+                    new InformationMessage(
+                        "無効なファイル", "Error",
+                        MessageBoxImage.Error, "Info"));
         }
 
         #endregion
@@ -491,11 +499,12 @@ namespace Pg01.ViewModels
             => _CloseCommand ?? (_CloseCommand = new ViewModelCommand(Close));
 
 
-
         public void Close()
         {
-            Messenger.Raise(new WindowActionMessage(WindowAction.Close,
-                "WindowAction"));
+            Messenger.Raise(
+                new WindowActionMessage(
+                    WindowAction.Close,
+                    "WindowAction"));
         }
 
         #endregion

@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
@@ -64,16 +65,10 @@ namespace Pg01.ViewModels
 
         [UsedImplicitly] private readonly ButtonItem _item;
         private readonly Model _model;
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
 
         #endregion
 
         #region Initialize & Finalize
-
-        public ButtonItemViewModel()
-        {
-            Key = "";
-        }
 
         public ButtonItemViewModel(Model model, ButtonItem buttonItem)
         {
@@ -86,10 +81,16 @@ namespace Pg01.ViewModels
             Y = _item.Y*Height;
             Key = _item.Key;
 
-            _listener = new PropertyChangedEventListener(_model)
+            var listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Bank, LoadBank}
             };
+            CompositeDisposable.Add(listener);
+        }
+
+        ~ButtonItemViewModel()
+        {
+            Debug.WriteLine("ButtonItemViewModel Destructed");
         }
 
         #endregion

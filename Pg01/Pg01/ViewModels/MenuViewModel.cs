@@ -2,10 +2,10 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using JetBrains.Annotations;
 using Livet;
 using Livet.EventListeners;
 using Livet.Messaging.Windows;
@@ -17,9 +17,16 @@ namespace Pg01.ViewModels
 {
     public class MenuViewModel : ViewModel
     {
+        #region Fields
+
+        private readonly Model _model;
+
+        #endregion
+
         #region Private Functions
 
-        public void UpdateBasic(object sender,
+        public void UpdateBasic(
+            object sender,
             PropertyChangedEventArgs propertyChangedEventArgs)
         {
             var model = sender as Model;
@@ -38,11 +45,11 @@ namespace Pg01.ViewModels
                 new System.Windows.Point(
                     -items.Max(x => Math.Abs(x.X)),
                     -items.Max(x => Math.Abs(x.Y)));
-            ButtonsContainerWidth = 
-                (-ButtonsOrigin.X*2 + 1)* ConstValues.ButtonWidth;
-            ButtonsContainerHeight = 
+            ButtonsContainerWidth =
+                (-ButtonsOrigin.X*2 + 1)*ConstValues.ButtonWidth;
+            ButtonsContainerHeight =
                 (-ButtonsOrigin.Y*2 + 1)*
-                                     ConstValues.ButtonHeight;
+                ConstValues.ButtonHeight;
             Buttons =
                 new ObservableSynchronizedCollection<MenuItemViewModel>(
                     model.Menu.MenuItem.Select(
@@ -55,18 +62,7 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        #region Fields
-
-        private readonly Model _model;
-        [UsedImplicitly] private PropertyChangedEventListener _listener;
-
-        #endregion
-
         #region Initialize & Finalize
-
-        public MenuViewModel() : this(new Model())
-        {
-        }
 
         public MenuViewModel(Model model)
         {
@@ -74,17 +70,24 @@ namespace Pg01.ViewModels
             _X = -99999; //ちらつき防止
         }
 
+        ~MenuViewModel()
+        {
+            Debug.WriteLine("MenuViewModel Destructed");
+        }
+
         public void Initialize()
         {
-            _listener = new PropertyChangedEventListener(_model)
+            var listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
                 {() => _model.IsMenuVisible, IsMenuVisibleChangedEventHandler}
             };
+            CompositeDisposable.Add(listener);
             UpdateBasic(_model, null);
         }
 
-        private void IsMenuVisibleChangedEventHandler(object sender,
+        private void IsMenuVisibleChangedEventHandler(
+            object sender,
             PropertyChangedEventArgs e)
         {
             var model = sender as Model;
@@ -93,7 +96,7 @@ namespace Pg01.ViewModels
             {
                 if (model.IsMenuVisible)
                 {
-                    UpdateBasic(sender,e);
+                    UpdateBasic(sender, e);
                 }
                 else
                 {
@@ -102,7 +105,8 @@ namespace Pg01.ViewModels
                         (() =>
                         {
                             Messenger.Raise(
-                                new WindowActionMessage(WindowAction.Close,
+                                new WindowActionMessage(
+                                    WindowAction.Close,
                                     "WindowAction"));
                         }));
                 }
@@ -111,6 +115,7 @@ namespace Pg01.ViewModels
 
         protected override void Dispose(bool disposing)
         {
+            Debug.WriteLine("MenuViewModel Disposed");
             _model.IsMenuVisible = false;
             base.Dispose(disposing);
         }

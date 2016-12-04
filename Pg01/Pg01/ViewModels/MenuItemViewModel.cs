@@ -15,19 +15,7 @@ namespace Pg01.ViewModels
 {
     public class MenuItemViewModel : ViewModel, IButtonItemViewModel
     {
-        #region Fields
-
-        [UsedImplicitly] private readonly MenuItem _item;
-
-        private readonly Model _model;
-
-        #endregion
-
         #region Initialize & Finalize
-
-        public MenuItemViewModel()
-        {
-        }
 
         public MenuItemViewModel(Model model, MenuItem menuItem, Point origin)
         {
@@ -48,6 +36,14 @@ namespace Pg01.ViewModels
             Background = _item.Background;
             LabelText = _item.LabelText;
         }
+
+        #endregion
+
+        #region Fields
+
+        [UsedImplicitly] private readonly MenuItem _item;
+
+        private readonly Model _model;
 
         #endregion
 
@@ -223,7 +219,9 @@ namespace Pg01.ViewModels
 
         private ViewModelCommand _ButtonCommand;
 
-        public ViewModelCommand ButtonCommand => _ButtonCommand ?? (_ButtonCommand = new ViewModelCommand(Button));
+        public ViewModelCommand ButtonCommand
+            =>
+            _ButtonCommand ?? (_ButtonCommand = new ViewModelCommand(Button));
 
         public void Button()
         {

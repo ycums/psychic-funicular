@@ -16,27 +16,28 @@ namespace GcTest.ViewModels
 {
     public class MenuViewModel : ViewModel
     {
-        #region Fields
-
-        private readonly Model _model;
-
-        #endregion
 
         #region EventHandlers
 
         private void ChildVisibilityChangedHandler(
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Debug.WriteLine(
-                $"ChildVisibilityChangedHandler: {_model.ChilidVisibility}");
+            var model = sender as Model;
+            if (model != null)
+                Debug.WriteLine(
+                    $"ChildVisibilityChangedHandler: {model.ChilidVisibility}");
             DispatcherHelper.UIDispatcher.BeginInvoke((Action) Close);
         }
 
         private void CountChangedHandler(
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            Debug.WriteLine($"{_model.Count}");
-            Count = _model.Count;
+            var model = sender as Model;
+            if (model != null)
+            {
+                Debug.WriteLine($"{model.Count}");
+                Count = model.Count;
+            }
         }
 
         #endregion
@@ -49,18 +50,17 @@ namespace GcTest.ViewModels
 
         public MenuViewModel(Model model)
         {
-            _model = model;
+            var listener = new PropertyChangedEventListener(model);
+            //{
+            //    {() => model.ChilidVisibility, ChildVisibilityChangedHandler},
+            //    {() => model.Count, CountChangedHandler}
+            //};
+            CompositeDisposable.Add(listener);
             _Visibility = Visibility.Visible;
         }
 
         public void Initialize()
         {
-            var listener = new PropertyChangedEventListener(_model)
-            {
-                {() => _model.ChilidVisibility, ChildVisibilityChangedHandler},
-                {() => _model.Count, CountChangedHandler}
-            };
-            CompositeDisposable.Add(listener);
         }
 
 

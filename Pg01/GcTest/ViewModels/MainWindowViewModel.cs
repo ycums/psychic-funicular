@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using GcTest.Models;
 using Livet;
 using Livet.Commands;
@@ -141,8 +142,10 @@ namespace GcTest.ViewModels
 
         public void Gc()
         {
+            Debug.WriteLine("GC");
             GC.Collect();
             GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         #endregion
