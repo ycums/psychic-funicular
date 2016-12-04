@@ -73,6 +73,7 @@ namespace Pg01.ViewModels
         public ButtonItemViewModel(Model model, ButtonItem buttonItem)
         {
             ObjectCountManager.CountUp(GetType());
+            ViewModelManager.AddEntryViewModel(this);
 
             _model = model;
             _item = buttonItem;
@@ -88,6 +89,12 @@ namespace Pg01.ViewModels
                 {() => _model.Bank, LoadBank}
             };
             CompositeDisposable.Add(listener);
+        }
+
+        public void AltDispose()
+        {
+            CompositeDisposable.Dispose();
+            ViewModelManager.RemoveEntryViewModel(this);
         }
 
         ~ButtonItemViewModel()

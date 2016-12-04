@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace Pg01.ViewModels
             ObjectCountManager.CountUp(GetType());
 
             _model = model;
+            _Buttons =
+                new ObservableSynchronizedCollection<ButtonItemViewModel>();
         }
 
         public MainWindowViewModel() : this(new Model())
@@ -78,6 +81,8 @@ namespace Pg01.ViewModels
             _model.TimerEnabled = true;
         }
 
+        #region Event Handelers
+
         private void MassageChanged(object sender, PropertyChangedEventArgs e)
         {
             var m = _model.Message;
@@ -105,6 +110,12 @@ namespace Pg01.ViewModels
                 }
         }
 
+        #endregion
+
+        #endregion
+
+        #region Private Functions
+
         private void UpdateBasic(
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
@@ -113,10 +124,9 @@ namespace Pg01.ViewModels
             if (model != null)
             {
                 Title = model.Basic.Title;
-                Buttons =
-                    new ObservableSynchronizedCollection<ButtonItemViewModel>(
-                        model.Basic.Buttons.Select(
-                            x => new ButtonItemViewModel(model, x)).ToArray());
+
+                UpdateButtons(model, model.Basic.Buttons);
+
                 ButtonsContainerHeight =
                     Buttons.Max(x => x.Y) + ConstValues.ButtonHeight;
                 ButtonsContainerWidth =
@@ -131,9 +141,19 @@ namespace Pg01.ViewModels
             }
         }
 
-        #endregion
-
-        #region Private Functions
+        private void UpdateButtons(
+            Model model, IEnumerable<ButtonItem> newButtons)
+        {
+            foreach (var button in Buttons)
+            {
+                button.AltDispose();
+            }
+            Buttons.Clear();
+            foreach (var i in newButtons)
+            {
+                Buttons.Add(new ButtonItemViewModel(model, i));
+            }
+        }
 
         private void CorrectY()
         {
@@ -534,6 +554,7 @@ namespace Pg01.ViewModels
         }
 
         #endregion
+
         #endregion
     }
 }
