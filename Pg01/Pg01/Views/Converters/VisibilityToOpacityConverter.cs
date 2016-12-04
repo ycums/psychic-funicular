@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Pg01
+namespace Pg01.Views.Converters
 {
     public class VisibilityToOpacityConverter : IValueConverter
     {

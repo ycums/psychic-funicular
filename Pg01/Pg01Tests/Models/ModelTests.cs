@@ -143,6 +143,39 @@ namespace Pg01Tests.Models
         }
 
         [TestMethod]
+        [Description("ApplicationGroup が切り替わってもメニューが表示されたままになる不具合の修正 #84")]
+        public void ApplicationGroupAndMenuVisibilityTest()
+        {
+            var wi01 = new WindowInfo("ClipStudioPaint.exe",
+                "新規ファイル.clip - CLIP STUDIO PAINT");
+            var wi02 = new WindowInfo("booboo.exe", "BOOBOO PAINT");
+
+            var config = ConfigUtil.Deserialize(Resources.TestConfig17);
+            var model = new Model(config, new DummySendKeyCode());
+            model.Basic.Title.Is("Title01");
+
+            // 該当あり
+            model.WindowInfo = wi01;
+            model.ApplicationGroup.Name.Is("CLIP STUDIO PAINT");
+            model.Bank.Name.Is("");
+            model.IsMenuVisible.IsFalse();
+            model.MainWindowVisibility.Is(Visibility.Visible);
+
+            var action = model.Bank.Entries[0].ActionItem;
+            model.ProcAction(action, KeyboardUpDown.Down);
+            model.ProcAction(action, KeyboardUpDown.Up);
+
+            model.IsMenuVisible.IsTrue();
+
+            // 該当なし
+            model.WindowInfo = wi02;
+            model.ApplicationGroups.IsNotNull();
+            model.ApplicationGroup.Name.Is("");
+            model.IsMenuVisible.IsFalse();
+            model.MainWindowVisibility.Is(Visibility.Hidden);
+        }
+
+        [TestMethod]
         [Description("背景色がデフォルトで設定されないと見づらいので機能追加 #59")]
         public void DefaultMenuItemBackgrowndColor()
         {

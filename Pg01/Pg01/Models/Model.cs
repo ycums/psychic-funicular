@@ -281,6 +281,7 @@ namespace Pg01.Models
                 if (_ApplicationGroup == value)
                     return;
                 _ApplicationGroup = value;
+                IsMenuVisible = false;  
                 LoadBank(_ApplicationGroup, "");
                 RaisePropertyChanged();
             }
