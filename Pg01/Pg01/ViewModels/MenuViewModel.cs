@@ -7,9 +7,11 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Livet;
+using Livet.Commands;
 using Livet.EventListeners;
 using Livet.Messaging.Windows;
 using Pg01.Models;
+using Pg01Util;
 
 #endregion
 
@@ -66,13 +68,16 @@ namespace Pg01.ViewModels
 
         public MenuViewModel(Model model)
         {
+            ViewModelManager.AddEntryViewModel(this);
+            ObjectCountManager.CountUp(GetType());
+
             _model = model;
             _X = -99999; //ちらつき防止
         }
 
         ~MenuViewModel()
         {
-            Debug.WriteLine("MenuViewModel Destructed");
+            ObjectCountManager.CountDown(GetType());
         }
 
         public void Initialize()
@@ -275,6 +280,23 @@ namespace Pg01.ViewModels
         #endregion
 
         #region Commands
+
+        #region OnWindowClosedCommand
+
+        private ViewModelCommand _OnWindowClosedCommand;
+
+        public ViewModelCommand OnWindowClosedCommand
+            => _OnWindowClosedCommand ??
+               (_OnWindowClosedCommand =
+                   new ViewModelCommand(OnWindowClosed));
+
+        public void OnWindowClosed()
+        {
+            CompositeDisposable.Dispose();
+            ViewModelManager.RemoveEntryViewModel(this);
+        }
+
+        #endregion
 
         #endregion
     }

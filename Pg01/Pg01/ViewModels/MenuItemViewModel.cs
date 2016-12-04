@@ -8,6 +8,7 @@ using Livet;
 using Livet.Commands;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
+using Pg01Util;
 
 #endregion
 
@@ -19,6 +20,8 @@ namespace Pg01.ViewModels
 
         public MenuItemViewModel(Model model, MenuItem menuItem, Point origin)
         {
+            ObjectCountManager.CountUp(GetType());
+
             _model = model;
             _item = menuItem;
             Width = ConstValues.ButtonWidth;
@@ -35,6 +38,11 @@ namespace Pg01.ViewModels
             Foreground = _item.Foreground;
             Background = _item.Background;
             LabelText = _item.LabelText;
+        }
+
+        ~MenuItemViewModel()
+        {
+            ObjectCountManager.CountDown(GetType());
         }
 
         #endregion
@@ -230,6 +238,7 @@ namespace Pg01.ViewModels
         }
 
         #endregion
+
 
         #endregion
     }

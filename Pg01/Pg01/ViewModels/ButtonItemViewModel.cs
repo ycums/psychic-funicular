@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using Livet;
@@ -11,6 +10,7 @@ using Livet.EventListeners;
 using Pg01.Models;
 using Pg01.Models.Util;
 using Pg01.Views.Behaviors.Util;
+using Pg01Util;
 
 #endregion
 
@@ -72,6 +72,8 @@ namespace Pg01.ViewModels
 
         public ButtonItemViewModel(Model model, ButtonItem buttonItem)
         {
+            ObjectCountManager.CountUp(GetType());
+
             _model = model;
             _item = buttonItem;
             Width = ConstValues.ButtonWidth;
@@ -90,7 +92,7 @@ namespace Pg01.ViewModels
 
         ~ButtonItemViewModel()
         {
-            Debug.WriteLine("ButtonItemViewModel Destructed");
+            ObjectCountManager.CountDown(GetType());
         }
 
         #endregion

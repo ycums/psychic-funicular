@@ -106,6 +106,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behavior\CommandExecuteAction.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Util\ISendKeyCode.cs" />
     <Compile Include="ViewModels\IButtonItemViewModel.cs" />
@@ -207,7 +208,12 @@
     </None>
     <None Include="Resources\PerfCenterCpl.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Util\Pg01Util.csproj">
+      <Project>{c890105b-d87c-4879-8e4a-9defbce46ee8}</Project>
+      <Name>Pg01Util</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

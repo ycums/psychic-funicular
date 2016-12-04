@@ -13,6 +13,7 @@ using Livet.Messaging.IO;
 using Livet.Messaging.Windows;
 using Pg01.Models;
 using Pg01.Views.Behaviors.Util;
+using Pg01Util;
 
 #endregion
 
@@ -30,11 +31,18 @@ namespace Pg01.ViewModels
 
         public MainWindowViewModel(Model model)
         {
+            ObjectCountManager.CountUp(GetType());
+
             _model = model;
         }
 
         public MainWindowViewModel() : this(new Model())
         {
+        }
+
+        ~MainWindowViewModel()
+        {
+            ObjectCountManager.CountDown(GetType());
         }
 
         public void Initialize()

@@ -6,9 +6,9 @@ using Livet;
 
 #endregion
 
-namespace GcTest.ViewModels
+namespace Pg01Util
 {
-    internal static class ViewModelManager
+    public static class ViewModelManager
     {
         private static readonly Dictionary<Type, List<ViewModel>>
             ViewModels = new Dictionary<Type, List<ViewModel>>();

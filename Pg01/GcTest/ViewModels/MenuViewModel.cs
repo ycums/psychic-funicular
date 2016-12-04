@@ -9,6 +9,7 @@ using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
 using Livet.Messaging.Windows;
+using Pg01Util;
 
 #endregion
 
@@ -50,10 +51,12 @@ namespace GcTest.ViewModels
         public MenuViewModel(Model model)
         {
             ViewModelManager.AddEntryViewModel(this);
+            ObjectCountManager.CountUp(GetType());
+
             var listener = new PropertyChangedEventListener(model)
             {
-                { () => model.ChilidVisibility, ChildVisibilityChangedHandler},
-                { () => model.Count, CountChangedHandler}
+                {() => model.ChilidVisibility, ChildVisibilityChangedHandler},
+                {() => model.Count, CountChangedHandler}
             };
             CompositeDisposable.Add(listener);
             _Visibility = Visibility.Visible;
@@ -65,7 +68,7 @@ namespace GcTest.ViewModels
 
         ~MenuViewModel()
         {
-            Debug.WriteLine("MenuViewModel Destructor");
+            ObjectCountManager.CountDown(GetType());
         }
 
         #endregion
