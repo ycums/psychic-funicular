@@ -16,7 +16,7 @@ namespace Pg01Util
 
         #region Private Functions
 
-        private static void Dump()
+        public static void Dump()
         {
             var sb = new StringBuilder();
             sb.Append("[ObjectCount] ");

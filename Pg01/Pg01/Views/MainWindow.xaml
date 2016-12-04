@@ -15,8 +15,7 @@
         WindowStyle="None"
         AllowsTransparency="true"
         Topmost="True"
-        Title="Pg01" Opacity="{Binding MainWindowVisibility, Converter={StaticResource VisibilityToOpacityConverter}}"
-        >
+        Title="Pg01" Opacity="{Binding MainWindowVisibility, Converter={StaticResource VisibilityToOpacityConverter}}">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -44,7 +43,7 @@
         </i:EventTrigger>
 
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
-        <l:InteractionMessageTrigger  MessageKey="Information" Messenger="{Binding Messenger}">
+        <l:InteractionMessageTrigger MessageKey="Information" Messenger="{Binding Messenger}">
             <l:InformationDialogInteractionMessageAction InvokeActionOnlyWhenWindowIsActive="False" />
         </l:InteractionMessageTrigger>
 
@@ -72,14 +71,16 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Content="再読み込み(_R)" IsEnabled="{Binding ReloadCommand.CanExecute}"
                         Command="{Binding ReloadCommand}" />
-                <Button Grid.Column="1" Content="閉じる (_C)" Command="{Binding CloseCommand}" />
+                <Button Grid.Column="1" Content="_GC" Command="{Binding GcCommand}" />
+                <Button Grid.Column="2" Content="閉じる (_C)" Command="{Binding CloseCommand}" />
             </Grid>
-            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}" 
+            <ItemsControl MinHeight="20" ItemsSource="{Binding Buttons}"
                           Height="{Binding ButtonsContainerHeight}"
-                          Width="{Binding ButtonsContainerWidth}" 
+                          Width="{Binding ButtonsContainerWidth}"
                           HorizontalAlignment="{Binding ButtonsAlignment}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

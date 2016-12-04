@@ -517,6 +517,23 @@ namespace Pg01.ViewModels
 
         #endregion
 
+        #region GcCommand
+
+        private ViewModelCommand _GcCommand;
+
+        public ViewModelCommand GcCommand
+            => _GcCommand ?? (_GcCommand = new ViewModelCommand(Gc));
+
+        public void Gc()
+        {
+            Debug.WriteLine("====== GC ======");
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            ObjectCountManager.Dump();
+        }
+
+        #endregion
         #endregion
     }
 }
