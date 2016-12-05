@@ -57,7 +57,7 @@ namespace Pg01Util
             {
                 Sem.Release();
             }
-            Dump();
+            //Dump();
         }
 
         public static void CountDown(Type type)
@@ -75,7 +75,7 @@ namespace Pg01Util
             {
                 Sem.Release();
             }
-            Dump();
+            //Dump();
         }
 
         #endregion

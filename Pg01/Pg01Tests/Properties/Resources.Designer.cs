@@ -442,5 +442,29 @@ namespace Pg01Tests.Properties {
                 return ResourceManager.GetString("TestConfig16", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///
+        ///&lt;Config xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;Basic&gt;
+        ///    &lt;Title&gt;Title01&lt;/Title&gt;
+        ///    &lt;Buttons&gt;
+        ///    &lt;/Buttons&gt;
+        ///    &lt;WindowLocation X=&quot;99999&quot; Y=&quot;0&quot; /&gt;
+        ///  &lt;/Basic&gt;
+        ///  &lt;ApplicationGroups&gt;
+        ///    &lt;ApplicationGroup Name=&quot;CLIP STUDIO PAINT&quot;&gt;
+        ///      &lt;MatchingRoule&gt;
+        ///        &lt;ExeName&gt;ClipStudioPaint.exe&lt;/ExeName&gt;
+        ///        &lt;WindowTitlePatterns&gt;
+        ///          &lt;Pattern&gt;*CLIP STUDIO PAINT&lt;/Pattern&gt;
+        ///          &lt;Pattern&gt;ショートカット設定&lt;/Pat [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TestConfig17 {
+            get {
+                return ResourceManager.GetString("TestConfig17", resourceCulture);
+            }
+        }
     }
 }
