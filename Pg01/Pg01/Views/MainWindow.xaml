@@ -52,7 +52,7 @@
         </l:InteractionMessageTrigger>
 
         <l:InteractionMessageTrigger MessageKey="OpenMenuMessage" Messenger="{Binding Messenger}">
-            <l:TransitionInteractionMessageAction WindowType="{x:Type v:Menu}" Mode="Modal" />
+            <l:TransitionInteractionMessageAction WindowType="{x:Type v:Menu}" Mode="Normal" />
         </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 

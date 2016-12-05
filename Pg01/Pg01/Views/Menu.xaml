@@ -8,7 +8,7 @@
     xmlns:behaviors="clr-namespace:Pg01.Views.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:behavior="clr-namespace:Pg01.Behavior"
+    xmlns:c="clr-namespace:Pg01.Views.Converters"
     mc:Ignorable="d"
     Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
     Width="{Binding Width, Mode=OneWayToSource}" Height="{Binding Height, Mode=OneWayToSource}"
@@ -18,8 +18,18 @@
     WindowStyle="None"
     AllowsTransparency="true"
     Topmost="True"
-    Title="Menu" MinHeight="25" MinWidth="25" Opacity="0.5"
+    Title="Menu" MinHeight="25" MinWidth="25"
     d:DataContext="{d:DesignInstance {x:Type vm:MenuViewModel}}">
+    <Window.Opacity>
+        <Binding Path="IsMenuVisible">
+            <Binding.Converter>
+                <c:ValueConverterGroup >
+                    <BooleanToVisibilityConverter/>
+                    <c:VisibilityToOpacityConverter/>
+                </c:ValueConverterGroup>
+            </Binding.Converter>
+        </Binding>
+    </Window.Opacity>
     <i:Interaction.Behaviors>
         <behaviors:NonActiveWindowBehavior />
     </i:Interaction.Behaviors>
@@ -35,16 +45,11 @@
             <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize" />
         </i:EventTrigger>
 
-        <!--Windowが閉じたタイミングでViewModelのOnClosedWindowCommandを呼ぶ-->
+        <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
         <i:EventTrigger EventName="Closed">
-            <behavior:CommandExecuteAction Command="{Binding OnWindowClosedCommand}" />
+            <l:DataContextDisposeAction />
         </i:EventTrigger>
-
         <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
-
-        <l:InteractionMessageTrigger MessageKey="WindowAction" Messenger="{Binding Messenger}">
-            <l:WindowInteractionMessageAction InvokeActionOnlyWhenWindowIsActive="False" />
-        </l:InteractionMessageTrigger>
     </i:Interaction.Triggers>
 
     <Grid>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using Livet;
 using Livet.Commands;
@@ -38,19 +39,7 @@ namespace Pg01.ViewModels
             _model = model;
             _Buttons =
                 new ObservableSynchronizedCollection<ButtonItemViewModel>();
-        }
 
-        public MainWindowViewModel() : this(new Model())
-        {
-        }
-
-        ~MainWindowViewModel()
-        {
-            ObjectCountManager.CountDown(GetType());
-        }
-
-        public void Initialize()
-        {
             var listener = new PropertyChangedEventListener(_model)
             {
                 {() => _model.Basic, UpdateBasic},
@@ -67,7 +56,6 @@ namespace Pg01.ViewModels
                                 ? "(default)"
                                 : _model.Bank.Name
                 },
-                {() => _model.IsMenuVisible, IsMenuVisibleChanged},
                 {() => _model.Message, MassageChanged},
                 {
                     () => _model.MainWindowVisibility,
@@ -76,10 +64,40 @@ namespace Pg01.ViewModels
                 }
             };
             CompositeDisposable.Add(listener);
+        }
 
+        public MainWindowViewModel() : this(new Model())
+        {
+        }
+
+        ~MainWindowViewModel()
+        {
+            ObjectCountManager.CountDown(GetType());
+        }
+
+        public void Initialize()
+        {
             UpdateBasic(_model, null);
 
             _model.TimerEnabled = true;
+
+            Observable.Range(0, 1)
+                .Delay(TimeSpan.FromSeconds(0.5))
+                .Subscribe(Hoge);
+        }
+
+        private void Hoge(int value)
+        {
+            if (_menuViewModel == null)
+                _menuViewModel = new MenuViewModel(_model);
+            DispatcherHelper.UIDispatcher.BeginInvoke(
+                (Action)
+                (() =>
+                {
+                    Messenger.Raise(
+                        new TransitionMessage(
+                            _menuViewModel, "OpenMenuMessage"));
+                }));
         }
 
         #region Event Handelers
@@ -93,23 +111,6 @@ namespace Pg01.ViewModels
                     new InformationMessage(
                         m.Text, m.Caption, m.Image, "Information"));
             }
-        }
-
-        private void IsMenuVisibleChanged(
-            object sender,
-            PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            var model = sender as Model;
-            if (model != null)
-                if (model.IsMenuVisible)
-                {
-                    Debug.WriteLine(
-                        @"Messenger.Raise(new TransitionMessage(vm, ""OpenMenuMessage""));");
-                    if(_menuViewModel == null) _menuViewModel = new MenuViewModel(model);
-                    Messenger.Raise(
-                        new TransitionMessage(
-                            _menuViewModel, "OpenMenuMessage"));
-                }
         }
 
         #endregion

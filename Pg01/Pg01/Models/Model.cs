@@ -374,6 +374,8 @@ namespace Pg01.Models
                 _IsMenuVisible = value;
                 Debug.WriteLine($"IsMenuVisible: {value}");
                 RaisePropertyChanged();
+                Debug.WriteLine($"IsMenuVisible: {value} Raised");
+
             }
         }
 
@@ -413,9 +415,9 @@ namespace Pg01.Models
                 _WindowInfo = value;
                 Debug.WriteLine(
                     $"{_WindowInfo.ExeName}: {_WindowInfo.WindowText}");
-                IsMenuVisible = false;
                 LoadApplicationGroup(_WindowInfo);
                 UpdateMainWindowVisibility();
+                IsMenuVisible = false;
                 RaisePropertyChanged();
             }
         }

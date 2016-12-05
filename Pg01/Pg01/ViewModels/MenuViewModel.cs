@@ -1,15 +1,12 @@
 ﻿#region
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Livet;
-using Livet.Commands;
 using Livet.EventListeners;
-using Livet.Messaging.Windows;
 using Pg01.Models;
 using Pg01Util;
 
@@ -27,20 +24,7 @@ namespace Pg01.ViewModels
 
         #region Private Functions
 
-        public void UpdateBasic(
-            object sender,
-            PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            var model = sender as Model;
-
-            if (model != null)
-            {
-                var pos = Cursor.Position;
-                UpdateBasicCore(model, pos);
-            }
-        }
-
-        public void UpdateBasicCore(Model model, Point pos)
+        public void UpdateMenu(Model model)
         {
             var items = model.Menu.MenuItem;
             ButtonsOrigin =
@@ -55,11 +39,21 @@ namespace Pg01.ViewModels
             Buttons =
                 new ObservableSynchronizedCollection<MenuItemViewModel>(
                     model.Menu.MenuItem.Select(
-                            x => new MenuItemViewModel(model, x, ButtonsOrigin))
+                            x =>
+                                new MenuItemViewModel(
+                                    model, x, ButtonsOrigin))
                         .ToArray());
+            Debug.WriteLine($"UpdateMenu: {Buttons.Count}");
+        }
 
-            X = pos.X - ButtonsContainerWidth/2;
-            Y = pos.Y - ButtonsContainerHeight/2;
+        public void IsMenuVisibleChanged(bool visible, Point pos)
+        {
+            if (visible)
+            {
+                X = pos.X - ButtonsContainerWidth/2;
+                Y = pos.Y - ButtonsContainerHeight/2;
+            }
+            IsMenuVisible = visible;
         }
 
         #endregion
@@ -73,6 +67,21 @@ namespace Pg01.ViewModels
 
             _model = model;
             _X = -99999; //ちらつき防止
+
+            var listener = new PropertyChangedEventListener(_model)
+            {
+                {
+                    () => _model.Menu,
+                    (s, a) => UpdateMenu(_model)
+                },
+                {
+                    () => _model.IsMenuVisible,
+                    (s, a) =>
+                        IsMenuVisibleChanged(
+                            _model.IsMenuVisible, Cursor.Position)
+                }
+            };
+            CompositeDisposable.Add(listener);
         }
 
         ~MenuViewModel()
@@ -82,41 +91,6 @@ namespace Pg01.ViewModels
 
         public void Initialize()
         {
-            var listener = new PropertyChangedEventListener(_model)
-            {
-                {() => _model.Basic, UpdateBasic},
-                {() => _model.IsMenuVisible, IsMenuVisibleChangedEventHandler}
-            };
-            CompositeDisposable.Add(listener);
-            UpdateBasic(_model, null);
-        }
-
-        private void IsMenuVisibleChangedEventHandler(
-            object sender,
-            PropertyChangedEventArgs e)
-        {
-            var model = sender as Model;
-
-            if (model != null)
-            {
-                if (model.IsMenuVisible)
-                {
-                    UpdateBasic(sender, e);
-                }
-                else
-                {
-                    Debug.Write("Close");
-                    DispatcherHelper.UIDispatcher.BeginInvoke(
-                        (Action)
-                        (() =>
-                        {
-                            Messenger.Raise(
-                                new WindowActionMessage(
-                                    WindowAction.Close,
-                                    "WindowAction"));
-                        }));
-                }
-            }
         }
 
         #endregion
@@ -269,28 +243,25 @@ namespace Pg01.ViewModels
 
         #endregion
 
-        public System.Windows.Point ButtonsOrigin { get; set; }
+        #region IsMenuVisible変更通知プロパティ
 
-        #endregion
+        private bool _IsMenuVisible;
 
-        #region Commands
-
-        #region OnWindowClosedCommand
-
-        private ViewModelCommand _OnWindowClosedCommand;
-
-        public ViewModelCommand OnWindowClosedCommand
-            => _OnWindowClosedCommand ??
-               (_OnWindowClosedCommand =
-                   new ViewModelCommand(OnWindowClosed));
-
-        public void OnWindowClosed()
+        public bool IsMenuVisible
         {
-            //CompositeDisposable.Dispose();
-            //ViewModelManager.RemoveEntryViewModel(this);
+            get { return _IsMenuVisible; }
+            set
+            {
+                if (_IsMenuVisible == value)
+                    return;
+                _IsMenuVisible = value;
+                RaisePropertyChanged();
+            }
         }
 
         #endregion
+
+        public System.Windows.Point ButtonsOrigin { get; set; }
 
         #endregion
     }
